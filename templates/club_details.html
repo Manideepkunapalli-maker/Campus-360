@@ -1,0 +1,351 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ club.name }} — Campus360
+{% endblock %}
+
+{% block content %}
+
+<main class="dashboard-main">
+
+    <!-- BACK -->
+    <a
+        href="{{ url_for('clubs') }}"
+        class="club-back-link"
+    >
+        <i data-lucide="arrow-left"></i>
+        Back to Club Connect
+    </a>
+
+
+    <!-- CLUB HEADER -->
+
+    <section class="club-details-hero">
+
+        <div class="club-details-icon">
+
+            <i data-lucide="users"></i>
+
+        </div>
+
+
+        <div class="club-details-heading">
+
+            <div class="panel-label">
+                VERIFIED CAMPUS CLUB
+            </div>
+
+            <h1>
+                {{ club.name }}
+            </h1>
+
+            {% if club.domain %}
+
+            <span class="club-domain">
+                {{ club.domain }}
+            </span>
+
+            {% endif %}
+
+            {% if club.description %}
+
+            <p>
+                {{ club.description }}
+            </p>
+
+            {% endif %}
+
+        </div>
+
+
+        {% if club.verified %}
+
+        <span class="admin-verified">
+
+            <i data-lucide="badge-check"></i>
+
+            Verified
+
+        </span>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         EVENTS
+    ====================================================== -->
+
+    <section class="admin-card">
+
+        <div class="admin-card-header">
+
+            <div class="admin-icon">
+
+                <i data-lucide="calendar"></i>
+
+            </div>
+
+            <div>
+
+                <h2>
+                    Upcoming Events
+                </h2>
+
+                <p>
+                    Events organized by {{ club.name }}.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if events %}
+
+        <div class="club-events-list">
+
+            {% for event in events %}
+
+            <article class="club-event-card">
+
+                <div class="club-event-icon">
+
+                    <i data-lucide="calendar-days"></i>
+
+                </div>
+
+
+                <div class="club-event-info">
+
+                    <h3>
+                        {{ event.title }}
+                    </h3>
+
+
+                    {% if event.description %}
+
+                    <p>
+                        {{ event.description }}
+                    </p>
+
+                    {% endif %}
+
+
+                    <div class="club-event-meta">
+
+                        {% if event.event_date %}
+
+                        <span>
+
+                            <i data-lucide="calendar"></i>
+
+                            {{ event.event_date.strftime("%d %b %Y, %I:%M %p") }}
+
+                        </span>
+
+                        {% endif %}
+
+
+                        {% if event.location %}
+
+                        <span>
+
+                            <i data-lucide="map-pin"></i>
+
+                            {{ event.location }}
+
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                {% if event.registration_link %}
+
+                <a
+                    href="{{ event.registration_link }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="club-primary-btn"
+                >
+
+                    <i data-lucide="external-link"></i>
+
+                    Register
+
+                </a>
+
+                {% endif %}
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <div class="admin-empty">
+
+            <i data-lucide="calendar-x"></i>
+
+            <p>
+                No upcoming events yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         OPPORTUNITIES
+    ====================================================== -->
+
+    <section class="admin-card">
+
+        <div class="admin-card-header">
+
+            <div class="admin-icon">
+
+                <i data-lucide="briefcase"></i>
+
+            </div>
+
+            <div>
+
+                <h2>
+                    Open Opportunities
+                </h2>
+
+                <p>
+                    Join the {{ club.name }} team.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if opportunities %}
+
+        <div class="club-opportunities-list">
+
+            {% for opportunity in opportunities %}
+
+            <article class="club-opportunity-card">
+
+                <div class="club-opportunity-icon">
+
+                    <i data-lucide="briefcase-business"></i>
+
+                </div>
+
+
+                <div class="club-opportunity-info">
+
+                    <span class="panel-label">
+                        OPEN POSITION
+                    </span>
+
+
+                    <h3>
+                        {{ opportunity.title }}
+                    </h3>
+
+
+                    {% if opportunity.description %}
+
+                    <p>
+                        {{ opportunity.description }}
+                    </p>
+
+                    {% endif %}
+
+
+                    <div class="club-opportunity-meta">
+
+                        {% if opportunity.role_type %}
+
+                        <span>
+
+                            <i data-lucide="user-round"></i>
+
+                            {{ opportunity.role_type }}
+
+                        </span>
+
+                        {% endif %}
+
+
+                        {% if opportunity.domain %}
+
+                        <span>
+
+                            <i data-lucide="layers"></i>
+
+                            {{ opportunity.domain }}
+
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- APPLY -->
+
+                <a
+                    href="{{ url_for(
+                        'club_apply',
+                        opportunity_id=opportunity.id
+                    ) }}"
+                    class="club-primary-btn"
+                >
+
+                    <i data-lucide="send"></i>
+
+                    Apply Now
+
+                </a>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <div class="admin-empty">
+
+            <i data-lucide="briefcase"></i>
+
+            <h3>
+                No open positions
+            </h3>
+
+            <p>
+                This club has not published any opportunities yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+{% endblock %}

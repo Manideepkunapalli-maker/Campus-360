@@ -1,0 +1,444 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Profile — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <div class="dashboard-date">
+
+                    <i data-lucide="user"></i>
+
+                    MY PROFILE
+
+                </div>
+
+
+                <h1>
+                    Your Campus360 Profile
+                </h1>
+
+
+                <p>
+                    Manage your student identity and
+                    campus information.
+                </p>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             PROFILE HERO
+        ================================================== -->
+
+        <section class="profile-hero">
+
+
+            <div class="profile-avatar">
+
+                {{ user.name[0]|upper }}
+
+            </div>
+
+
+            <div class="profile-hero-info">
+
+                <div class="profile-name-row">
+
+                    <h2>
+                        {{ user.name }}
+                    </h2>
+
+
+                    <span class="profile-verified">
+
+                        <i data-lucide="badge-check"></i>
+
+                        Verified Student
+
+                    </span>
+
+                </div>
+
+
+                <p>
+                    {{ user.email }}
+                </p>
+
+
+                <div class="profile-mini-info">
+
+                    {% if user.branch %}
+
+                    <span>
+
+                        <i data-lucide="graduation-cap"></i>
+
+                        {{ user.branch }}
+
+                    </span>
+
+                    {% endif %}
+
+
+                    {% if user.batch %}
+
+                    <span>
+
+                        <i data-lucide="calendar"></i>
+
+                        Batch {{ user.batch }}
+
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             PROFILE INFORMATION
+        ================================================== -->
+
+        <section class="profile-section">
+
+            <div class="profile-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        STUDENT INFORMATION
+                    </div>
+
+                    <h2>
+                        Your details
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-info-grid">
+
+
+                <!-- NAME -->
+
+                <div class="profile-info-card">
+
+                    <div class="profile-info-icon">
+
+                        <i data-lucide="user"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Full Name
+                        </span>
+
+                        <strong>
+                            {{ user.name }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- EMAIL -->
+
+                <div class="profile-info-card">
+
+                    <div class="profile-info-icon">
+
+                        <i data-lucide="mail"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            VIT Email
+                        </span>
+
+                        <strong>
+                            {{ user.email }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- BRANCH -->
+
+                <div class="profile-info-card">
+
+                    <div class="profile-info-icon">
+
+                        <i data-lucide="book-open"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Branch
+                        </span>
+
+                        <strong>
+                            {{ user.branch or "Not added" }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- BATCH -->
+
+                <div class="profile-info-card">
+
+                    <div class="profile-info-icon">
+
+                        <i data-lucide="calendar-days"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Batch
+                        </span>
+
+                        <strong>
+                            {{ user.batch or "Not added" }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ROOMMATE PROFILE
+        ================================================== -->
+
+        <section class="profile-section">
+
+
+            <div class="profile-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        SMART ROOMMATES
+                    </div>
+
+                    <h2>
+                        Roommate profile
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            {% if roommate_profile %}
+
+
+            <div class="profile-roommate-card">
+
+                <div class="profile-roommate-icon">
+
+                    <i data-lucide="house"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Roommate profile is active
+                    </strong>
+
+
+                    <p>
+
+                        {{ roommate_profile.hostel_block }}
+
+                        {% if roommate_profile.room_type %}
+                            · {{ roommate_profile.room_type }}
+                        {% endif %}
+
+                        {% if roommate_profile.ac_type %}
+                            · {{ roommate_profile.ac_type }}
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="/roommates"
+                    class="profile-action-btn"
+                >
+
+                    View Matches
+
+                    <i data-lucide="arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+            {% else %}
+
+
+            <div class="profile-roommate-card">
+
+                <div class="profile-roommate-icon">
+
+                    <i data-lucide="house"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        No roommate profile yet
+                    </strong>
+
+
+                    <p>
+                        Create one to find compatible
+                        roommates.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="/roommates/create"
+                    class="profile-action-btn"
+                >
+
+                    Create Profile
+
+                    <i data-lucide="arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- =================================================
+             VERIFIED NETWORK
+        ================================================== -->
+
+        <section class="profile-verification">
+
+            <div class="profile-verification-icon">
+
+                <i data-lucide="shield-check"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Verified Campus360 Student
+                </strong>
+
+
+                <p>
+                    Your account is connected to your
+                    registered VIT student email.
+                </p>
+
+            </div>
+
+
+            <span class="profile-verification-badge">
+
+                VERIFIED
+
+            </span>
+
+        </section>
+
+
+
+        <!-- =================================================
+             LOGOUT
+        ================================================== -->
+
+        <div class="profile-logout-wrapper">
+
+            <a
+                href="/logout"
+                class="profile-logout-btn"
+            >
+
+                <i data-lucide="log-out"></i>
+
+                Logout from Campus360
+
+            </a>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+{% endblock %}

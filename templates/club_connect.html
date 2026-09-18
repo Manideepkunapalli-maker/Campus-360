@@ -1,0 +1,904 @@
+{% extends "base.html" %}
+
+{% block title %}
+Club Connect — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <main class="dashboard-main">
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <div class="dashboard-date">
+
+                    <i data-lucide="megaphone"></i>
+
+                    CLUB CONNECT
+
+                </div>
+
+
+                <h1>
+                    Find your campus community. 📢
+                </h1>
+
+
+                <p>
+                    Discover clubs, events, recruitment
+                    and student opportunities.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <div class="header-profile">
+
+                    <div class="header-avatar">
+
+                        {{ session.get("user_name", "D")[0]|upper }}
+
+                    </div>
+
+
+                    <div class="header-profile-info">
+
+                        <strong>
+                            {{ session.get("user_name", "Student") }}
+                        </strong>
+
+                        <span>
+                            {{ session.get("branch", "AI & ML") }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             SEARCH
+        ================================================== -->
+
+        <form
+            method="GET"
+            action="{{ url_for('clubs') }}"
+            class="club-search-form"
+        >
+
+            <div class="club-search-box">
+
+                <i data-lucide="search"></i>
+
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ search or '' }}"
+                    placeholder="Search clubs..."
+                >
+
+            </div>
+
+
+            <select
+                name="domain"
+                class="club-domain-filter"
+            >
+
+                <option value="">
+                    All Domains
+                </option>
+
+                {% for item in domains %}
+
+                <option
+                    value="{{ item }}"
+                    {% if selected_domain == item %}
+                    selected
+                    {% endif %}
+                >
+
+                    {{ item }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <button
+                type="submit"
+                class="club-primary-btn"
+            >
+
+                <i data-lucide="search"></i>
+
+                Search
+
+            </button>
+
+
+            {% if search or selected_domain %}
+
+            <a
+                href="{{ url_for('clubs') }}"
+                class="club-clear-btn"
+            >
+
+                Clear
+
+            </a>
+
+            {% endif %}
+
+        </form>
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section class="club-hero">
+
+            <div class="club-hero-content">
+
+                <div class="club-hero-label">
+
+                    <i data-lucide="badge-check"></i>
+
+                    VERIFIED CAMPUS CLUBS
+
+                </div>
+
+
+                <h2>
+                    Discover. Connect. Grow.
+                </h2>
+
+
+                <p>
+                    Follow student clubs, discover events,
+                    apply for opportunities and build your
+                    campus profile.
+                </p>
+
+
+                <div class="club-hero-actions">
+
+                    <a
+                        href="#clubs"
+                        class="club-primary-btn"
+                    >
+
+                        <i data-lucide="compass"></i>
+
+                        Explore Clubs
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('my_club_applications') }}"
+                        class="club-secondary-btn"
+                    >
+
+                        <i data-lucide="file-check"></i>
+
+                        My Applications
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('club_admin') }}"
+                        class="club-secondary-btn"
+                    >
+
+                        <i data-lucide="settings"></i>
+
+                        Club Admin
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="club-hero-icon">
+
+                <i data-lucide="users"></i>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             STATS
+        ================================================== -->
+
+        <section class="club-stats-grid">
+
+
+            <div class="club-stat-card">
+
+                <div class="club-stat-icon purple">
+
+                    <i data-lucide="badge-check"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        {{ total_clubs }}
+                    </strong>
+
+                    <span>
+                        Verified Clubs
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="club-stat-card">
+
+                <div class="club-stat-icon blue">
+
+                    <i data-lucide="calendar-days"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        {{ total_events }}
+                    </strong>
+
+                    <span>
+                        Upcoming Events
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="club-stat-card">
+
+                <div class="club-stat-icon green">
+
+                    <i data-lucide="briefcase-business"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        {{ total_opportunities }}
+                    </strong>
+
+                    <span>
+                        Open Opportunities
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CLUBS
+        ================================================== -->
+
+        <section
+            class="club-section"
+            id="clubs"
+        >
+
+            <div class="club-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        CAMPUS COMMUNITY
+                    </div>
+
+                    <h2>
+                        Discover clubs
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('club_admin') }}"
+                    class="club-small-btn"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Add Club
+
+                </a>
+
+            </div>
+
+
+            {% if clubs %}
+
+            <div class="club-grid">
+
+                {% for club in clubs %}
+
+                <article class="club-card">
+
+
+                    <div class="club-card-top">
+
+                        <div class="club-card-icon">
+
+                            {% if club.logo %}
+
+                            <img
+                                src="{{ club.logo }}"
+                                alt="{{ club.name }}"
+                            >
+
+                            {% else %}
+
+                            <i data-lucide="users"></i>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        {% if club.verified %}
+
+                        <span class="club-verified">
+
+                            <i data-lucide="badge-check"></i>
+
+                            Verified
+
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <h3>
+                        {{ club.name }}
+                    </h3>
+
+
+                    {% if club.domain %}
+
+                    <span class="club-domain">
+
+                        {{ club.domain }}
+
+                    </span>
+
+                    {% endif %}
+
+
+                    <p>
+
+                        {{ club.description or
+                        "Campus club community and student activities." }}
+
+                    </p>
+
+
+                    <div class="club-card-footer">
+
+                        <a
+                            href="{{ url_for(
+                                'club_details',
+                                club_id=club.id
+                            ) }}"
+                            class="club-view-btn"
+                        >
+
+                            View Club
+
+                            <i data-lucide="arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+
+            {% else %}
+
+            <div class="club-empty-state">
+
+                <div class="club-empty-icon">
+
+                    <i data-lucide="users"></i>
+
+                </div>
+
+
+                <h3>
+
+                    {% if search or selected_domain %}
+
+                        No clubs found
+
+                    {% else %}
+
+                        Clubs are coming soon
+
+                    {% endif %}
+
+                </h3>
+
+
+                <p>
+
+                    {% if search or selected_domain %}
+
+                        Try another search or domain.
+
+                    {% else %}
+
+                        Verified campus clubs will appear here.
+
+                    {% endif %}
+
+                </p>
+
+
+                {% if search or selected_domain %}
+
+                <a
+                    href="{{ url_for('clubs') }}"
+                    class="club-primary-btn"
+                >
+
+                    Clear Search
+
+                </a>
+
+                {% else %}
+
+                <a
+                    href="{{ url_for('club_admin') }}"
+                    class="club-primary-btn"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Add First Club
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- =================================================
+             EVENTS
+        ================================================== -->
+
+        <section class="club-section">
+
+            <div class="club-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        WHAT'S HAPPENING
+                    </div>
+
+                    <h2>
+                        Upcoming events
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('club_admin') }}"
+                    class="club-small-btn"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Add Event
+
+                </a>
+
+            </div>
+
+
+            {% if events %}
+
+            <div class="event-list">
+
+                {% for event in events %}
+
+                <article class="event-card">
+
+
+                    <div class="event-date">
+
+                        <i data-lucide="calendar"></i>
+
+                        <strong>
+
+                            {% if event.event_date %}
+
+                                {{ event.event_date.strftime(
+                                    "%d %b %Y, %I:%M %p"
+                                ) }}
+
+                            {% else %}
+
+                                Date TBA
+
+                            {% endif %}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="event-content">
+
+                        <h3>
+                            {{ event.title }}
+                        </h3>
+
+
+                        <p>
+
+                            {{ event.description or
+                            "Campus event." }}
+
+                        </p>
+
+
+                        {% if event.location %}
+
+                        <span class="event-location">
+
+                            <i data-lucide="map-pin"></i>
+
+                            {{ event.location }}
+
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    {% if event.registration_link %}
+
+                    <a
+                        href="{{ event.registration_link }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="club-view-btn"
+                    >
+
+                        Register
+
+                        <i data-lucide="external-link"></i>
+
+                    </a>
+
+                    {% endif %}
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+
+            {% else %}
+
+            <div class="club-empty-state small">
+
+                <div class="club-empty-icon">
+
+                    <i data-lucide="calendar-x"></i>
+
+                </div>
+
+
+                <h3>
+                    No upcoming events
+                </h3>
+
+
+                <p>
+                    New club events will appear here.
+                </p>
+
+
+                <a
+                    href="{{ url_for('club_admin') }}"
+                    class="club-secondary-btn"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Add Event
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- =================================================
+             OPPORTUNITIES
+        ================================================== -->
+
+        <section class="club-section">
+
+            <div class="club-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        OPPORTUNITIES
+                    </div>
+
+                    <h2>
+                        Open positions
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('club_admin') }}"
+                    class="club-small-btn"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Add Opportunity
+
+                </a>
+
+            </div>
+
+
+            {% if opportunities %}
+
+            <div class="opportunity-grid">
+
+                {% for opportunity in opportunities %}
+
+                {% set opportunity_club =
+                    namespace(name="Campus Club") %}
+
+
+                {% for club in clubs %}
+
+                    {% if club.id == opportunity.club_id %}
+
+                        {% set opportunity_club.name =
+                            club.name %}
+
+                    {% endif %}
+
+                {% endfor %}
+
+
+                <article class="opportunity-card">
+
+
+                    <div class="opportunity-icon">
+
+                        <i data-lucide="briefcase"></i>
+
+                    </div>
+
+
+                    <div class="opportunity-content">
+
+                        <span class="opportunity-club">
+
+                            {{ opportunity_club.name }}
+
+                        </span>
+
+
+                        <h3>
+
+                            {{ opportunity.title }}
+
+                        </h3>
+
+
+                        <p>
+
+                            {{ opportunity.description or
+                            "Student opportunity." }}
+
+                        </p>
+
+
+                        <div class="opportunity-tags">
+
+                            {% if opportunity.role_type %}
+
+                            <span class="opportunity-tag">
+
+                                <i data-lucide="user-round"></i>
+
+                                {{ opportunity.role_type }}
+
+                            </span>
+
+                            {% endif %}
+
+
+                            {% if opportunity.domain %}
+
+                            <span class="opportunity-tag">
+
+                                <i data-lucide="layers"></i>
+
+                                {{ opportunity.domain }}
+
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- APPLY -->
+
+                    <a
+                        href="{{ url_for(
+                            'club_apply',
+                            opportunity_id=opportunity.id
+                        ) }}"
+                        class="club-primary-btn opportunity-apply-btn"
+                    >
+
+                        Apply
+
+                        <i data-lucide="arrow-right"></i>
+
+                    </a>
+
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        class="opportunity-arrow"
+                    ></i>
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+
+            {% else %}
+
+            <div class="club-empty-state small">
+
+                <div class="club-empty-icon">
+
+                    <i data-lucide="briefcase-business"></i>
+
+                </div>
+
+
+                <h3>
+                    No open positions
+                </h3>
+
+
+                <p>
+                    Club recruitment opportunities will
+                    appear here.
+                </p>
+
+
+                <a
+                    href="{{ url_for('club_admin') }}"
+                    class="club-secondary-btn"
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Add Opportunity
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- =================================================
+             VERIFICATION NOTE
+        ================================================== -->
+
+        <section class="club-verification-note">
+
+            <div class="club-verification-icon">
+
+                <i data-lucide="shield-check"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Verified campus community
+                </strong>
+
+
+                <p>
+                    Club profiles and opportunities are
+                    intended for verified student communities.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+{% endblock %}

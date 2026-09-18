@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ course.course_code }} — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <main
+        class="dashboard-main"
+        style="max-width:900px;margin:0 auto;"
+    >
+
+
+        <!-- BACK -->
+
+        <div style="margin-bottom:22px;">
+
+            <a
+                href="/courses"
+                class="back-home"
+            >
+
+                <i data-lucide="arrow-left"></i>
+
+                Back to Course Insights
+
+            </a>
+
+        </div>
+
+
+
+        <!-- COURSE HEADER -->
+
+        <section class="course-detail-hero">
+
+            <div class="course-detail-code">
+
+                {{ course.course_code }}
+
+            </div>
+
+
+            <h1>
+
+                {{ course.course_name }}
+
+            </h1>
+
+
+            {% if course.rating %}
+
+            <div class="course-detail-rating">
+
+                <i data-lucide="star"></i>
+
+                {{ "%.1f"|format(course.rating) }}
+
+                <span>
+                    Student rating
+                </span>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- QUICK INFORMATION -->
+
+        <section class="course-detail-grid">
+
+
+            {% if course.difficulty %}
+
+            <div class="course-detail-card">
+
+                <div class="course-detail-icon purple">
+
+                    <i data-lucide="gauge"></i>
+
+                </div>
+
+
+                <span>
+                    Difficulty
+                </span>
+
+
+                <strong>
+                    {{ course.difficulty }}
+                </strong>
+
+            </div>
+
+            {% endif %}
+
+
+
+            {% if course.workload %}
+
+            <div class="course-detail-card">
+
+                <div class="course-detail-icon blue">
+
+                    <i data-lucide="clock-3"></i>
+
+                </div>
+
+
+                <span>
+                    Assignment Workload
+                </span>
+
+
+                <strong>
+                    {{ course.workload }}
+                </strong>
+
+            </div>
+
+            {% endif %}
+
+
+        </section>
+
+
+
+        <!-- EXAM PATTERN -->
+
+        {% if course.exam_pattern %}
+
+        <section class="course-detail-section">
+
+            <div class="course-detail-section-title">
+
+                <i data-lucide="file-text"></i>
+
+                <h2>
+                    Exam Pattern
+                </h2>
+
+            </div>
+
+
+            <p>
+                {{ course.exam_pattern }}
+            </p>
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- TIPS -->
+
+        {% if course.tips %}
+
+        <section class="course-detail-section">
+
+            <div class="course-detail-section-title">
+
+                <i data-lucide="lightbulb"></i>
+
+                <h2>
+                    Tips for Juniors
+                </h2>
+
+            </div>
+
+
+            <p>
+                {{ course.tips }}
+            </p>
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- NO FACULTY RATINGS -->
+
+        <section class="course-note">
+
+            <div class="course-note-icon">
+
+                <i data-lucide="shield-check"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    No faculty ratings
+                </strong>
+
+
+                <p>
+                    Campus360 focuses on course information
+                    and student learning experiences, not
+                    faculty ratings.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+{% endblock %}

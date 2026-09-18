@@ -1,0 +1,883 @@
+{% extends "base.html" %}
+
+{% block title %}
+Course Insights — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <a href="/dashboard" class="sidebar-logo">
+
+            <div class="logo-icon">
+                <i data-lucide="graduation-cap"></i>
+            </div>
+
+            <div class="logo-text">
+                Campus<span>360</span>
+            </div>
+
+        </a>
+
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-label">
+                CAMPUS
+            </div>
+
+            <a href="/dashboard" class="sidebar-link">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Overview</span>
+            </a>
+
+            <a href="/academic" class="sidebar-link">
+                <i data-lucide="book-open"></i>
+                <span>Academic Hub</span>
+            </a>
+
+            <a href="/marketplace" class="sidebar-link">
+                <i data-lucide="shopping-bag"></i>
+                <span>Marketplace</span>
+            </a>
+
+            <a href="/roommates" class="sidebar-link">
+                <i data-lucide="house"></i>
+                <span>Roommates</span>
+            </a>
+
+            <a href="/clubs" class="sidebar-link">
+                <i data-lucide="megaphone"></i>
+                <span>Club Connect</span>
+            </a>
+
+            <a href="/courses" class="sidebar-link active">
+                <i data-lucide="star"></i>
+                <span>Course Insights</span>
+            </a>
+
+            <a href="/profile" class="sidebar-link">
+                <i data-lucide="code-2"></i>
+                <span>Skill Services</span>
+            </a>
+
+        </div>
+
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-label">
+                ACCOUNT
+            </div>
+
+            <a href="/profile" class="sidebar-link">
+                <i data-lucide="user"></i>
+                <span>My Profile</span>
+            </a>
+
+            <a href="/profile" class="sidebar-link">
+                <i data-lucide="settings"></i>
+                <span>Settings</span>
+            </a>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-user">
+
+                <div class="user-avatar">
+                    D
+                </div>
+
+                <div class="user-info">
+
+                    <strong>
+                        Deepu
+                    </strong>
+
+                    <span>
+                        Student
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="dashboard-main">
+
+
+        <!-- HEADER -->
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <div class="dashboard-date">
+
+                    <i data-lucide="star"></i>
+
+                    COURSE INSIGHTS
+
+                </div>
+
+                <h1>
+                    Know your course before you start. ⭐
+                </h1>
+
+                <p>
+                    Learn from students who have already
+                    taken the course.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <button class="header-icon">
+
+                    <i data-lucide="search"></i>
+
+                </button>
+
+                <button class="header-icon">
+
+                    <i data-lucide="bell"></i>
+
+                </button>
+
+                <div class="header-profile">
+
+                    <div class="header-avatar">
+                        D
+                    </div>
+
+                    <div class="header-profile-info">
+
+                        <strong>
+                            Deepu
+                        </strong>
+
+                        <span>
+                            AI & ML
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- SEARCH HERO -->
+
+        <section class="course-hero">
+
+            <div>
+
+                <div class="course-badge">
+
+                    <i data-lucide="users"></i>
+
+                    Student experiences
+
+                </div>
+
+                <h2>
+                    Make better academic decisions.
+                </h2>
+
+                <p>
+                    Explore course difficulty, exam patterns,
+                    workload and practical tips shared by students.
+                </p>
+
+            </div>
+
+
+            <div class="course-search-box">
+
+                <i data-lucide="search"></i>
+
+                <input
+                    type="text"
+                    placeholder="Search course or course code..."
+                >
+
+                <button>
+                    Search
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- POPULAR COURSES -->
+
+        <section class="course-section">
+
+            <div class="course-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        POPULAR COURSES
+                    </div>
+
+                    <h2>
+                        Explore courses
+                    </h2>
+
+                </div>
+
+                <span class="course-count">
+                    36 courses
+                </span>
+
+            </div>
+
+
+            <div class="course-grid">
+
+
+                <!-- COURSE 1 -->
+
+                <a href="#dsa" class="course-card">
+
+                    <div class="course-card-top">
+
+                        <div class="course-code purple">
+                            CSE2001
+                        </div>
+
+                        <span class="difficulty-badge hard">
+                            Challenging
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Data Structures & Algorithms
+                    </h3>
+
+                    <p>
+                        Learn about arrays, linked lists,
+                        trees, graphs and algorithms.
+                    </p>
+
+                    <div class="course-rating">
+
+                        <span class="rating-stars">
+                            ★★★★☆
+                        </span>
+
+                        <span>
+                            4.3
+                        </span>
+
+                        <span class="review-count">
+                            Student insights
+                        </span>
+
+                    </div>
+
+                    <div class="course-card-footer">
+
+                        <span>
+                            Exam focused
+                        </span>
+
+                        <i data-lucide="arrow-up-right"></i>
+
+                    </div>
+
+                </a>
+
+
+                <!-- COURSE 2 -->
+
+                <a href="#math" class="course-card">
+
+                    <div class="course-card-top">
+
+                        <div class="course-code green">
+                            MAT1001
+                        </div>
+
+                        <span class="difficulty-badge moderate">
+                            Moderate
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Engineering Mathematics
+                    </h3>
+
+                    <p>
+                        Differential equations, Fourier series
+                        and mathematical methods.
+                    </p>
+
+                    <div class="course-rating">
+
+                        <span class="rating-stars">
+                            ★★★☆☆
+                        </span>
+
+                        <span>
+                            3.7
+                        </span>
+
+                        <span class="review-count">
+                            98 reviews
+                        </span>
+
+                    </div>
+
+                    <div class="course-card-footer">
+
+                        <span>
+                            Practice heavy
+                        </span>
+
+                        <i data-lucide="arrow-up-right"></i>
+
+                    </div>
+
+                </a>
+
+
+                <!-- COURSE 3 -->
+
+                <a href="#physics" class="course-card">
+
+                    <div class="course-card-top">
+
+                        <div class="course-code orange">
+                            PHY1001
+                        </div>
+
+                        <span class="difficulty-badge moderate">
+                            Moderate
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Engineering Physics
+                    </h3>
+
+                    <p>
+                        Fundamentals of physics with
+                        applications to engineering.
+                    </p>
+
+                    <div class="course-rating">
+
+                        <span class="rating-stars">
+                            ★★★☆☆
+                        </span>
+
+                        <span>
+                            3.5
+                        </span>
+
+                        <span class="review-count">
+                            73 reviews
+                        </span>
+
+                    </div>
+
+                    <div class="course-card-footer">
+
+                        <span>
+                            Concept focused
+                        </span>
+
+                        <i data-lucide="arrow-up-right"></i>
+
+                    </div>
+
+                </a>
+
+
+                <!-- COURSE 4 -->
+
+                <a href="#java" class="course-card">
+
+                    <div class="course-card-top">
+
+                        <div class="course-code blue">
+                            CSE1002
+                        </div>
+
+                        <span class="difficulty-badge hard">
+                            Challenging
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Object Oriented Programming
+                    </h3>
+
+                    <p>
+                        Java, classes, inheritance,
+                        polymorphism and interfaces.
+                    </p>
+
+                    <div class="course-rating">
+
+                        <span class="rating-stars">
+                            ★★★★☆
+                        </span>
+
+                        <span>
+                            4.1
+                        </span>
+
+                        <span class="review-count">
+                            86 reviews
+                        </span>
+
+                    </div>
+
+                    <div class="course-card-footer">
+
+                        <span>
+                            Coding heavy
+                        </span>
+
+                        <i data-lucide="arrow-up-right"></i>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- COURSE DETAIL -->
+
+        <section class="course-detail" id="dsa">
+
+            <div class="course-detail-header">
+
+                <div class="course-detail-title">
+
+                    <div class="large-course-code">
+                        CSE2001
+                    </div>
+
+                    <div>
+
+                        <div class="panel-label">
+                            COURSE INSIGHT
+                        </div>
+
+                        <h2>
+                            Data Structures & Algorithms
+                        </h2>
+
+                        <p>
+                            Shared by students who completed the course.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="overall-rating">
+
+                    <strong>
+                        4.3
+                    </strong>
+
+                    <div>
+                        <span>★★★★☆</span>
+                        <small>Community-submitted insight</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- INSIGHT STATS -->
+
+            <div class="insight-stats">
+
+
+                <div class="insight-stat">
+
+                    <div class="insight-stat-icon purple">
+                        <i data-lucide="gauge"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Difficulty
+                        </span>
+
+                        <strong>
+                            Challenging
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="insight-stat">
+
+                    <div class="insight-stat-icon blue">
+                        <i data-lucide="file-question"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Exam pattern
+                        </span>
+
+                        <strong>
+                            Problem solving
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="insight-stat">
+
+                    <div class="insight-stat-icon orange">
+                        <i data-lucide="clock-3"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Workload
+                        </span>
+
+                        <strong>
+                            Medium-high
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="insight-stat">
+
+                    <div class="insight-stat-icon green">
+                        <i data-lucide="book-open"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Preparation
+                        </span>
+
+                        <strong>
+                            Practice regularly
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EXAM PATTERN + WORKLOAD -->
+
+            <div class="course-analysis-grid">
+
+
+                <div class="analysis-panel">
+
+                    <div class="analysis-panel-header">
+
+                        <h3>
+                            Exam pattern
+                        </h3>
+
+                        <i data-lucide="bar-chart-3"></i>
+
+                    </div>
+
+
+                    <div class="exam-row">
+
+                        <span>
+                            CAT 1
+                        </span>
+
+                        <div class="exam-bar">
+                            <div style="width: 65%"></div>
+                        </div>
+
+                        <strong>
+                            65%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="exam-row">
+
+                        <span>
+                            CAT 2
+                        </span>
+
+                        <div class="exam-bar">
+                            <div style="width: 75%"></div>
+                        </div>
+
+                        <strong>
+                            75%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="exam-row">
+
+                        <span>
+                            FAT
+                        </span>
+
+                        <div class="exam-bar">
+                            <div style="width: 90%"></div>
+                        </div>
+
+                        <strong>
+                            90%
+                        </strong>
+
+                    </div>
+
+
+                    <p class="analysis-note">
+                        Students report that understanding concepts
+                        is more important than memorising definitions.
+                    </p>
+
+                </div>
+
+
+                <div class="analysis-panel">
+
+                    <div class="analysis-panel-header">
+
+                        <h3>
+                            Workload
+                        </h3>
+
+                        <i data-lucide="activity"></i>
+
+                    </div>
+
+
+                    <div class="workload-level">
+
+                        <span>
+                            Assignments
+                        </span>
+
+                        <div class="workload-dots">
+
+                            <span class="filled"></span>
+                            <span class="filled"></span>
+                            <span class="filled"></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+                        <strong>
+                            Medium
+                        </strong>
+
+                    </div>
+
+
+                    <div class="workload-level">
+
+                        <span>
+                            Coding
+                        </span>
+
+                        <div class="workload-dots">
+
+                            <span class="filled"></span>
+                            <span class="filled"></span>
+                            <span class="filled"></span>
+                            <span class="filled"></span>
+                            <span></span>
+
+                        </div>
+
+                        <strong>
+                            High
+                        </strong>
+
+                    </div>
+
+
+                    <div class="workload-level">
+
+                        <span>
+                            Revision
+                        </span>
+
+                        <div class="workload-dots">
+
+                            <span class="filled"></span>
+                            <span class="filled"></span>
+                            <span class="filled"></span>
+                            <span class="filled"></span>
+                            <span></span>
+
+                        </div>
+
+                        <strong>
+                            High
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- STUDENT TIPS -->
+
+            <div class="student-tips">
+
+                <div class="tips-header">
+
+                    <div>
+
+                        <div class="panel-label">
+                            FROM STUDENTS
+                        </div>
+
+                        <h3>
+                            Tips for juniors
+                        </h3>
+
+                    </div>
+
+                    <i data-lucide="lightbulb"></i>
+
+                </div>
+
+
+                <div class="tip-list">
+
+                    <div class="tip">
+
+                        <div class="tip-number">
+                            01
+                        </div>
+
+                        <p>
+                            Start solving problems early instead
+                            of waiting until exam week.
+                        </p>
+
+                    </div>
+
+
+                    <div class="tip">
+
+                        <div class="tip-number">
+                            02
+                        </div>
+
+                        <p>
+                            Focus on understanding the pattern
+                            behind each algorithm.
+                        </p>
+
+                    </div>
+
+
+                    <div class="tip">
+
+                        <div class="tip-number">
+                            03
+                        </div>
+
+                        <p>
+                            Practice coding without looking
+                            at the solution.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- IMPORTANT NOTE -->
+
+        <section class="course-note">
+
+            <div class="course-note-icon">
+
+                <i data-lucide="info"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Course Insights are student experiences.
+                </strong>
+
+                <p>
+                    Ratings and information describe the course,
+                    workload and learning experience — not faculty.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+{% endblock %}

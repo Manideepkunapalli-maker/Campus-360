@@ -1,0 +1,352 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Account — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="login-card">
+
+    <!-- HEADER -->
+
+    <div class="login-header">
+
+        <div class="login-logo">
+
+            <div class="logo-icon">
+                <i data-lucide="graduation-cap"></i>
+            </div>
+
+        </div>
+
+
+        <h1>
+            Create your account 🚀
+        </h1>
+
+
+        <p>
+            Join your Campus360 student community
+        </p>
+
+    </div>
+
+
+    <!-- ERROR -->
+
+    {% if error %}
+
+    <div class="login-error">
+
+        <i
+            data-lucide="alert-circle"
+            size="16"
+        ></i>
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- SIGNUP FORM -->
+
+    <form
+        method="POST"
+        action="{{ url_for('signup') }}"
+    >
+
+        <!-- NAME -->
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Full Name
+            </label>
+
+            <div class="input-wrapper">
+
+                <i
+                    data-lucide="user"
+                    size="17"
+                ></i>
+
+                <input
+                    type="text"
+                    name="name"
+                    class="input"
+                    placeholder="Enter your full name"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+            <label class="form-label">
+                VIT Email
+            </label>
+
+            <div class="input-wrapper">
+
+                <i
+                    data-lucide="mail"
+                    size="17"
+                ></i>
+
+                <input
+                    type="email"
+                    name="email"
+                    class="input"
+                    placeholder="yourname@vitap.ac.in"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- BRANCH -->
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Branch
+            </label>
+
+            <div class="input-wrapper">
+
+                <i
+                    data-lucide="graduation-cap"
+                    size="17"
+                ></i>
+
+                <select
+                    name="branch"
+                    class="input"
+                    required
+                >
+
+                    <option value="">
+                        Select your branch
+                    </option>
+
+                    <option value="AI & ML">
+                        Artificial Intelligence & Machine Learning
+                    </option>
+
+                    <option value="CSE">
+                        Computer Science Engineering
+                    </option>
+
+                    <option value="ECE">
+                        Electronics & Communication Engineering
+                    </option>
+
+                    <option value="EEE">
+                        Electrical & Electronics Engineering
+                    </option>
+
+                    <option value="Mechanical">
+                        Mechanical Engineering
+                    </option>
+
+                    <option value="Civil">
+                        Civil Engineering
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- BATCH -->
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Batch
+            </label>
+
+            <div class="input-wrapper">
+
+                <i
+                    data-lucide="calendar"
+                    size="17"
+                ></i>
+
+                <select
+                    name="batch"
+                    class="input"
+                    required
+                >
+
+                    <option value="">
+                        Select your batch
+                    </option>
+
+                    <option value="2029">
+                        2025 — 2029
+                    </option>
+
+                    <option value="2030">
+                        2026 — 2030
+                    </option>
+
+                    <option value="2031">
+                        2027 — 2031
+                    </option>
+
+                    <option value="2032">
+                        2028 — 2032
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Password
+            </label>
+
+            <div class="input-wrapper">
+
+                <i
+                    data-lucide="lock"
+                    size="17"
+                ></i>
+
+                <input
+                    type="password"
+                    name="password"
+                    class="input"
+                    placeholder="Create a password"
+                    minlength="6"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- CONFIRM PASSWORD -->
+
+        <div class="form-group">
+
+            <label class="form-label">
+                Confirm Password
+            </label>
+
+            <div class="input-wrapper">
+
+                <i
+                    data-lucide="shield-check"
+                    size="17"
+                ></i>
+
+                <input
+                    type="password"
+                    name="confirm_password"
+                    class="input"
+                    placeholder="Confirm your password"
+                    minlength="6"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- BUTTON -->
+
+        <button
+            type="submit"
+            class="btn btn-primary login-btn"
+        >
+
+            Create Account
+
+            <i
+                data-lucide="arrow-right"
+                size="17"
+            ></i>
+
+        </button>
+
+    </form>
+
+
+    <!-- VERIFIED MESSAGE -->
+
+    <div class="login-note">
+
+        <i
+            data-lucide="shield-check"
+            size="15"
+        ></i>
+
+        <span>
+            Campus360 is designed for verified
+            student communities.
+        </span>
+
+    </div>
+
+
+    <!-- LOGIN -->
+
+    <div class="signup-link">
+
+        <span>
+            Already have an account?
+        </span>
+
+        <a href="/login">
+            Sign in
+        </a>
+
+    </div>
+
+
+    <!-- BACK -->
+
+    <a
+        href="/"
+        class="back-home"
+    >
+
+        <i
+            data-lucide="arrow-left"
+            size="14"
+        ></i>
+
+        Back to Campus360
+
+    </a>
+
+</div>
+
+{% endblock %}

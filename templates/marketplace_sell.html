@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}
+Sell Item — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <main
+        class="dashboard-main"
+        style="max-width:850px;margin:0 auto;"
+    >
+
+
+        <div style="margin-bottom:25px;">
+
+            <a
+                href="/marketplace"
+                style="
+                    color:#6366f1;
+                    font-size:9px;
+                    font-weight:800;
+                    text-decoration:none;
+                "
+            >
+
+                ← Back to Marketplace
+
+            </a>
+
+        </div>
+
+
+        <section class="dashboard-panel">
+
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        CAMPUS MARKETPLACE
+                    </div>
+
+                    <h2>
+                        Sell an item
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="/marketplace/create"
+                enctype="multipart/form-data"
+            >
+
+
+                <!-- TITLE -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Item name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        class="input"
+                        placeholder="Example: Engineering Mathematics Textbook"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CATEGORY -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Category
+                    </label>
+
+                    <select
+                        name="category"
+                        class="input"
+                        required
+                    >
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option value="Textbooks">
+                            Textbooks
+                        </option>
+
+                        <option value="Calculators">
+                            Calculators
+                        </option>
+
+                        <option value="Lab Coats">
+                            Lab Coats
+                        </option>
+
+                        <option value="Stationery">
+                            Stationery
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PRICE -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Price
+                    </label>
+
+                    <input
+                        type="number"
+                        name="price"
+                        class="input"
+                        placeholder="₹"
+                        min="0"
+                        step="1"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Description
+                    </label>
+
+                    <textarea
+                        name="description"
+                        class="input"
+                        rows="5"
+                        placeholder="Describe the item's condition, edition, size, etc."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- IMAGE -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Item photo
+                    </label>
+
+                    <input
+                        type="file"
+                        name="image"
+                        class="input"
+                        accept=".jpg,.jpeg,.png,.webp"
+                    >
+
+                    <p
+                        style="
+                            margin-top:6px;
+                            color:#9ca3af;
+                            font-size:7px;
+                        "
+                    >
+                        JPG, PNG or WEBP
+                    </p>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="btn btn-primary login-btn"
+                >
+
+                    <i data-lucide="shopping-bag"></i>
+
+                    List Item
+
+                </button>
+
+
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
+
+{% endblock %}

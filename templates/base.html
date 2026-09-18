@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Basic Settings -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="icon"
+        type="image/svg+xml"
+        href="{{ url_for('static', filename='favicon.svg') }}"
+    >
+
+    <!-- Page Title -->
+
+    <title>
+        {% block title %}Campus360{% endblock %}
+    </title>
+
+
+    <!-- =========================
+         GOOGLE FONTS
+    ========================== -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =========================
+         LUCIDE ICONS
+    ========================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+    <!-- =========================
+         OUR CSS
+    ========================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    {% if session.get("user_id") %}
+
+    <aside class="sidebar">
+
+
+        <!-- LOGO -->
+
+        <a
+            href="/dashboard"
+            class="sidebar-logo"
+        >
+
+            <div class="sidebar-logo-icon">
+
+                <i data-lucide="graduation-cap"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Campus360
+                </strong>
+
+                <span>
+                    Student Network
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+
+            <div class="sidebar-label">
+                MAIN
+            </div>
+
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="/dashboard"
+                class="sidebar-link"
+            >
+
+                <i data-lucide="layout-dashboard"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+
+            <!-- ACADEMIC -->
+
+            <a
+                href="/academic"
+                class="sidebar-link"
+            >
+
+                <i data-lucide="book-open"></i>
+
+                <span>
+                    Academic Hub
+                </span>
+
+            </a>
+
+
+
+            <!-- MARKETPLACE -->
+
+            <a
+                href="/marketplace"
+                class="sidebar-link"
+            >
+
+                <i data-lucide="shopping-bag"></i>
+
+                <span>
+                    Marketplace
+                </span>
+
+            </a>
+
+
+
+            <!-- ROOMMATES -->
+
+            <a
+                href="/roommates"
+                class="sidebar-link"
+            >
+
+                <i data-lucide="house"></i>
+
+                <span>
+                    Smart Roommates
+                </span>
+
+            </a>
+
+
+
+            <!-- CLUBS -->
+
+            <a
+                href="/clubs"
+                class="sidebar-link"
+            >
+
+                <i data-lucide="megaphone"></i>
+
+                <span>
+                    Club Connect
+                </span>
+
+            </a>
+
+
+
+            <!-- COURSES -->
+
+            <a
+                href="/courses"
+                class="sidebar-link"
+            >
+
+                <i data-lucide="star"></i>
+
+                <span>
+                    Course Insights
+                </span>
+
+            </a>
+
+
+
+            <!-- SKILLS -->
+
+            <a
+                href="/skills"
+                class="sidebar-link"
+            >
+
+                <i data-lucide="code-2"></i>
+
+                <span>
+                    Skill Services
+                </span>
+
+            </a>
+
+
+            <div class="sidebar-divider"></div>
+
+
+            <div class="sidebar-label">
+                ACCOUNT
+            </div>
+
+
+            <!-- PROFILE -->
+
+            <a
+                href="/profile"
+                class="sidebar-link"
+            >
+
+                <i data-lucide="user"></i>
+
+                <span>
+                    My Profile
+                </span>
+
+            </a>
+
+
+
+            <!-- LOGOUT -->
+
+            <a
+                href="/logout"
+                class="sidebar-link sidebar-logout"
+            >
+
+                <i data-lucide="log-out"></i>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- SIDEBAR FOOTER -->
+
+        <div class="sidebar-footer">
+
+            <div class="sidebar-footer-icon">
+
+                <i data-lucide="shield-check"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Verified Network
+                </strong>
+
+                <span>
+                    Campus students only
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </aside>
+
+    {% endif %}
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <div
+        class="{% if session.get('user_id') %}main-with-sidebar{% else %}main-full{% endif %}"
+    >
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+    {% if messages %}
+
+        <div class="flash-messages">
+
+            {% for category, message in messages %}
+
+                <div class="flash-message {{ category }}">
+
+                    {% if category == "success" %}
+
+                        <i data-lucide="check-circle"></i>
+
+                    {% else %}
+
+                        <i data-lucide="alert-circle"></i>
+
+                    {% endif %}
+
+                    <span>
+                        {{ message }}
+                    </span>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+{% endwith %}
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+
+
+    <!-- =====================================================
+         OUR JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="{{ url_for('static', filename='css/js/app.js') }}"
+    ></script>
+
+
+    <!-- Activate Lucide Icons -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                if (
+                    typeof lucide !== "undefined"
+                ) {
+
+                    lucide.createIcons();
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

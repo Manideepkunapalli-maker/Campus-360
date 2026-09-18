@@ -1,0 +1,475 @@
+{% extends "base.html" %}
+
+{% block title %}
+Course Insights — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <div class="dashboard-date">
+
+                    <i data-lucide="star"></i>
+
+                    COURSE INSIGHTS
+
+                </div>
+
+
+                <h1>
+                    Know your courses before you start. ⭐
+                </h1>
+
+
+                <p>
+                    Learn about difficulty, exam patterns,
+                    workload and tips from fellow students.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <button class="header-icon">
+
+                    <i data-lucide="search"></i>
+
+                </button>
+
+
+                <button class="header-icon">
+
+                    <i data-lucide="bell"></i>
+
+                </button>
+
+
+                <div class="header-profile">
+
+                    <div class="header-avatar">
+                        D
+                    </div>
+
+
+                    <div class="header-profile-info">
+
+                        <strong>
+                            Deepu
+                        </strong>
+
+                        <span>
+                            AI & ML
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section class="course-hero">
+
+            <div>
+
+                <div class="course-badge">
+
+                    <i data-lucide="sparkles"></i>
+
+                    STUDENT KNOWLEDGE
+
+                </div>
+
+
+                <h2>
+
+                    Make smarter
+                    <span>course choices.</span>
+
+                </h2>
+
+
+                <p>
+
+                    Get a quick understanding of what to
+                    expect before you take a course.
+
+                </p>
+
+            </div>
+
+
+            <a
+                href="/courses/add"
+                class="course-add-btn"
+            >
+
+                <i data-lucide="plus"></i>
+
+                Add Course Insight
+
+            </a>
+
+        </section>
+
+
+
+        <!-- =================================================
+             STATS
+        ================================================== -->
+
+        <section class="course-stats">
+
+
+            <div class="course-stat-card">
+
+                <div class="course-stat-icon purple">
+
+                    <i data-lucide="book-open"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        {{ courses|length }}
+                    </strong>
+
+                    <span>
+                        Courses Covered
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="course-stat-card">
+
+                <div class="course-stat-icon blue">
+
+                    <i data-lucide="chart-no-axes-column"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Student
+                    </strong>
+
+                    <span>
+                        Shared Insights
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="course-stat-card">
+
+                <div class="course-stat-icon green">
+
+                    <i data-lucide="shield-check"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        No Faculty
+                    </strong>
+
+                    <span>
+                        Ratings
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             COURSE LIST
+        ================================================== -->
+
+        <section class="course-section">
+
+
+            <div class="course-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        ACADEMIC INTELLIGENCE
+                    </div>
+
+
+                    <h2>
+                        Course Insights
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+
+            {% if courses %}
+
+
+            <div class="course-grid">
+
+
+                {% for course in courses %}
+
+
+                <article class="course-card">
+
+
+                    <!-- COURSE HEADER -->
+
+                    <div class="course-card-header">
+
+                        <div class="course-code">
+
+                            {{ course.course_code }}
+
+                        </div>
+
+
+                        {% if course.rating %}
+
+                        <div class="course-rating">
+
+                            <i data-lucide="star"></i>
+
+                            {{ "%.1f"|format(course.rating) }}
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- NAME -->
+
+                    <h3>
+
+                        {{ course.course_name }}
+
+                    </h3>
+
+
+
+                    <!-- QUICK INFO -->
+
+                    <div class="course-quick-info">
+
+
+                        {% if course.difficulty %}
+
+                        <div class="course-info-item">
+
+                            <span>
+                                Difficulty
+                            </span>
+
+                            <strong>
+                                {{ course.difficulty }}
+                            </strong>
+
+                        </div>
+
+                        {% endif %}
+
+
+
+                        {% if course.workload %}
+
+                        <div class="course-info-item">
+
+                            <span>
+                                Workload
+                            </span>
+
+                            <strong>
+                                {{ course.workload }}
+                            </strong>
+
+                        </div>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+
+                    <!-- EXAM PATTERN -->
+
+                    {% if course.exam_pattern %}
+
+                    <div class="course-preview">
+
+                        <div class="course-preview-title">
+
+                            <i data-lucide="file-text"></i>
+
+                            Exam Pattern
+
+                        </div>
+
+
+                        <p>
+
+                            {{ course.exam_pattern }}
+
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+
+
+                    <!-- BUTTON -->
+
+                    <a
+                        href="{{ url_for(
+                            'course_detail',
+                            course_id=course.id
+                        ) }}"
+                        class="course-view-btn"
+                    >
+
+                        View Full Insight
+
+                        <i data-lucide="arrow-right"></i>
+
+                    </a>
+
+
+                </article>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- EMPTY STATE -->
+
+            <div class="course-empty">
+
+                <i
+                    data-lucide="book-open"
+                    size="42"
+                ></i>
+
+
+                <h3>
+                    No course insights yet
+                </h3>
+
+
+                <p>
+                    Be the first student to share
+                    useful information about a course.
+                </p>
+
+
+                <a
+                    href="/courses/add"
+                    class="course-add-btn"
+                    style="
+                        display:inline-flex;
+                        margin-top:15px;
+                    "
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Add First Insight
+
+                </a>
+
+            </div>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             DISCLAIMER
+        ================================================== -->
+
+        <section class="course-note">
+
+            <div class="course-note-icon">
+
+                <i data-lucide="info"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Student perspectives only
+                </strong>
+
+
+                <p>
+                    Course Insights are shared by students
+                    and are intended as guidance. Campus360
+                    does not provide faculty ratings.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,1266 @@
+{% extends "base.html" %}
+
+{% block title %}
+Campus360 — Your Campus. One Platform.
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+    <div class="container navbar-inner">
+
+        <a href="/" class="logo">
+
+            <div class="logo-icon">
+                <i data-lucide="graduation-cap"></i>
+            </div>
+
+            <div class="logo-text">
+                Campus<span>360</span>
+            </div>
+
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#how-it-works">
+                How it works
+            </a>
+
+            <a href="#community">
+                Community
+            </a>
+
+            <a href="/login">
+                Login
+            </a>
+
+            <a href="/login" class="btn btn-primary">
+
+                Get Started
+
+                <i
+                    data-lucide="arrow-right"
+                    size="16"
+                ></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="container">
+
+        <div class="hero-grid">
+
+
+            <!-- LEFT -->
+
+            <div class="hero-content">
+
+                <div class="hero-badge">
+
+                    <i
+                        data-lucide="sparkles"
+                        size="14"
+                    ></i>
+
+                    Built for students, by students
+
+                </div>
+
+
+                <h1 class="hero-title">
+
+                    Your campus.
+
+                    <br>
+
+                    <span class="gradient-text">
+                        One platform.
+                    </span>
+
+                </h1>
+
+
+                <p class="hero-description">
+
+                    Learn smarter, find your people,
+                    discover opportunities and save money —
+                    all from one verified student network.
+
+                </p>
+
+
+                <div class="hero-actions">
+
+                    <a
+                        href="/login"
+                        class="btn btn-primary"
+                    >
+
+                        Explore Campus
+
+                        <i
+                            data-lucide="arrow-right"
+                            size="17"
+                        ></i>
+
+                    </a>
+
+
+                    <a
+                        href="#features"
+                        class="btn btn-secondary"
+                    >
+
+                        See what's inside
+
+                        <i
+                            data-lucide="play-circle"
+                            size="17"
+                        ></i>
+
+                    </a>
+
+                </div>
+
+
+                <div class="hero-trust">
+
+                    <div class="trust-avatars">
+
+                        <div class="avatar">A</div>
+                        <div class="avatar">R</div>
+                        <div class="avatar">S</div>
+                        <div class="avatar">M</div>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Student powered
+                        </strong>
+
+                        <span>
+                            Built around real campus needs
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT -->
+
+            <div class="product-preview">
+
+                <div class="preview-window">
+
+
+                    <div class="preview-topbar">
+
+                        <div class="window-dot"></div>
+                        <div class="window-dot"></div>
+                        <div class="window-dot"></div>
+
+                        <div class="preview-url">
+                            campus360.app/dashboard
+                        </div>
+
+                    </div>
+
+
+                    <div class="preview-body">
+
+
+                        <!-- SIDEBAR -->
+
+                        <div class="preview-sidebar">
+
+                            <div class="preview-logo">
+
+                                <i
+                                    data-lucide="graduation-cap"
+                                    size="15"
+                                ></i>
+
+                                Campus360
+
+                            </div>
+
+
+                            <div class="preview-nav active">
+
+                                <i
+                                    data-lucide="layout-dashboard"
+                                    size="14"
+                                ></i>
+
+                                Overview
+
+                            </div>
+
+
+                            <div class="preview-nav">
+
+                                <i
+                                    data-lucide="book-open"
+                                    size="14"
+                                ></i>
+
+                                Academic
+
+                            </div>
+
+
+                            <div class="preview-nav">
+
+                                <i
+                                    data-lucide="shopping-bag"
+                                    size="14"
+                                ></i>
+
+                                Marketplace
+
+                            </div>
+
+
+                            <div class="preview-nav">
+
+                                <i
+                                    data-lucide="house"
+                                    size="14"
+                                ></i>
+
+                                Roommates
+
+                            </div>
+
+
+                            <div class="preview-nav">
+
+                                <i
+                                    data-lucide="megaphone"
+                                    size="14"
+                                ></i>
+
+                                Clubs
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PREVIEW MAIN -->
+
+                        <div class="preview-main">
+
+                            <div class="preview-greeting">
+
+                                <div>
+
+                                    <span>
+                                        Good morning 👋
+                                    </span>
+
+                                    <h3>
+                                        Welcome back
+                                    </h3>
+
+                                </div>
+
+
+                                <div class="preview-profile">
+                                    D
+                                </div>
+
+                            </div>
+
+
+                            <div class="preview-stats">
+
+
+                                <div class="preview-stat">
+
+                                    <div class="stat-icon purple">
+
+                                        <i
+                                            data-lucide="book-open"
+                                            size="14"
+                                        ></i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Live
+                                        </strong>
+
+                                        <span>
+                                            Resources
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="preview-stat">
+
+                                    <div class="stat-icon green">
+
+                                        <i
+                                            data-lucide="users"
+                                            size="14"
+                                        ></i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            8
+                                        </strong>
+
+                                        <span>
+                                            Matches
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="preview-stat">
+
+                                    <div class="stat-icon orange">
+
+                                        <i
+                                            data-lucide="bell"
+                                            size="14"
+                                        ></i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            5
+                                        </strong>
+
+                                        <span>
+                                            Updates
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="preview-section-title">
+                                Quick access
+                            </div>
+
+
+                            <div class="preview-card-grid">
+
+
+                                <div class="mini-card">
+
+                                    <div class="mini-card-icon">
+
+                                        <i
+                                            data-lucide="book-open"
+                                            size="17"
+                                        ></i>
+
+                                    </div>
+
+                                    <h4>
+                                        Academic Hub
+                                    </h4>
+
+                                    <p>
+                                        Notes & PYQs
+                                    </p>
+
+                                </div>
+
+
+                                <div class="mini-card">
+
+                                    <div class="mini-card-icon green-icon">
+
+                                        <i
+                                            data-lucide="shopping-bag"
+                                            size="17"
+                                        ></i>
+
+                                    </div>
+
+                                    <h4>
+                                        Marketplace
+                                    </h4>
+
+                                    <p>
+                                        12 new listings
+                                    </p>
+
+                                </div>
+
+
+                                <div class="mini-card">
+
+                                    <div class="mini-card-icon orange-icon">
+
+                                        <i
+                                            data-lucide="house"
+                                            size="17"
+                                        ></i>
+
+                                    </div>
+
+                                    <h4>
+                                        Roommates
+                                    </h4>
+
+                                    <p>
+                                        92% match found
+                                    </p>
+
+                                </div>
+
+
+                                <div class="mini-card">
+
+                                    <div class="mini-card-icon pink-icon">
+
+                                        <i
+                                            data-lucide="megaphone"
+                                            size="17"
+                                        ></i>
+
+                                    </div>
+
+                                    <h4>
+                                        Club Connect
+                                    </h4>
+
+                                    <p>
+                                        4 opportunities
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     STATS
+========================= -->
+
+<section class="stats-section">
+
+    <div class="container">
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div class="stat-number">
+                    01
+                </div>
+
+                <div class="stat-label">
+                    Unified Campus
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-number">
+                    06+
+                </div>
+
+                <div class="stat-label">
+                    Student Services
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-number">
+                    100%
+                </div>
+
+                <div class="stat-label">
+                    Student Focused
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-number">
+                    ✓
+                </div>
+
+                <div class="stat-label">
+                    Verified Network
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FEATURES
+========================= -->
+
+<section
+    class="section"
+    id="features"
+>
+
+    <div class="container">
+
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                Everything in one place
+            </div>
+
+            <h2 class="section-title">
+
+                Built around
+
+                <span class="gradient-text">
+                    student life.
+                </span>
+
+            </h2>
+
+            <p class="section-description">
+
+                From finding study material to finding
+                your next roommate, Campus360 brings
+                the most important parts of campus life
+                together.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+
+                    <i data-lucide="book-open"></i>
+
+                </div>
+
+                <h3>
+                    Academic Hub
+                </h3>
+
+                <p>
+                    Share and discover notes,
+                    previous-year papers, books
+                    and peer tutoring.
+                </p>
+
+                <a
+                    href="/login"
+                    class="feature-link"
+                >
+
+                    Explore academics
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        size="15"
+                    ></i>
+
+                </a>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon green">
+
+                    <i data-lucide="shopping-bag"></i>
+
+                </div>
+
+                <h3>
+                    Campus Marketplace
+                </h3>
+
+                <p>
+                    Buy and sell textbooks,
+                    lab coats, calculators,
+                    stationery and study essentials.
+                </p>
+
+                <a
+                    href="/login"
+                    class="feature-link"
+                >
+
+                    Browse marketplace
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        size="15"
+                    ></i>
+
+                </a>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon orange">
+
+                    <i data-lucide="house"></i>
+
+                </div>
+
+                <h3>
+                    Smart Roommates
+                </h3>
+
+                <p>
+                    Find compatible roommates based
+                    on study habits, sleep schedules,
+                    cleanliness and lifestyle.
+                </p>
+
+                <a
+                    href="/login"
+                    class="feature-link"
+                >
+
+                    Find your match
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        size="15"
+                    ></i>
+
+                </a>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon pink">
+
+                    <i data-lucide="megaphone"></i>
+
+                </div>
+
+                <h3>
+                    Club Connect
+                </h3>
+
+                <p>
+                    Discover events, volunteer roles,
+                    recruitment drives and opportunities
+                    across campus.
+                </p>
+
+                <a
+                    href="/login"
+                    class="feature-link"
+                >
+
+                    Discover clubs
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        size="15"
+                    ></i>
+
+                </a>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon blue">
+
+                    <i data-lucide="star"></i>
+
+                </div>
+
+                <h3>
+                    Course Insights
+                </h3>
+
+                <p>
+                    Understand course difficulty,
+                    exam patterns, assignment workload
+                    and tips from students.
+                </p>
+
+                <a
+                    href="/login"
+                    class="feature-link"
+                >
+
+                    Explore courses
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        size="15"
+                    ></i>
+
+                </a>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon purple">
+
+                    <i data-lucide="code-2"></i>
+
+                </div>
+
+                <h3>
+                    Skill Services
+                </h3>
+
+                <p>
+                    Get coding assistance and
+                    connect with peers who can
+                    help you learn.
+                </p>
+
+                <a
+                    href="/login"
+                    class="feature-link"
+                >
+
+                    Find a peer
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        size="15"
+                    ></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     VERIFIED NETWORK
+========================= -->
+
+<section
+    class="section community-section"
+    id="community"
+>
+
+    <div class="container">
+
+        <div class="community-grid">
+
+
+            <div class="community-content">
+
+                <div class="section-label">
+                    Trusted campus network
+                </div>
+
+                <h2 class="section-title">
+
+                    Your campus.
+
+                    <br>
+
+                    <span class="gradient-text">
+                        Your people.
+                    </span>
+
+                </h2>
+
+                <p class="section-description">
+
+                    Campus360 is designed around a
+                    verified student community. Connect,
+                    learn and collaborate with people
+                    who actually belong to your campus.
+
+                </p>
+
+
+                <div class="trust-list">
+
+                    <div class="trust-item">
+
+                        <div class="check-icon">
+
+                            <i data-lucide="check"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Verified student profiles
+                            </strong>
+
+                            <span>
+                                Built for your campus community
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="trust-item">
+
+                        <div class="check-icon">
+
+                            <i data-lucide="check"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Trusted peer services
+                            </strong>
+
+                            <span>
+                                Ratings for tutors and mentors
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="trust-item">
+
+                        <div class="check-icon">
+
+                            <i data-lucide="check"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                One student profile
+                            </strong>
+
+                            <span>
+                                Apply to multiple opportunities
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="community-visual">
+
+                <div class="community-card">
+
+                    <div class="verified-header">
+
+                        <div class="verified-avatar">
+                            D
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Student Profile
+                            </strong>
+
+                            <span>
+                                AI & ML • Student
+                            </span>
+
+                        </div>
+
+                        <div class="verified-badge">
+
+                            <i
+                                data-lucide="badge-check"
+                                size="14"
+                            ></i>
+
+                            Verified
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-divider"></div>
+
+
+                    <div class="profile-stats">
+
+                        <div>
+
+                            <strong>
+                                92%
+                            </strong>
+
+                            <span>
+                                Roommate match
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                4.9
+                            </strong>
+
+                            <span>
+                                Mentor rating
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                12
+                            </strong>
+
+                            <span>
+                                Applications
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="profile-tags">
+
+                        <span>
+                            📚 Quiet Study
+                        </span>
+
+                        <span>
+                            🌙 Early Sleeper
+                        </span>
+
+                        <span>
+                            🧹 Clean
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     HOW IT WORKS
+========================= -->
+
+<section
+    class="section"
+    id="how-it-works"
+>
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                Simple by design
+            </div>
+
+            <h2 class="section-title">
+
+                Everything starts
+
+                <span class="gradient-text">
+                    here.
+                </span>
+
+            </h2>
+
+            <p class="section-description">
+
+                One profile. One platform.
+                Endless campus possibilities.
+
+            </p>
+
+        </div>
+
+
+        <div class="steps-grid">
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <div class="step-icon">
+
+                    <i data-lucide="user-plus"></i>
+
+                </div>
+
+                <h3>
+                    Create your profile
+                </h3>
+
+                <p>
+                    Join the verified student
+                    network and build your profile.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <div class="step-icon">
+
+                    <i data-lucide="compass"></i>
+
+                </div>
+
+                <h3>
+                    Explore campus
+                </h3>
+
+                <p>
+                    Discover resources, people,
+                    clubs and opportunities.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <div class="step-icon">
+
+                    <i data-lucide="rocket"></i>
+
+                </div>
+
+                <h3>
+                    Make it happen
+                </h3>
+
+                <p>
+                    Learn, connect, save and
+                    grow with your campus.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FINAL CTA
+========================= -->
+
+<section class="cta-section">
+
+    <div class="container">
+
+        <div class="cta-card">
+
+            <div class="cta-glow"></div>
+
+            <div class="cta-content">
+
+                <div class="section-label">
+                    Your campus is waiting
+                </div>
+
+                <h2>
+
+                    Ready to experience
+
+                    <span>
+                        Campus360?
+                    </span>
+
+                </h2>
+
+                <p>
+                    Everything students need.
+                    One connected campus.
+                </p>
+
+
+                <a
+                    href="/login"
+                    class="btn btn-white"
+                >
+
+                    Get Started
+
+                    <i
+                        data-lucide="arrow-right"
+                        size="17"
+                    ></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="footer">
+
+    <div class="container footer-inner">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+
+                <i
+                    data-lucide="graduation-cap"
+                    size="19"
+                ></i>
+
+            </div>
+
+            <div class="logo-text">
+                Campus<span>360</span>
+            </div>
+
+        </div>
+
+
+        <div class="footer-text">
+
+            © 2026 Campus360.
+            Built for students.
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+{% endblock %}

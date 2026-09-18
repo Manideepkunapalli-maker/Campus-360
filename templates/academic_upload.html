@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}
+Share Resource — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <main
+        class="dashboard-main"
+        style="max-width: 800px; margin: 0 auto;"
+    >
+
+        <div style="margin-bottom: 25px;">
+
+            <a
+                href="/academic"
+                style="
+                    color:#6366f1;
+                    font-size:9px;
+                    font-weight:800;
+                    text-decoration:none;
+                "
+            >
+                ← Back to Academic Hub
+            </a>
+
+        </div>
+
+
+        <section class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        ACADEMIC HUB
+                    </div>
+
+                    <h2>
+                        Share a resource
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="/academic/upload"
+                enctype="multipart/form-data"
+            >
+
+                <!-- TITLE -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Resource title
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        class="input"
+                        placeholder="Example: DSA Unit 1 Notes"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- SUBJECT -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Subject
+                    </label>
+
+                    <input
+                        type="text"
+                        name="subject"
+                        class="input"
+                        placeholder="Example: Data Structures"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- TYPE -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Resource type
+                    </label>
+
+                    <select
+                        name="resource_type"
+                        class="input"
+                    >
+
+                        <option value="Notes">
+                            Notes
+                        </option>
+
+                        <option value="PYQ">
+                            Previous-Year Paper
+                        </option>
+
+                        <option value="Book">
+                            Book
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Description
+                    </label>
+
+                    <textarea
+                        name="description"
+                        class="input"
+                        rows="4"
+                        placeholder="Tell students what this resource contains..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- FILE -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Upload file
+                    </label>
+
+                    <input
+                        type="file"
+                        name="file"
+                        class="input"
+                        accept=".pdf,.doc,.docx,.ppt,.pptx"
+                        required
+                    >
+
+                    <p
+                        style="
+                            margin-top:6px;
+                            color:#9ca3af;
+                            font-size:7px;
+                        "
+                    >
+                        PDF, DOC, DOCX, PPT or PPTX • Maximum 10 MB
+                    </p>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="btn btn-primary login-btn"
+                >
+
+                    <i data-lucide="upload"></i>
+
+                    Upload Resource
+
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
+
+{% endblock %}

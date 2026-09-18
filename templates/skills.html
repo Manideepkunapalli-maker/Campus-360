@@ -1,0 +1,673 @@
+{% extends "base.html" %}
+
+{% block title %}
+Skill Services — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <div class="dashboard-date">
+
+                    <i data-lucide="code-2"></i>
+
+                    SKILL SERVICES
+
+                </div>
+
+
+                <h1>
+                    Learn together. Build together. 💻
+                </h1>
+
+
+                <p>
+                    Get coding assistance and learn from
+                    students with skills you need.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <button class="header-icon">
+
+                    <i data-lucide="search"></i>
+
+                </button>
+
+
+                <button class="header-icon">
+
+                    <i data-lucide="bell"></i>
+
+                </button>
+
+
+                <div class="header-profile">
+
+                    <div class="header-avatar">
+                        D
+                    </div>
+
+
+                    <div class="header-profile-info">
+
+                        <strong>
+                            Deepu
+                        </strong>
+
+                        <span>
+                            AI & ML
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section class="skill-hero">
+
+            <div>
+
+                <div class="skill-badge">
+
+                    <i data-lucide="users"></i>
+
+                    PEER LEARNING
+
+                </div>
+
+
+                <h2>
+
+                    Your classmates
+                    <span>can help.</span>
+
+                </h2>
+
+
+                <p>
+
+                    Stuck on a coding problem?
+                    Need help understanding a concept?
+                    Ask the campus community.
+
+                </p>
+
+            </div>
+
+
+            <a
+                href="#ask-help"
+                class="skill-primary-btn"
+            >
+
+                <i data-lucide="plus"></i>
+
+                Ask for Help
+
+            </a>
+
+        </section>
+
+
+
+        <!-- =================================================
+             STATS
+        ================================================== -->
+
+        <section class="skill-stats">
+
+
+            <div class="skill-stat-card">
+
+                <div class="skill-stat-icon purple">
+
+                    <i data-lucide="message-circle-question"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        {{ requests|length }}
+                    </strong>
+
+                    <span>
+                        Help Requests
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="skill-stat-card">
+
+                <div class="skill-stat-icon blue">
+
+                    <i data-lucide="users"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        {{ mentors|length }}
+                    </strong>
+
+                    <span>
+                        Peer Mentors
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="skill-stat-card">
+
+                <div class="skill-stat-icon green">
+
+                    <i data-lucide="graduation-cap"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Peer
+                    </strong>
+
+                    <span>
+                        Learning Network
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ASK FOR HELP
+        ================================================== -->
+
+        <section
+            class="skill-section"
+            id="ask-help"
+        >
+
+            <div class="skill-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        NEED HELP?
+                    </div>
+
+                    <h2>
+                        Ask the campus
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="skill-form-card">
+
+                <form
+                    method="POST"
+                    action="/skills/request"
+                >
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            What do you need help with?
+                        </label>
+
+
+                        <input
+                            type="text"
+                            name="title"
+                            class="input"
+                            placeholder="Example: Help me understand binary search in Java"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Category
+                        </label>
+
+
+                        <select
+                            name="category"
+                            class="input"
+                            required
+                        >
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option value="DSA">
+                                DSA
+                            </option>
+
+                            <option value="Java">
+                                Java
+                            </option>
+
+                            <option value="Python">
+                                Python
+                            </option>
+
+                            <option value="Web Development">
+                                Web Development
+                            </option>
+
+                            <option value="AI / ML">
+                                AI / ML
+                            </option>
+
+                            <option value="Projects">
+                                Projects
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Explain your problem
+                        </label>
+
+
+                        <textarea
+                            name="description"
+                            class="input"
+                            rows="5"
+                            placeholder="Describe what you are stuck on..."
+                        ></textarea>
+
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+
+                        <i data-lucide="send"></i>
+
+                        Post Help Request
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             OPEN REQUESTS
+        ================================================== -->
+
+        <section class="skill-section">
+
+
+            <div class="skill-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        CAMPUS REQUESTS
+                    </div>
+
+                    <h2>
+                        Students who need help
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+
+            {% if requests %}
+
+
+            <div class="skill-request-grid">
+
+
+                {% for item in requests %}
+
+
+                <article class="skill-request-card">
+
+
+                    <div class="skill-request-top">
+
+
+                        <div class="skill-request-icon">
+
+                            <i data-lucide="code-2"></i>
+
+                        </div>
+
+
+                        <span class="skill-category">
+
+                            {{ item.category or "General" }}
+
+                        </span>
+
+                    </div>
+
+
+
+                    <h3>
+                        {{ item.title }}
+                    </h3>
+
+
+                    <p>
+
+                        {{ item.description or
+                           "Student is looking for peer assistance." }}
+
+                    </p>
+
+
+
+                    <div class="skill-request-bottom">
+
+
+                        <span class="skill-status">
+
+                            <span></span>
+
+                            {{ item.status }}
+
+                        </span>
+
+
+                        <button
+                            class="skill-help-btn"
+                            type="button"
+                        >
+
+                            I can help
+
+                            <i data-lucide="arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+
+                </article>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <div class="skill-empty">
+
+                <i
+                    data-lucide="message-circle"
+                    size="42"
+                ></i>
+
+
+                <h3>
+                    No help requests yet
+                </h3>
+
+
+                <p>
+                    Be the first student to ask for
+                    coding or academic help.
+                </p>
+
+
+                <a
+                    href="#ask-help"
+                    class="skill-primary-btn"
+                    style="
+                        display:inline-flex;
+                        margin-top:15px;
+                    "
+                >
+
+                    <i data-lucide="plus"></i>
+
+                    Ask for Help
+
+                </a>
+
+            </div>
+
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- =================================================
+             PEER MENTORS
+        ================================================== -->
+
+        <section class="skill-section">
+
+
+            <div class="skill-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        PEER MENTORS
+                    </div>
+
+
+                    <h2>
+                        Students who can help
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+
+            {% if mentors %}
+
+
+            <div class="mentor-grid">
+
+
+                {% for mentor in mentors %}
+
+
+                <article class="mentor-card">
+
+
+                    <div class="mentor-avatar">
+
+                        {{ mentor.user_id }}
+
+                    </div>
+
+
+                    <div class="mentor-info">
+
+                        <h3>
+                            Peer Mentor
+                        </h3>
+
+
+                        <p>
+                            {{ mentor.skills or
+                               "Technical skills" }}
+                        </p>
+
+
+                        <div class="mentor-rating">
+
+                            <i data-lucide="star"></i>
+
+                            {{ "%.1f"|format(
+                                mentor.rating or 0
+                            ) }}
+
+                            <span>
+                                {{ mentor.sessions or 0 }}
+                                sessions
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="mentor-connect-btn"
+                        type="button"
+                    >
+
+                        Connect
+
+                    </button>
+
+
+                </article>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <div class="skill-empty">
+
+                <i
+                    data-lucide="graduation-cap"
+                    size="40"
+                ></i>
+
+
+                <h3>
+                    Peer mentors coming soon
+                </h3>
+
+
+                <p>
+                    Students who offer peer learning
+                    support will appear here.
+                </p>
+
+            </div>
+
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- =================================================
+             FOOTER NOTE
+        ================================================== -->
+
+        <section class="skill-note">
+
+            <div class="skill-note-icon">
+
+                <i data-lucide="shield-check"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Learn, don't just copy.
+                </strong>
+
+
+                <p>
+                    Campus360 encourages students to
+                    understand concepts, solve problems
+                    and learn from each other.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+{% endblock %}

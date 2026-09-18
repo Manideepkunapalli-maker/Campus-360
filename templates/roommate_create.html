@@ -1,0 +1,473 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Roommate Profile — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <main
+        class="dashboard-main"
+        style="max-width:850px;margin:0 auto;"
+    >
+
+        <div style="margin-bottom:25px;">
+
+            <a
+                href="/roommates"
+                style="
+                    color:#6366f1;
+                    font-size:9px;
+                    font-weight:800;
+                    text-decoration:none;
+                "
+            >
+                ← Back to Roommates
+            </a>
+
+        </div>
+
+
+        <section class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        SMART ROOMMATES
+                    </div>
+
+                    <h2>
+                        Create your roommate profile
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <p
+                style="
+                    margin-bottom:25px;
+                    color:#6b7280;
+                    font-size:9px;
+                    line-height:1.6;
+                "
+            >
+                Tell us about your living preferences.
+                Campus360 will first check hostel eligibility
+                and then find students with compatible lifestyles.
+            </p>
+
+
+            <form
+                method="POST"
+                action="/roommates/create"
+            >
+
+                <!-- =====================================
+                     GENDER
+                ====================================== -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Gender
+                    </label>
+
+                    <select
+                        name="gender"
+                        id="gender"
+                        class="input"
+                        required
+                    >
+
+                        <option value="">
+                            Select gender
+                        </option>
+
+                        <option value="Male">
+                            Male
+                        </option>
+
+                        <option value="Female">
+                            Female
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =====================================
+                     HOSTEL BLOCK
+                ====================================== -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Hostel Block
+                    </label>
+
+                    <select
+                        name="hostel_block"
+                        id="hostel_block"
+                        class="input"
+                        required
+                    >
+
+                        <option value="">
+                            Select gender first
+                        </option>
+
+                    </select>
+
+                    <p
+                        style="
+                            margin-top:6px;
+                            color:#9ca3af;
+                            font-size:7px;
+                        "
+                    >
+                        Hostel blocks are restricted according
+                        to the selected gender.
+                    </p>
+
+                </div>
+
+
+                <!-- =====================================
+                     ROOM TYPE
+                ====================================== -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Room Type
+                    </label>
+
+                    <select
+                        name="room_type"
+                        class="input"
+                        required
+                    >
+
+                        <option value="">
+                            Select room type
+                        </option>
+
+                        <option value="2 Sharing">
+                            2 Sharing
+                        </option>
+
+                        <option value="3 Sharing">
+                            3 Sharing
+                        </option>
+
+                        <option value="4 Sharing">
+                            4 Sharing
+                        </option>
+
+                        <option value="6 Sharing">
+                            6 Sharing
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =====================================
+                     AC
+                ====================================== -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Room Preference
+                    </label>
+
+                    <select
+                        name="ac_type"
+                        class="input"
+                        required
+                    >
+
+                        <option value="">
+                            Select preference
+                        </option>
+
+                        <option value="AC">
+                            AC
+                        </option>
+
+                        <option value="Non-AC">
+                            Non-AC
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =====================================
+                     STUDY HABIT
+                ====================================== -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Study Habits
+                    </label>
+
+                    <select
+                        name="study_habit"
+                        class="input"
+                        required
+                    >
+
+                        <option value="">
+                            Select study habit
+                        </option>
+
+                        <option value="Quiet">
+                            I prefer a quiet room
+                        </option>
+
+                        <option value="Moderate">
+                            Moderate noise is okay
+                        </option>
+
+                        <option value="Social">
+                            I like a social environment
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =====================================
+                     SLEEP
+                ====================================== -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Sleep Schedule
+                    </label>
+
+                    <select
+                        name="sleep_schedule"
+                        class="input"
+                        required
+                    >
+
+                        <option value="">
+                            Select sleep schedule
+                        </option>
+
+                        <option value="Early Sleeper">
+                            Early sleeper
+                        </option>
+
+                        <option value="Night Owl">
+                            Night owl
+                        </option>
+
+                        <option value="Flexible">
+                            Flexible
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =====================================
+                     CLEANLINESS
+                ====================================== -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Cleanliness
+                    </label>
+
+                    <select
+                        name="cleanliness"
+                        class="input"
+                        required
+                    >
+
+                        <option value="">
+                            Select preference
+                        </option>
+
+                        <option value="Very Clean">
+                            Very clean
+                        </option>
+
+                        <option value="Clean">
+                            Clean
+                        </option>
+
+                        <option value="Relaxed">
+                            Relaxed
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =====================================
+                     LANGUAGES
+                ====================================== -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Languages
+                    </label>
+
+                    <input
+                        type="text"
+                        name="languages"
+                        class="input"
+                        placeholder="Example: English, Telugu, Hindi"
+                        required
+                    >
+
+                    <p
+                        style="
+                            margin-top:6px;
+                            color:#9ca3af;
+                            font-size:7px;
+                        "
+                    >
+                        Separate multiple languages with commas.
+                    </p>
+
+                </div>
+
+
+                <!-- =====================================
+                     BUTTON
+                ====================================== -->
+
+                <button
+                    type="submit"
+                    class="btn btn-primary login-btn"
+                >
+
+                    <i data-lucide="user-plus"></i>
+
+                    Create Roommate Profile
+
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================
+     HOSTEL BLOCK LOGIC
+========================================== -->
+
+<script>
+
+const genderSelect =
+    document.getElementById("gender");
+
+const hostelSelect =
+    document.getElementById("hostel_block");
+
+
+const boysBlocks = [
+    "MH1",
+    "MH2",
+    "MH3",
+    "MH4",
+    "NH5",
+    "MH6",
+    "MH7"
+];
+
+
+const girlsBlocks = [
+    "LH1",
+    "LH2",
+    "LH3",
+    "LH4"
+];
+
+
+genderSelect.addEventListener(
+    "change",
+    function () {
+
+        hostelSelect.innerHTML = "";
+
+
+        const defaultOption =
+            document.createElement("option");
+
+        defaultOption.value = "";
+
+        defaultOption.textContent =
+            "Select hostel block";
+
+        hostelSelect.appendChild(
+            defaultOption
+        );
+
+
+        let blocks = [];
+
+
+        if (this.value === "Male") {
+
+            blocks = boysBlocks;
+
+        }
+
+
+        if (this.value === "Female") {
+
+            blocks = girlsBlocks;
+
+        }
+
+
+        blocks.forEach(
+            function (block) {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = block;
+
+                option.textContent = block;
+
+                hostelSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+{% endblock %}

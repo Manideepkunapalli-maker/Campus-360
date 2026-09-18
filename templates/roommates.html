@@ -1,0 +1,601 @@
+{% extends "base.html" %}
+
+{% block title %}
+Smart Roommates — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <a href="/dashboard" class="sidebar-logo">
+
+            <div class="logo-icon">
+                <i data-lucide="graduation-cap"></i>
+            </div>
+
+            <div class="logo-text">
+                Campus<span>360</span>
+            </div>
+
+        </a>
+
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-label">
+                CAMPUS
+            </div>
+
+
+            <a href="/dashboard" class="sidebar-link">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Overview</span>
+            </a>
+
+
+            <a href="/academic" class="sidebar-link">
+                <i data-lucide="book-open"></i>
+                <span>Academic Hub</span>
+            </a>
+
+
+            <a href="/marketplace" class="sidebar-link">
+                <i data-lucide="shopping-bag"></i>
+                <span>Marketplace</span>
+            </a>
+
+
+            <a href="/roommates" class="sidebar-link active">
+                <i data-lucide="house"></i>
+                <span>Roommates</span>
+            </a>
+
+
+            <a href="/clubs" class="sidebar-link">
+                <i data-lucide="megaphone"></i>
+                <span>Club Connect</span>
+            </a>
+
+
+            <a href="/courses" class="sidebar-link">
+                <i data-lucide="star"></i>
+                <span>Course Insights</span>
+            </a>
+
+
+            <a href="/skills" class="sidebar-link">
+                <i data-lucide="code-2"></i>
+                <span>Skill Services</span>
+            </a>
+
+        </div>
+
+
+        <!-- ACCOUNT -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-label">
+                ACCOUNT
+            </div>
+
+
+            <a href="/profile" class="sidebar-link">
+                <i data-lucide="user"></i>
+                <span>My Profile</span>
+            </a>
+
+
+            <a href="/profile" class="sidebar-link">
+                <i data-lucide="settings"></i>
+                <span>Settings</span>
+            </a>
+
+
+            <a href="/logout" class="sidebar-link">
+                <i data-lucide="log-out"></i>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-user">
+
+                <div class="user-avatar">
+                    D
+                </div>
+
+                <div class="user-info">
+
+                    <strong>
+                        Deepu
+                    </strong>
+
+                    <span>
+                        Student
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="dashboard-main">
+
+
+        <!-- HEADER -->
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <div class="dashboard-date">
+
+                    <i data-lucide="house"></i>
+
+                    SMART ROOMMATES
+
+                </div>
+
+
+                <h1>
+                    Find your right roommate. 🏠
+                </h1>
+
+
+                <p>
+                    Find students with similar habits,
+                    schedules and living preferences.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <button class="header-icon">
+                    <i data-lucide="search"></i>
+                </button>
+
+
+                <button class="header-icon">
+                    <i data-lucide="bell"></i>
+                </button>
+
+
+                <div class="header-profile">
+
+                    <div class="header-avatar">
+                        D
+                    </div>
+
+
+                    <div class="header-profile-info">
+
+                        <strong>
+                            Deepu
+                        </strong>
+
+                        <span>
+                            AI & ML
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- HERO -->
+
+        <section class="roommate-hero">
+
+            <div>
+
+                <div class="roommate-badge">
+
+                    <i data-lucide="sparkles"></i>
+
+                    SMART MATCHING
+
+                </div>
+
+
+                <h2>
+                    Your room should feel
+                    <span>like home.</span>
+                </h2>
+
+
+                <p>
+                    Tell us how you like to live and
+                    discover students who match your
+                    lifestyle.
+                </p>
+
+            </div>
+
+
+           <div style="display:flex; gap:8px;">
+
+    <a
+        href="/roommates/requests"
+        class="roommate-request-link"
+    >
+
+        <i data-lucide="inbox"></i>
+
+        Requests
+
+    </a>
+
+
+    <a
+        href="/roommates/create"
+        class="roommate-create-btn"
+    >
+
+        <i data-lucide="user-plus"></i>
+
+        Create My Profile
+
+    </a>
+
+</div>
+
+        </section>
+
+
+        <!-- MATCHING FACTORS -->
+
+        <section class="roommate-factors">
+
+            <div class="roommate-factor">
+
+                <div class="roommate-factor-icon purple">
+                    <i data-lucide="book-open"></i>
+                </div>
+
+                <strong>
+                    Study habits
+                </strong>
+
+                <span>
+                    Find compatible routines
+                </span>
+
+            </div>
+
+
+            <div class="roommate-factor">
+
+                <div class="roommate-factor-icon blue">
+                    <i data-lucide="moon"></i>
+                </div>
+
+                <strong>
+                    Sleep schedule
+                </strong>
+
+                <span>
+                    Morning or night owl
+                </span>
+
+            </div>
+
+
+            <div class="roommate-factor">
+
+                <div class="roommate-factor-icon green">
+                    <i data-lucide="sparkles"></i>
+                </div>
+
+                <strong>
+                    Cleanliness
+                </strong>
+
+                <span>
+                    Similar living standards
+                </span>
+
+            </div>
+
+
+            <div class="roommate-factor">
+
+                <div class="roommate-factor-icon orange">
+                    <i data-lucide="languages"></i>
+                </div>
+
+                <strong>
+                    Languages
+                </strong>
+
+                <span>
+                    Communicate comfortably
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROFILES -->
+
+        <section class="roommate-section">
+
+            <div class="roommate-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        STUDENT PROFILES
+                    </div>
+
+                    <h2>
+                        Potential roommates
+                    </h2>
+
+                </div>
+
+
+                <span class="roommate-count">
+                    {{ profiles|length }} profiles
+                </span>
+
+            </div>
+
+
+            {% if profiles %}
+
+            <div class="roommate-grid">
+
+                {% for profile in profiles %}
+
+                <article class="roommate-card">
+
+
+                    <!-- AVATAR -->
+
+                    <div class="roommate-card-top">
+
+                        <div class="roommate-avatar">
+                            {{ profile.user.name[0]|upper }}
+                        </div>
+
+
+                        <div>
+
+                            <h3>
+                                {{ profile.user.name }}
+                            </h3>
+
+
+                            <p>
+                                {{ profile.user.branch }}
+                                •
+                                {{ profile.user.batch }}
+                            </p>
+
+                        </div>
+
+
+                        <div class="match-score">
+
+                            <span>
+                                MATCH
+                            </span>
+
+                            <strong>
+                                {{ profile.match_score }}%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DETAILS -->
+
+                    <div class="roommate-details">
+
+
+                        <div class="roommate-detail">
+
+                            <i data-lucide="building-2"></i>
+
+                            <span>
+                                {{ profile.hostel_block }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="roommate-detail">
+
+                            <i data-lucide="bed-double"></i>
+
+                            <span>
+                                {{ profile.room_type }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="roommate-detail">
+
+                            <i data-lucide="wind"></i>
+
+                            <span>
+                                {{ profile.ac_type }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="roommate-detail">
+
+                            <i data-lucide="book-open"></i>
+
+                            <span>
+                                {{ profile.study_habit }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="roommate-detail">
+
+                            <i data-lucide="moon"></i>
+
+                            <span>
+                                {{ profile.sleep_schedule }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="roommate-detail">
+
+                            <i data-lucide="sparkles"></i>
+
+                            <span>
+                                {{ profile.cleanliness }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LANGUAGES -->
+
+                    <div class="roommate-languages">
+
+                        {% for language in (profile.languages or "").split(",") if language.strip() %}
+
+                        <span>
+                            {{ language.strip() }}
+                        </span>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- ACTION -->
+
+                    <form
+    method="POST"
+    action="{{ url_for(
+        'roommate_connect',
+        profile_id=profile.id
+    ) }}"
+>
+
+    <button
+        type="submit"
+        class="roommate-connect-btn"
+    >
+
+        <i data-lucide="user-plus"></i>
+
+        Connect
+
+    </button>
+
+</form>
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- EMPTY -->
+
+            <div class="roommate-empty">
+
+                <i
+                    data-lucide="users"
+                    size="40"
+                ></i>
+
+
+                <h3>
+                    No roommate profiles yet
+                </h3>
+
+
+                <p>
+                    Create your profile and be one of
+                    the first students to join.
+                </p>
+
+
+                <a href="/roommates/create">
+
+                    <i data-lucide="user-plus"></i>
+
+                    Create My Profile
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- PRIVACY -->
+
+        <section class="roommate-privacy">
+
+            <div class="roommate-privacy-icon">
+
+                <i data-lucide="shield-check"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Your preferences stay within Campus360
+                </strong>
+
+                <p>
+                    Only the information needed for
+                    roommate matching is displayed.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+{% endblock %}

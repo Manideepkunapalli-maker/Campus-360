@@ -1,0 +1,513 @@
+{% extends "base.html" %}
+
+{% block title %}
+Marketplace — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <a href="/dashboard" class="sidebar-logo">
+
+            <div class="logo-icon">
+                <i data-lucide="graduation-cap"></i>
+            </div>
+
+            <div class="logo-text">
+                Campus<span>360</span>
+            </div>
+
+        </a>
+
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-label">
+                CAMPUS
+            </div>
+
+            <a href="/dashboard" class="sidebar-link">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Overview</span>
+            </a>
+
+            <a href="/academic" class="sidebar-link">
+                <i data-lucide="book-open"></i>
+                <span>Academic Hub</span>
+            </a>
+
+            <a href="/marketplace" class="sidebar-link active">
+                <i data-lucide="shopping-bag"></i>
+                <span>Marketplace</span>
+            </a>
+
+            <a href="/roommates" class="sidebar-link">
+                <i data-lucide="house"></i>
+                <span>Roommates</span>
+            </a>
+
+            <a href="/clubs" class="sidebar-link">
+                <i data-lucide="megaphone"></i>
+                <span>Club Connect</span>
+            </a>
+
+            <a href="/courses" class="sidebar-link">
+                <i data-lucide="star"></i>
+                <span>Course Insights</span>
+            </a>
+
+            <a href="/skills" class="sidebar-link">
+                <i data-lucide="code-2"></i>
+                <span>Skill Services</span>
+            </a>
+
+        </div>
+
+
+        <!-- ACCOUNT -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-label">
+                ACCOUNT
+            </div>
+
+            <a href="/profile" class="sidebar-link">
+                <i data-lucide="user"></i>
+                <span>My Profile</span>
+            </a>
+
+            <a href="/profile" class="sidebar-link">
+                <i data-lucide="settings"></i>
+                <span>Settings</span>
+            </a>
+
+            <a href="/logout" class="sidebar-link">
+                <i data-lucide="log-out"></i>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-user">
+
+                <div class="user-avatar">
+                    D
+                </div>
+
+                <div class="user-info">
+
+                    <strong>
+                        Deepu
+                    </strong>
+
+                    <span>
+                        Student
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="dashboard-main">
+
+
+        <!-- HEADER -->
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <div class="dashboard-date">
+
+                    <i data-lucide="shopping-bag"></i>
+
+                    CAMPUS MARKETPLACE
+
+                </div>
+
+                <h1>
+                    Buy. Sell. Save. 🛍️
+                </h1>
+
+                <p>
+                    Find affordable academic essentials
+                    from students around your campus.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <button class="header-icon">
+
+                    <i data-lucide="search"></i>
+
+                </button>
+
+                <button class="header-icon">
+
+                    <i data-lucide="bell"></i>
+
+                </button>
+
+
+                <div class="header-profile">
+
+                    <div class="header-avatar">
+                        D
+                    </div>
+
+                    <div class="header-profile-info">
+
+                        <strong>
+                            Deepu
+                        </strong>
+
+                        <span>
+                            AI & ML
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- HERO -->
+
+        <section class="marketplace-hero">
+
+            <div>
+
+                <div class="marketplace-badge">
+
+                    <i data-lucide="store"></i>
+
+                    STUDENT MARKETPLACE
+
+                </div>
+
+                <h2>
+                    Academic essentials,
+                    <span>without the high price.</span>
+                </h2>
+
+                <p>
+                    Buy and sell textbooks, calculators,
+                    lab coats and other study essentials
+                    within your campus community.
+                </p>
+
+            </div>
+
+
+            <a
+                href="/marketplace/sell"
+                class="marketplace-sell-btn"
+            >
+
+                <i data-lucide="plus"></i>
+
+                Sell an item
+
+            </a>
+
+        </section>
+
+
+        <!-- SEARCH -->
+
+        <form class="marketplace-search" method="GET" action="{{ url_for('marketplace') }}">
+
+            <i data-lucide="search"></i>
+
+            <input
+                type="text"
+                name="search"
+                value="{{ search }}"
+                placeholder="Search textbooks, calculators, lab coats..."
+            >
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+
+        <!-- CATEGORIES -->
+
+        <section class="market-category-grid">
+
+
+            <a href="{{ url_for('marketplace', category='Textbooks') }}" class="market-category-card">
+
+                <div class="market-category-icon purple">
+
+                    <i data-lucide="book-open"></i>
+
+                </div>
+
+                <strong>
+                    Textbooks
+                </strong>
+
+                <span>
+                    {{ items|selectattr("category", "equalto", "Textbooks")|list|length }}
+                    listings
+                </span>
+
+            </a>
+
+
+            <a href="{{ url_for('marketplace', category='Calculators') }}" class="market-category-card">
+
+                <div class="market-category-icon blue">
+
+                    <i data-lucide="calculator"></i>
+
+                </div>
+
+                <strong>
+                    Calculators
+                </strong>
+
+                <span>
+                    {{ items|selectattr("category", "equalto", "Calculators")|list|length }}
+                    listings
+                </span>
+
+            </a>
+
+
+            <a href="{{ url_for('marketplace', category='Lab Coats') }}" class="market-category-card">
+
+                <div class="market-category-icon green">
+
+                    <i data-lucide="shirt"></i>
+
+                </div>
+
+                <strong>
+                    Lab Coats
+                </strong>
+
+                <span>
+                    {{ items|selectattr("category", "equalto", "Lab Coats")|list|length }}
+                    listings
+                </span>
+
+            </a>
+
+
+            <a href="{{ url_for('marketplace', category='Stationery') }}" class="market-category-card">
+
+                <div class="market-category-icon orange">
+
+                    <i data-lucide="pencil"></i>
+
+                </div>
+
+                <strong>
+                    Stationery
+                </strong>
+
+                <span>
+                    {{ items|selectattr("category", "equalto", "Stationery")|list|length }}
+                    listings
+                </span>
+
+            </a>
+
+        </section>
+
+
+        <!-- LISTINGS -->
+
+        <section class="marketplace-section">
+
+            <div class="marketplace-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        MARKETPLACE
+                    </div>
+
+                    <h2>
+                        Recently listed
+                    </h2>
+
+                </div>
+
+                <span class="marketplace-count">
+                    {{ items|length }} listings
+                </span>
+
+            </div>
+
+
+            {% if items %}
+
+            <div class="marketplace-grid">
+
+                {% for item in items %}
+
+                <article class="market-item-card">
+
+
+                    <!-- IMAGE -->
+
+                    <div class="market-item-image">
+
+                        {% if item.image %}
+
+                        <img
+                            src="{{ url_for(
+                                'marketplace_image',
+                                filename=item.image
+                            ) }}"
+                            alt="{{ item.title }}"
+                        >
+
+                        {% else %}
+
+                        <div class="market-placeholder">
+
+                            <i data-lucide="shopping-bag"></i>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- CONTENT -->
+
+                    <div class="market-item-content">
+
+
+                        <div class="market-item-category">
+
+                            {{ item.category }}
+
+                        </div>
+
+
+                        <h3>
+                            {{ item.title }}
+                        </h3>
+
+
+                        <p>
+                            {{ item.description }}
+                        </p>
+
+
+                        <div class="market-item-bottom">
+
+                            <strong>
+                                ₹{{ "%.0f"|format(item.price) }}
+                            </strong>
+
+                            <span>
+                                Student seller
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+
+            {% else %}
+
+            <!-- EMPTY -->
+
+            <div class="marketplace-empty">
+
+                <i
+                    data-lucide="shopping-bag"
+                    size="38"
+                ></i>
+
+                <h3>
+                    No listings yet
+                </h3>
+
+                <p>
+                    Be the first student to list something.
+                </p>
+
+                <a href="/marketplace/sell">
+
+                    <i data-lucide="plus"></i>
+
+                    Sell an item
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- SAFETY -->
+
+        <section class="marketplace-safety">
+
+            <div class="marketplace-safety-icon">
+
+                <i data-lucide="shield-check"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Buy and sell within your verified campus network
+                </strong>
+
+                <p>
+                    Always meet in a safe campus location
+                    and verify the item before payment.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+{% endblock %}

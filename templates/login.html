@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login — Campus360
+{% endblock %}
+
+
+{% block content %}
+
+<div class="login-page">
+
+    <div class="login-card">
+
+
+        <!-- =================================
+             LOGIN HEADER
+        ================================== -->
+
+        <div class="login-header">
+
+            <div class="login-logo">
+
+                <div class="logo-icon">
+
+                    <i data-lucide="graduation-cap"></i>
+
+                </div>
+
+            </div>
+
+
+            <h1>
+                Welcome back 👋
+            </h1>
+
+
+            <p>
+                Sign in to your Campus360 account
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================
+             ERROR MESSAGE
+        ================================== -->
+
+        {% if error %}
+
+        <div class="login-error">
+
+            <i
+                data-lucide="alert-circle"
+                size="16"
+            ></i>
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================
+             LOGIN FORM
+        ================================== -->
+
+        <form
+            method="POST"
+            action="{{ url_for('login') }}"
+        >
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label class="form-label">
+
+                    VIT Email
+
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <i
+                        data-lucide="mail"
+                        size="17"
+                    ></i>
+
+
+                    <input
+                        type="email"
+                        name="email"
+                        class="input"
+                        placeholder="yourname@vitap.ac.in"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label class="form-label">
+
+                    Password
+
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <i
+                        data-lucide="lock"
+                        size="17"
+                    ></i>
+
+
+                    <input
+                        type="password"
+                        name="password"
+                        class="input"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- LOGIN BUTTON -->
+
+            <button
+                type="submit"
+                class="btn btn-primary login-btn"
+            >
+
+                Sign In
+
+                <i
+                    data-lucide="arrow-right"
+                    size="17"
+                ></i>
+
+            </button>
+
+        </form>
+
+
+
+        <!-- =================================
+             VERIFICATION MESSAGE
+        ================================== -->
+
+        <div class="login-note">
+
+            <i
+                data-lucide="shield-check"
+                size="15"
+            ></i>
+
+            <span>
+                Campus360 is designed for verified
+                student communities.
+            </span>
+
+        </div>
+        <div class="signup-link">
+
+    <span>
+        Don't have an account?
+    </span>
+
+    <a href="/signup">
+        Create an account
+    </a>
+
+</div>
+
+
+        <!-- BACK -->
+
+        <a
+            href="/"
+            class="back-home"
+        >
+
+            <i
+                data-lucide="arrow-left"
+                size="14"
+            ></i>
+
+            Back to Campus360
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

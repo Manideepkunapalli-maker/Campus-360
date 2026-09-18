@@ -1,0 +1,728 @@
+{% extends "base.html" %}
+
+{% block title %}
+Academic Hub — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
+
+    <aside class="sidebar">
+
+        <a href="/dashboard" class="sidebar-logo">
+
+            <div class="logo-icon">
+                <i data-lucide="graduation-cap"></i>
+            </div>
+
+            <div class="logo-text">
+                Campus<span>360</span>
+            </div>
+
+        </a>
+
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-label">
+                CAMPUS
+            </div>
+
+
+            <a href="/dashboard" class="sidebar-link">
+
+                <i data-lucide="layout-dashboard"></i>
+
+                <span>
+                    Overview
+                </span>
+
+            </a>
+
+
+            <a href="/academic" class="sidebar-link active">
+
+                <i data-lucide="book-open"></i>
+
+                <span>
+                    Academic Hub
+                </span>
+
+            </a>
+
+
+            <a href="/marketplace" class="sidebar-link">
+
+                <i data-lucide="shopping-bag"></i>
+
+                <span>
+                    Marketplace
+                </span>
+
+            </a>
+
+
+            <a href="/roommates" class="sidebar-link">
+
+                <i data-lucide="house"></i>
+
+                <span>
+                    Roommates
+                </span>
+
+            </a>
+
+
+            <a href="/clubs" class="sidebar-link">
+
+                <i data-lucide="megaphone"></i>
+
+                <span>
+                    Club Connect
+                </span>
+
+            </a>
+
+
+            <a href="/courses" class="sidebar-link">
+
+                <i data-lucide="star"></i>
+
+                <span>
+                    Course Insights
+                </span>
+
+            </a>
+
+
+            <a href="/skills" class="sidebar-link">
+
+                <i data-lucide="code-2"></i>
+
+                <span>
+                    Skill Services
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- ACCOUNT -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-label">
+                ACCOUNT
+            </div>
+
+
+            <a href="/profile" class="sidebar-link">
+
+                <i data-lucide="user"></i>
+
+                <span>
+                    My Profile
+                </span>
+
+            </a>
+
+
+            <a href="/profile" class="sidebar-link">
+
+                <i data-lucide="settings"></i>
+
+                <span>
+                    Settings
+                </span>
+
+            </a>
+
+
+            <a href="/logout" class="sidebar-link">
+
+                <i data-lucide="log-out"></i>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- USER -->
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-user">
+
+                <div class="user-avatar">
+                    D
+                </div>
+
+
+                <div class="user-info">
+
+                    <strong>
+                        Deepu
+                    </strong>
+
+                    <span>
+                        Student
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="dashboard-main">
+
+
+        <!-- HEADER -->
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <div class="dashboard-date">
+
+                    <i data-lucide="book-open"></i>
+
+                    ACADEMIC HUB
+
+                </div>
+
+
+                <h1>
+                    Your academic resources. 📚
+                </h1>
+
+
+                <p>
+                    Find notes, previous-year papers, books
+                    and students who can help you learn.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <button class="header-icon">
+
+                    <i data-lucide="search"></i>
+
+                </button>
+
+
+                <button class="header-icon">
+
+                    <i data-lucide="bell"></i>
+
+                </button>
+
+
+                <div class="header-profile">
+
+                    <div class="header-avatar">
+                        D
+                    </div>
+
+
+                    <div class="header-profile-info">
+
+                        <strong>
+                            Deepu
+                        </strong>
+
+                        <span>
+                            AI & ML
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================================
+             HERO
+        ========================================== -->
+
+        <section class="academic-hero">
+
+
+            <div class="academic-hero-text">
+
+
+                <div class="academic-badge">
+
+                    <i data-lucide="sparkles"></i>
+
+                    STUDENT POWERED
+
+                </div>
+
+
+                <h2>
+
+                    Everything you need
+
+                    <span>
+                        to study smarter.
+                    </span>
+
+                </h2>
+
+
+                <p>
+
+                    Access resources shared by students,
+                    discover useful study material and get
+                    help from your campus community.
+
+                </p>
+
+            </div>
+
+
+            <a
+                href="/academic/upload-page"
+                class="academic-upload-btn"
+            >
+
+                <i data-lucide="upload"></i>
+
+                Share a resource
+
+            </a>
+
+        </section>
+
+
+        <!-- =========================================
+             SEARCH
+        ========================================== -->
+
+        <form class="academic-search" method="GET" action="{{ url_for('academic') }}">
+
+            <i data-lucide="search"></i>
+
+
+            <input
+                type="text"
+                name="search"
+                value="{{ search }}"
+                placeholder="Search notes, subjects, papers..."
+            >
+
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+
+        <!-- =========================================
+             RESOURCE TYPES
+        ========================================== -->
+
+        <section class="academic-resource-grid">
+
+
+            <!-- NOTES -->
+
+            <a
+                href="#resources"
+                class="academic-resource-card"
+            >
+
+                <div class="academic-resource-icon purple">
+
+                    <i data-lucide="file-text"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Notes
+                    </h3>
+
+
+                    <p>
+                        Student-shared notes and study material.
+                    </p>
+
+
+                    <span>
+                        {{ resource_counts.notes }} resources →
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <!-- PYQ -->
+
+            <a
+                href="#resources"
+                class="academic-resource-card"
+            >
+
+                <div class="academic-resource-icon blue">
+
+                    <i data-lucide="clipboard-list"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Previous-Year Papers
+                    </h3>
+
+
+                    <p>
+                        Prepare using previous examination papers.
+                    </p>
+
+
+                    <span>
+                        {{ resource_counts.papers }} papers →
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <!-- BOOK EXCHANGE -->
+
+            <a
+                href="#resources"
+                class="academic-resource-card"
+            >
+
+                <div class="academic-resource-icon green">
+
+                    <i data-lucide="book-marked"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Book Exchange
+                    </h3>
+
+
+                    <p>
+                        Find textbooks from students on campus.
+                    </p>
+
+
+                    <span>
+                        {{ resource_counts.books }} books →
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <!-- PEER TUTORING -->
+
+            <a
+                href="#resources"
+                class="academic-resource-card"
+            >
+
+                <div class="academic-resource-icon orange">
+
+                    <i data-lucide="users"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Peer Tutoring
+                    </h3>
+
+
+                    <p>
+                        Learn directly from students who know the subject.
+                    </p>
+
+
+                    <span>
+                        {{ resource_counts.tutors }} tutors →
+                    </span>
+
+                </div>
+
+            </a>
+
+        </section>
+
+
+        <!-- =========================================
+             RECENT RESOURCES
+        ========================================== -->
+
+        <section class="academic-section" id="resources">
+
+
+            <div class="academic-section-header">
+
+
+                <div>
+
+                    <div class="panel-label">
+                        RECENTLY ADDED
+                    </div>
+
+
+                    <h2>
+                        Popular resources
+                    </h2>
+
+                </div>
+
+
+                <a href="#resources">
+
+                    View all
+
+                    <i data-lucide="arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+            <!-- DATABASE RESOURCES -->
+
+            <div class="academic-resource-list">
+
+
+                {% if notes %}
+
+
+                    {% for note in notes %}
+
+
+                    <div class="academic-list-card">
+
+
+                        <!-- FILE ICON -->
+
+                        <div class="academic-file-icon">
+
+                            <i data-lucide="file-text"></i>
+
+                        </div>
+
+
+                        <!-- RESOURCE INFO -->
+
+                        <div class="academic-list-info">
+
+
+                            <h3>
+                                {{ note.title }}
+                            </h3>
+
+
+                            <p>
+                                {{ note.subject }}
+                            </p>
+
+
+                            <div class="academic-meta">
+
+
+                                <span>
+
+                                    <i data-lucide="user"></i>
+
+                                    Student resource
+
+                                </span>
+
+
+                                <span>
+
+                                    <i data-lucide="calendar"></i>
+
+                                    {{ note.created_at.strftime("%d %b %Y") }}
+
+                                </span>
+
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DOWNLOAD -->
+
+                        <a
+                            href="{{ url_for('download_academic', note_id=note.id) }}"
+                            class="academic-download"
+                            title="Download resource"
+                        >
+
+                            <i data-lucide="download"></i>
+
+                        </a>
+
+
+                    </div>
+
+
+                    {% endfor %}
+
+
+                {% else %}
+
+
+                    <!-- EMPTY STATE -->
+
+                    <div
+                        style="
+                            padding: 45px 20px;
+                            text-align: center;
+                            border: 1px dashed #d1d5db;
+                            border-radius: 14px;
+                            background: #ffffff;
+                            color: #9ca3af;
+                        "
+                    >
+
+
+                        <i
+                            data-lucide="file-question"
+                            size="32"
+                        ></i>
+
+
+                        <h3
+                            style="
+                                margin-top: 12px;
+                                color: #374151;
+                                font-size: 11px;
+                            "
+                        >
+                            No resources yet
+                        </h3>
+
+
+                        <p
+                            style="
+                                margin-top: 6px;
+                                font-size: 8px;
+                            "
+                        >
+                            Be the first student to share
+                            a resource with the campus.
+                        </p>
+
+
+                        <a
+                            href="/academic/upload-page"
+                            class="academic-upload-btn"
+                            style="
+                                display: inline-flex;
+                                margin-top: 15px;
+                            "
+                        >
+
+                            <i data-lucide="upload"></i>
+
+                            Upload First Resource
+
+                        </a>
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             QUICK HELP
+        ========================================== -->
+
+        <section class="academic-help">
+
+
+            <div class="academic-help-icon">
+
+                <i data-lucide="message-circle"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Can't find what you're looking for?
+                </strong>
+
+
+                <p>
+                    Ask your campus community for the resource
+                    you need.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('skills') }}#ask-help">
+
+                Request a resource
+
+                <i data-lucide="arrow-right"></i>
+
+            </a>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+{% endblock %}

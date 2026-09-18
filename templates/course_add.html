@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Course Insight — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <main
+        class="dashboard-main"
+        style="max-width:800px;margin:0 auto;"
+    >
+
+
+        <!-- BACK -->
+
+        <div style="margin-bottom:22px;">
+
+            <a
+                href="/courses"
+                class="back-home"
+            >
+
+                <i data-lucide="arrow-left"></i>
+
+                Back to Course Insights
+
+            </a>
+
+        </div>
+
+
+
+        <!-- FORM -->
+
+        <section class="dashboard-panel">
+
+
+            <div class="panel-label">
+                SHARE KNOWLEDGE
+            </div>
+
+
+            <h1 style="margin-top:6px;">
+                Add Course Insight
+            </h1>
+
+
+            <p
+                style="
+                    margin-top:7px;
+                    color:#6b7280;
+                    font-size:9px;
+                    line-height:1.5;
+                "
+            >
+
+                Help juniors understand what to expect
+                from this course.
+
+            </p>
+
+
+
+            {% if error %}
+
+            <div class="login-error">
+
+                <i data-lucide="alert-circle"></i>
+
+                {{ error }}
+
+            </div>
+
+            {% endif %}
+
+
+
+            <form
+                method="POST"
+                style="margin-top:25px;"
+            >
+
+
+                <!-- COURSE CODE -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Course Code
+                    </label>
+
+
+                    <input
+                        type="text"
+                        name="course_code"
+                        class="input"
+                        placeholder="Example: CSE1001"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- COURSE NAME -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Course Name
+                    </label>
+
+
+                    <input
+                        type="text"
+                        name="course_name"
+                        class="input"
+                        placeholder="Example: Problem Solving and Programming"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- DIFFICULTY -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Difficulty
+                    </label>
+
+
+                    <select
+                        name="difficulty"
+                        class="input"
+                    >
+
+                        <option value="">
+                            Select difficulty
+                        </option>
+
+                        <option value="Easy">
+                            Easy
+                        </option>
+
+                        <option value="Moderate">
+                            Moderate
+                        </option>
+
+                        <option value="Difficult">
+                            Difficult
+                        </option>
+
+                        <option value="Very Difficult">
+                            Very Difficult
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- WORKLOAD -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Assignment Workload
+                    </label>
+
+
+                    <select
+                        name="workload"
+                        class="input"
+                    >
+
+                        <option value="">
+                            Select workload
+                        </option>
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option value="Moderate">
+                            Moderate
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                        <option value="Very High">
+                            Very High
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- EXAM PATTERN -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Exam Pattern
+                    </label>
+
+
+                    <textarea
+                        name="exam_pattern"
+                        class="input"
+                        rows="5"
+                        placeholder="Example: CAT 1 covers Modules 1-2, FAT covers all modules..."
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- TIPS -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Tips for Juniors
+                    </label>
+
+
+                    <textarea
+                        name="tips"
+                        class="input"
+                        rows="5"
+                        placeholder="Share useful preparation tips..."
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- RATING -->
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Course Rating
+                    </label>
+
+
+                    <select
+                        name="rating"
+                        class="input"
+                    >
+
+                        <option value="">
+                            Select rating
+                        </option>
+
+                        <option value="1">
+                            ★ 1 — Very difficult
+                        </option>
+
+                        <option value="2">
+                            ★★ 2
+                        </option>
+
+                        <option value="3">
+                            ★★★ 3 — Average
+                        </option>
+
+                        <option value="4">
+                            ★★★★ 4
+                        </option>
+
+                        <option value="5">
+                            ★★★★★ 5 — Excellent
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="btn btn-primary login-btn"
+                >
+
+                    <i data-lucide="send"></i>
+
+                    Publish Course Insight
+
+                </button>
+
+
+            </form>
+
+
+        </section>
+
+
+    </main>
+
+</div>
+
+{% endblock %}

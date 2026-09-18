@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}
+Roommate Requests — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <main class="dashboard-main">
+
+        <div style="margin-bottom:25px;">
+
+            <a
+                href="/roommates"
+                class="back-home"
+            >
+                <i data-lucide="arrow-left"></i>
+                Back to Roommates
+            </a>
+
+        </div>
+
+
+        <section class="dashboard-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        SMART ROOMMATES
+                    </div>
+
+                    <h2>
+                        Roommate Requests
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            {% if requests %}
+
+                {% for req in requests %}
+
+                <div class="roommate-request-card">
+
+                    <div class="roommate-avatar">
+                        {{ req.sender.name[0]|upper }}
+                    </div>
+
+
+                    <div class="roommate-request-info">
+
+                        <strong>
+                            {{ req.sender.name }}
+                        </strong>
+
+                        <span>
+                            {{ req.sender.branch }}
+                            •
+                            {{ req.sender.batch }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="roommate-request-actions">
+
+                        <form
+                            method="POST"
+                            action="{{ url_for(
+                                'roommate_request_action',
+                                request_id=req.id,
+                                action='accept'
+                            ) }}"
+                        >
+
+                            <button
+                                type="submit"
+                                class="request-accept"
+                            >
+                                ✓ Accept
+                            </button>
+
+                        </form>
+
+
+                        <form
+                            method="POST"
+                            action="{{ url_for(
+                                'roommate_request_action',
+                                request_id=req.id,
+                                action='reject'
+                            ) }}"
+                        >
+
+                            <button
+                                type="submit"
+                                class="request-reject"
+                            >
+                                ✕ Reject
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="roommate-empty">
+
+                    <i
+                        data-lucide="inbox"
+                        size="40"
+                    ></i>
+
+                    <h3>
+                        No roommate requests
+                    </h3>
+
+                    <p>
+                        Requests from other students
+                        will appear here.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}
+Apply — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <main class="dashboard-main">
+
+        <!-- BACK -->
+
+        <a
+            href="{{ url_for('clubs') }}"
+            class="club-back-link"
+        >
+
+            <i data-lucide="arrow-left"></i>
+
+            Back to Club Connect
+
+        </a>
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="club-page-heading">
+
+            <div class="panel-label">
+                CLUB OPPORTUNITY
+            </div>
+
+            <h1>
+                Apply for an opportunity
+            </h1>
+
+            <p>
+                Review the opportunity details before
+                submitting your application.
+            </p>
+
+        </div>
+
+
+        <!-- OPPORTUNITY CARD -->
+
+        <section class="apply-card">
+
+            <div class="apply-icon">
+
+                <i data-lucide="briefcase-business"></i>
+
+            </div>
+
+
+            <div class="apply-content">
+
+                <span class="apply-label">
+                    OPEN POSITION
+                </span>
+
+
+                <h2>
+                    {{ opportunity.title }}
+                </h2>
+
+
+                {% if opportunity.domain %}
+
+                <span class="apply-domain">
+                    {{ opportunity.domain }}
+                </span>
+
+                {% endif %}
+
+
+                {% if opportunity.description %}
+
+                <p class="apply-description">
+                    {{ opportunity.description }}
+                </p>
+
+                {% endif %}
+
+
+                <!-- META -->
+
+                <div class="apply-meta">
+
+                    {% if opportunity.role_type %}
+
+                    <span>
+
+                        <i data-lucide="user-round"></i>
+
+                        {{ opportunity.role_type }}
+
+                    </span>
+
+                    {% endif %}
+
+
+                    <span>
+
+                        <i data-lucide="users"></i>
+
+                        Student Opportunity
+
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     ALREADY APPLIED
+                ================================================== -->
+
+                {% if already_applied %}
+
+                <div class="apply-already-card">
+
+                    <div class="apply-already-icon">
+
+                        <i data-lucide="circle-check"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            You already applied
+                        </strong>
+
+                        <p>
+                            You have already submitted an
+                            application for this opportunity.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('my_club_applications') }}"
+                    class="club-primary-btn"
+                >
+
+                    <i data-lucide="file-check"></i>
+
+                    View My Applications
+
+                </a>
+
+
+                {% else %}
+
+
+                <!-- =================================================
+                     APPLICATION FORM
+                ================================================== -->
+
+                <form
+                    method="POST"
+                    class="apply-form"
+                >
+
+                    <button
+                        type="submit"
+                        class="club-primary-btn"
+                    >
+
+                        <i data-lucide="send"></i>
+
+                        Submit Application
+
+                    </button>
+
+                </form>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+{% endblock %}

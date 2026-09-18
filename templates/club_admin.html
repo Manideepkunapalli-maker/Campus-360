@@ -1,0 +1,1293 @@
+{% extends "base.html" %}
+
+{% block title %}
+Club Admin — Campus360
+{% endblock %}
+
+{% block content %}
+
+<main class="dashboard-main">
+
+    <!-- =====================================================
+         BACK
+    ====================================================== -->
+
+    <a
+        href="{{ url_for('clubs') }}"
+        class="club-back-link"
+    >
+
+        <i data-lucide="arrow-left"></i>
+
+        Back to Club Connect
+
+    </a>
+
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="club-page-heading">
+
+        <div class="panel-label">
+            CLUB ADMIN
+        </div>
+
+        <h1>
+            Manage Campus Clubs
+        </h1>
+
+        <p>
+            Create clubs, add events and publish student opportunities.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         CREATE CLUB
+    ====================================================== -->
+
+    <section class="admin-card">
+
+        <div class="admin-card-header">
+
+            <div class="admin-icon">
+                <i data-lucide="users"></i>
+            </div>
+
+            <div>
+
+                <h2>
+                    Create Club
+                </h2>
+
+                <p>
+                    Add a verified campus club.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form
+            method="POST"
+            action="{{ url_for('create_club') }}"
+            class="admin-form"
+        >
+
+            <div class="admin-form-group">
+
+                <label>
+                    Club Name
+                </label>
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Machine Learning Club"
+                    required
+                >
+
+            </div>
+
+
+            <div class="admin-form-group">
+
+                <label>
+                    Domain
+                </label>
+
+                <input
+                    type="text"
+                    name="domain"
+                    placeholder="AI / ML"
+                >
+
+            </div>
+
+
+            <div class="admin-form-group">
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                    name="description"
+                    rows="4"
+                    placeholder="Describe the club..."
+                ></textarea>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="club-primary-btn"
+            >
+
+                <i data-lucide="plus"></i>
+
+                Add Club
+
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         ADD EVENT
+    ====================================================== -->
+
+    <section class="admin-card">
+
+        <div class="admin-card-header">
+
+            <div class="admin-icon">
+
+                <i data-lucide="calendar-plus"></i>
+
+            </div>
+
+            <div>
+
+                <h2>
+                    Add Event
+                </h2>
+
+                <p>
+                    Create an upcoming club event.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if clubs %}
+
+        <form
+            method="POST"
+            action="{{ url_for('create_club_event') }}"
+            class="admin-form"
+        >
+
+            <div class="admin-form-group">
+
+                <label>
+                    Club
+                </label>
+
+                <select
+                    name="club_id"
+                    required
+                >
+
+                    <option value="">
+                        Select a club
+                    </option>
+
+                    {% for club in clubs %}
+
+                    <option value="{{ club.id }}">
+                        {{ club.name }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="admin-form-group">
+
+                <label>
+                    Event Title
+                </label>
+
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="AI & ML Workshop"
+                    required
+                >
+
+            </div>
+
+
+            <div class="admin-form-group">
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                    name="description"
+                    rows="3"
+                    placeholder="Describe the event..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="admin-two-column">
+
+                <div class="admin-form-group">
+
+                    <label>
+                        Date & Time
+                    </label>
+
+                    <input
+                        type="datetime-local"
+                        name="event_date"
+                    >
+
+                </div>
+
+
+                <div class="admin-form-group">
+
+                    <label>
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        name="location"
+                        placeholder="VIT-AP Campus"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-form-group">
+
+                <label>
+                    Registration Link
+                </label>
+
+                <input
+                    type="url"
+                    name="registration_link"
+                    placeholder="https://..."
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="club-primary-btn"
+            >
+
+                <i data-lucide="calendar-plus"></i>
+
+                Add Event
+
+            </button>
+
+        </form>
+
+
+        {% else %}
+
+        <div class="admin-warning">
+
+            <i data-lucide="alert-circle"></i>
+
+            <span>
+                Create a club first before adding an event.
+            </span>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         ADD OPPORTUNITY
+    ====================================================== -->
+
+    <section class="admin-card">
+
+        <div class="admin-card-header">
+
+            <div class="admin-icon">
+
+                <i data-lucide="briefcase"></i>
+
+            </div>
+
+            <div>
+
+                <h2>
+                    Add Opportunity
+                </h2>
+
+                <p>
+                    Publish a recruitment opportunity.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if clubs %}
+
+        <form
+            method="POST"
+            action="{{ url_for('create_club_opportunity') }}"
+            class="admin-form"
+        >
+
+            <div class="admin-form-group">
+
+                <label>
+                    Club
+                </label>
+
+                <select
+                    name="club_id"
+                    required
+                >
+
+                    <option value="">
+                        Select a club
+                    </option>
+
+                    {% for club in clubs %}
+
+                    <option value="{{ club.id }}">
+                        {{ club.name }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="admin-form-group">
+
+                <label>
+                    Opportunity Title
+                </label>
+
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Marketing Team Member"
+                    required
+                >
+
+            </div>
+
+
+            <div class="admin-form-group">
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                    name="description"
+                    rows="4"
+                    placeholder="Describe the opportunity..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="admin-two-column">
+
+                <div class="admin-form-group">
+
+                    <label>
+                        Role Type
+                    </label>
+
+                    <input
+                        type="text"
+                        name="role_type"
+                        placeholder="Volunteer"
+                    >
+
+                </div>
+
+
+                <div class="admin-form-group">
+
+                    <label>
+                        Domain
+                    </label>
+
+                    <input
+                        type="text"
+                        name="domain"
+                        placeholder="Marketing"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="club-primary-btn"
+            >
+
+                <i data-lucide="plus"></i>
+
+                Add Opportunity
+
+            </button>
+
+        </form>
+
+
+        {% else %}
+
+        <div class="admin-warning">
+
+            <i data-lucide="alert-circle"></i>
+
+            <span>
+                Create a club first before adding an opportunity.
+            </span>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         EXISTING CLUBS
+    ====================================================== -->
+
+    <section class="admin-card">
+
+        <div class="admin-card-header">
+
+            <div class="admin-icon">
+
+                <i data-lucide="library"></i>
+
+            </div>
+
+            <div>
+
+                <h2>
+                    Existing Clubs
+                </h2>
+
+                <p>
+                    Clubs currently registered on Campus360.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if clubs %}
+
+        <div class="admin-club-list">
+
+            {% for club in clubs %}
+
+            <div class="admin-club-row">
+
+                <div class="admin-club-avatar">
+
+                    <i data-lucide="users"></i>
+
+                </div>
+
+
+                <div class="admin-club-info">
+
+                    <strong>
+                        {{ club.name }}
+                    </strong>
+
+
+                    {% if club.domain %}
+
+                    <span>
+                        {{ club.domain }}
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if club.verified %}
+
+                <span class="admin-verified">
+
+                    <i data-lucide="badge-check"></i>
+
+                    Verified
+
+                </span>
+
+                {% else %}
+
+                <span class="admin-unverified">
+
+                    <i data-lucide="clock"></i>
+
+                    Unverified
+
+                </span>
+
+                {% endif %}
+
+
+                <!-- EDIT CLUB -->
+
+                <button
+                    type="button"
+                    class="admin-edit-btn"
+                    onclick="toggleClubEdit({{ club.id }})"
+                >
+
+                    <i data-lucide="pencil"></i>
+
+                    Edit
+
+                </button>
+
+
+                <!-- DELETE CLUB -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for('delete_club', club_id=club.id) }}"
+                    onsubmit="return confirm('Delete this club and all its events, opportunities and applications?');"
+                >
+
+                    <button
+                        type="submit"
+                        class="admin-delete-btn"
+                    >
+
+                        <i data-lucide="trash-2"></i>
+
+                        Delete
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- CLUB EDIT PANEL -->
+
+            <div
+                id="club-edit-{{ club.id }}"
+                class="admin-edit-panel"
+                style="display: none;"
+            >
+
+                <form
+                    method="POST"
+                    action="{{ url_for('edit_club', club_id=club.id) }}"
+                    class="admin-form"
+                >
+
+                    <div class="admin-form-group">
+
+                        <label>
+                            Club Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            value="{{ club.name }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="admin-form-group">
+
+                        <label>
+                            Domain
+                        </label>
+
+                        <input
+                            type="text"
+                            name="domain"
+                            value="{{ club.domain or '' }}"
+                        >
+
+                    </div>
+
+
+                    <div class="admin-form-group">
+
+                        <label>
+                            Description
+                        </label>
+
+                        <textarea
+                            name="description"
+                            rows="3"
+                        >{{ club.description or '' }}</textarea>
+
+                    </div>
+
+
+                    <div class="admin-edit-actions">
+
+                        <button
+                            type="submit"
+                            class="admin-save-btn"
+                        >
+
+                            <i data-lucide="save"></i>
+
+                            Save Changes
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="admin-cancel-btn"
+                            onclick="toggleClubEdit({{ club.id }})"
+                        >
+
+                            Cancel
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <div class="admin-empty">
+
+            <i data-lucide="users-round"></i>
+
+            <p>
+                No clubs have been created yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         EXISTING OPPORTUNITIES
+    ====================================================== -->
+
+    <section class="admin-card">
+
+        <div class="admin-card-header">
+
+            <div class="admin-icon">
+
+                <i data-lucide="briefcase"></i>
+
+            </div>
+
+            <div>
+
+                <h2>
+                    Existing Opportunities
+                </h2>
+
+                <p>
+                    Manage published club opportunities.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if opportunities %}
+
+        <div class="admin-opportunity-list">
+
+            {% for opportunity in opportunities %}
+
+            <div class="admin-opportunity-row">
+
+                <div class="admin-opportunity-icon">
+
+                    <i data-lucide="briefcase-business"></i>
+
+                </div>
+
+
+                <div class="admin-opportunity-info">
+
+                    {% set opportunity_club = namespace(name="Campus Club") %}
+
+                    {% for club in clubs %}
+                        {% if club.id == opportunity.club_id %}
+                            {% set opportunity_club.name = club.name %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <strong>
+                        {{ opportunity.title }}
+                    </strong>
+
+                    <span>
+                        {{ opportunity_club.name }}
+                    </span>
+
+
+                    {% if opportunity.role_type %}
+
+                    <span>
+                        {{ opportunity.role_type }}
+                    </span>
+
+                    {% endif %}
+
+
+                    {% if opportunity.domain %}
+
+                    <span>
+                        {{ opportunity.domain }}
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- OPPORTUNITY ACTIONS -->
+
+                <div class="admin-opportunity-actions">
+
+                    <!-- EDIT -->
+
+                    <button
+                        type="button"
+                        class="admin-edit-btn"
+                        onclick="toggleOpportunityEdit({{ opportunity.id }})"
+                    >
+
+                        <i data-lucide="pencil"></i>
+
+                        Edit
+
+                    </button>
+
+
+                    <!-- DELETE -->
+
+                    <form
+                        method="POST"
+                        action="{{ url_for('delete_club_opportunity', opportunity_id=opportunity.id) }}"
+                        onsubmit="return confirm('Delete this opportunity?');"
+                    >
+
+                        <button
+                            type="submit"
+                            class="admin-delete-btn"
+                        >
+
+                            <i data-lucide="trash-2"></i>
+
+                            Delete
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- OPPORTUNITY EDIT PANEL -->
+
+            <div
+                id="opportunity-edit-{{ opportunity.id }}"
+                class="admin-edit-panel"
+                style="display: none;"
+            >
+
+                <form
+                    method="POST"
+                    action="{{ url_for('edit_club_opportunity', opportunity_id=opportunity.id) }}"
+                    class="admin-form"
+                >
+
+                    <div class="admin-form-group">
+
+                        <label>
+                            Opportunity Title
+                        </label>
+
+                        <input
+                            type="text"
+                            name="title"
+                            value="{{ opportunity.title }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="admin-form-group">
+
+                        <label>
+                            Description
+                        </label>
+
+                        <textarea
+                            name="description"
+                            rows="4"
+                        >{{ opportunity.description or '' }}</textarea>
+
+                    </div>
+
+
+                    <div class="admin-two-column">
+
+                        <div class="admin-form-group">
+
+                            <label>
+                                Role Type
+                            </label>
+
+                            <input
+                                type="text"
+                                name="role_type"
+                                value="{{ opportunity.role_type or '' }}"
+                            >
+
+                        </div>
+
+
+                        <div class="admin-form-group">
+
+                            <label>
+                                Domain
+                            </label>
+
+                            <input
+                                type="text"
+                                name="domain"
+                                value="{{ opportunity.domain or '' }}"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-edit-actions">
+
+                        <button
+                            type="submit"
+                            class="admin-save-btn"
+                        >
+
+                            <i data-lucide="save"></i>
+
+                            Save Changes
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="admin-cancel-btn"
+                            onclick="toggleOpportunityEdit({{ opportunity.id }})"
+                        >
+
+                            Cancel
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <div class="admin-empty">
+
+            <i data-lucide="briefcase"></i>
+
+            <p>
+                No opportunities have been created yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         STUDENT APPLICATIONS
+    ====================================================== -->
+
+    <section class="admin-card">
+
+        <div class="admin-card-header">
+
+            <div class="admin-icon">
+
+                <i data-lucide="file-check-2"></i>
+
+            </div>
+
+            <div>
+
+                <h2>
+                    Student Applications
+                </h2>
+
+                <p>
+                    Review students who applied for club opportunities.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if applications %}
+
+        <div class="admin-applications-list">
+
+            {% for application in applications %}
+
+            <div class="admin-application-row">
+
+                <!-- STUDENT ICON -->
+
+                <div class="admin-application-icon">
+
+                    <i data-lucide="user"></i>
+
+                </div>
+
+
+                <!-- STUDENT INFORMATION -->
+
+                <div class="admin-application-info">
+
+                    <strong>
+
+                        {% if applicants[application.id] %}
+
+                            {{ applicants[application.id].name }}
+
+                        {% else %}
+
+                            Student
+
+                        {% endif %}
+
+                    </strong>
+
+
+                    {% if applicants[application.id] %}
+
+                    <span>
+
+                        {{ applicants[application.id].email }}
+
+                    </span>
+
+
+                    {% if applicants[application.id].branch %}
+
+                    <span>
+
+                        {{ applicants[application.id].branch }}
+
+                    </span>
+
+                    {% endif %}
+
+
+                    {% if applicants[application.id].batch %}
+
+                    <span>
+
+                        {{ applicants[application.id].batch }}
+
+                    </span>
+
+                    {% endif %}
+
+                    {% endif %}
+
+
+                    {% set application_club = namespace(name="Campus Club") %}
+
+                    {% for club in clubs %}
+                        {% if club.id == application.club_id %}
+                            {% set application_club.name = club.name %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <small>
+
+                        Club:
+                        {{ application_club.name }}
+
+                        ·
+
+                        Applied for:
+                        {{ application.role }}
+
+                        ·
+
+                        Application #{{ application.id }}
+
+                    </small>
+
+                </div>
+
+
+                <!-- APPLICATION ACTIONS -->
+
+                <div class="admin-application-actions">
+
+
+                    <!-- STATUS -->
+
+                    {% if application.status|lower == "approved" %}
+
+                    <span class="admin-application-status approved">
+
+                        <i data-lucide="check-circle"></i>
+
+                        Approved
+
+                    </span>
+
+
+                    {% elif application.status|lower == "rejected" %}
+
+                    <span class="admin-application-status rejected">
+
+                        <i data-lucide="x-circle"></i>
+
+                        Rejected
+
+                    </span>
+
+
+                    {% else %}
+
+                    <span class="admin-application-status pending">
+
+                        <i data-lucide="clock-3"></i>
+
+                        Pending
+
+                    </span>
+
+                    {% endif %}
+
+
+                    <!-- APPROVE -->
+
+                    {% if application.status|lower != "approved" %}
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'approve_club_application',
+                            application_id=application.id
+                        ) }}"
+                    >
+
+                        <button
+                            type="submit"
+                            class="admin-approve-btn"
+                            onclick="return confirm('Approve this application?');"
+                        >
+
+                            <i data-lucide="check"></i>
+
+                            Approve
+
+                        </button>
+
+                    </form>
+
+                    {% endif %}
+
+
+                    <!-- REJECT -->
+
+                    {% if application.status|lower != "rejected" %}
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'reject_club_application',
+                            application_id=application.id
+                        ) }}"
+                    >
+
+                        <button
+                            type="submit"
+                            class="admin-reject-btn"
+                            onclick="return confirm('Reject this application?');"
+                        >
+
+                            <i data-lucide="x"></i>
+
+                            Reject
+
+                        </button>
+
+                    </form>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <div class="admin-empty">
+
+            <i data-lucide="inbox"></i>
+
+            <p>
+                No student applications yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     CLUB + OPPORTUNITY EDIT JAVASCRIPT
+====================================================== -->
+
+<script>
+
+function toggleClubEdit(clubId) {
+
+    const panel = document.getElementById(
+        "club-edit-" + clubId
+    );
+
+    if (!panel) {
+        return;
+    }
+
+
+    if (panel.style.display === "none") {
+
+        panel.style.display = "block";
+
+    } else {
+
+        panel.style.display = "none";
+
+    }
+
+
+    if (typeof lucide !== "undefined") {
+
+        lucide.createIcons();
+
+    }
+
+}
+
+
+function toggleOpportunityEdit(opportunityId) {
+
+    const panel = document.getElementById(
+        "opportunity-edit-" + opportunityId
+    );
+
+    if (!panel) {
+        return;
+    }
+
+
+    if (panel.style.display === "none") {
+
+        panel.style.display = "block";
+
+    } else {
+
+        panel.style.display = "none";
+
+    }
+
+
+    if (typeof lucide !== "undefined") {
+
+        lucide.createIcons();
+
+    }
+
+}
+
+</script>
+
+{% endblock %}

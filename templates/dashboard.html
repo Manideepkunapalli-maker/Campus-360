@@ -1,0 +1,538 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard — Campus360
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <div class="dashboard-date">
+
+                    <i data-lucide="sun"></i>
+
+                    CAMPUS360 DASHBOARD
+
+                </div>
+
+
+                <h1>
+                    Welcome back, {{ session.get("user_name", "Student") }} 👋
+                </h1>
+
+
+                <p>
+                    Everything you need for your campus life,
+                    in one place.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <button
+                    class="header-icon"
+                    type="button"
+                >
+
+                    <i data-lucide="search"></i>
+
+                </button>
+
+
+                <button
+                    class="header-icon"
+                    type="button"
+                >
+
+                    <i data-lucide="bell"></i>
+
+                </button>
+
+
+                <div class="header-profile">
+
+                    <div class="header-avatar">
+
+                        {{ session.get("user_name", "D")[0]|upper }}
+
+                    </div>
+
+
+                    <div class="header-profile-info">
+
+                        <strong>
+                            {{ session.get("user_name", "Student") }}
+                        </strong>
+
+                        <span>
+                            Campus360 Student
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             WELCOME HERO
+        ================================================== -->
+
+        <section class="dashboard-hero">
+
+            <div>
+
+                <div class="dashboard-hero-badge">
+
+                    <i data-lucide="sparkles"></i>
+
+                    YOUR CAMPUS, CONNECTED
+
+                </div>
+
+
+                <h2>
+                    Learn. Connect. Grow.
+                </h2>
+
+
+                <p>
+                    Explore academic resources, discover
+                    opportunities, find roommates and connect
+                    with your campus community.
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-hero-icon">
+
+                <i data-lucide="graduation-cap"></i>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FEATURE GRID
+        ================================================== -->
+
+        <section class="dashboard-feature-section">
+
+            <div class="dashboard-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        CAMPUS360
+                    </div>
+
+                    <h2>
+                        Everything in one place
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-feature-grid">
+
+
+                <!-- ACADEMIC -->
+
+                <a
+                    href="/academic"
+                    class="dashboard-feature-card academic"
+                >
+
+                    <div class="dashboard-feature-icon">
+
+                        <i data-lucide="book-open"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Academic Hub
+                        </h3>
+
+                        <p>
+                            Notes, previous-year papers,
+                            book exchange and peer tutoring.
+                        </p>
+
+                    </div>
+
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        class="feature-arrow"
+                    ></i>
+
+                </a>
+
+
+
+                <!-- MARKETPLACE -->
+
+                <a
+                    href="/marketplace"
+                    class="dashboard-feature-card marketplace"
+                >
+
+                    <div class="dashboard-feature-icon">
+
+                        <i data-lucide="shopping-bag"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Campus Marketplace
+                        </h3>
+
+                        <p>
+                            Buy and sell textbooks,
+                            lab coats and study essentials.
+                        </p>
+
+                    </div>
+
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        class="feature-arrow"
+                    ></i>
+
+                </a>
+
+
+
+                <!-- ROOMMATES -->
+
+                <a
+                    href="/roommates"
+                    class="dashboard-feature-card roommates"
+                >
+
+                    <div class="dashboard-feature-icon">
+
+                        <i data-lucide="house"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Smart Roommates
+                        </h3>
+
+                        <p>
+                            Find compatible roommates based
+                            on your lifestyle.
+                        </p>
+
+                    </div>
+
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        class="feature-arrow"
+                    ></i>
+
+                </a>
+
+
+
+                <!-- CLUBS -->
+
+                <a
+                    href="/clubs"
+                    class="dashboard-feature-card clubs"
+                >
+
+                    <div class="dashboard-feature-icon">
+
+                        <i data-lucide="megaphone"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Club Connect
+                        </h3>
+
+                        <p>
+                            Discover events, recruitment
+                            and student opportunities.
+                        </p>
+
+                    </div>
+
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        class="feature-arrow"
+                    ></i>
+
+                </a>
+
+
+
+                <!-- COURSES -->
+
+                <a
+                    href="/courses"
+                    class="dashboard-feature-card courses"
+                >
+
+                    <div class="dashboard-feature-icon">
+
+                        <i data-lucide="star"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Course Insights
+                        </h3>
+
+                        <p>
+                            Understand difficulty, workload,
+                            exam patterns and tips.
+                        </p>
+
+                    </div>
+
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        class="feature-arrow"
+                    ></i>
+
+                </a>
+
+
+
+                <!-- SKILLS -->
+
+                <a
+                    href="/skills"
+                    class="dashboard-feature-card skills"
+                >
+
+                    <div class="dashboard-feature-icon">
+
+                        <i data-lucide="code-2"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Skill Services
+                        </h3>
+
+                        <p>
+                            Get coding assistance and
+                            peer learning support.
+                        </p>
+
+                    </div>
+
+
+                    <i
+                        data-lucide="arrow-up-right"
+                        class="feature-arrow"
+                    ></i>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             QUICK ACTIONS
+        ================================================== -->
+
+        <section class="quick-actions-section">
+
+            <div class="dashboard-section-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        QUICK ACTIONS
+                    </div>
+
+                    <h2>
+                        What do you want to do?
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="quick-actions-grid">
+
+
+                <a
+                    href="/academic/upload-page"
+                    class="quick-action"
+                >
+
+                    <i data-lucide="upload"></i>
+
+                    <span>
+                        Upload Notes
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="/marketplace/sell"
+                    class="quick-action"
+                >
+
+                    <i data-lucide="tag"></i>
+
+                    <span>
+                        Sell an Item
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="/roommates/create"
+                    class="quick-action"
+                >
+
+                    <i data-lucide="users"></i>
+
+                    <span>
+                        Find Roommate
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="/courses/add"
+                    class="quick-action"
+                >
+
+                    <i data-lucide="lightbulb"></i>
+
+                    <span>
+                        Share Course Insight
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="/skills"
+                    class="quick-action"
+                >
+
+                    <i data-lucide="message-circle-question"></i>
+
+                    <span>
+                        Ask for Help
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="/clubs"
+                    class="quick-action"
+                >
+
+                    <i data-lucide="calendar-days"></i>
+
+                    <span>
+                        Explore Events
+                    </span>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             BOTTOM NOTE
+        ================================================== -->
+
+        <section class="dashboard-bottom-note">
+
+            <div class="dashboard-bottom-icon">
+
+                <i data-lucide="shield-check"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Built for your campus community
+                </strong>
+
+                <p>
+                    Campus360 brings learning, opportunities,
+                    resources and student connections together.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+{% endblock %}

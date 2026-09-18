@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Club Applications — Campus360
+{% endblock %}
+
+{% block content %}
+
+<main class="dashboard-main">
+
+    <!-- BACK -->
+
+    <a
+        href="{{ url_for('clubs') }}"
+        class="club-back-link"
+    >
+
+        <i data-lucide="arrow-left"></i>
+
+        Back to Club Connect
+
+    </a>
+
+
+    <!-- HEADER -->
+
+    <div class="club-page-heading">
+
+        <div class="panel-label">
+            MY APPLICATIONS
+        </div>
+
+        <h1>
+            Your club applications
+        </h1>
+
+        <p>
+            Track the opportunities you have applied for.
+        </p>
+
+    </div>
+
+
+    {% if applications %}
+
+    <div class="applications-list">
+
+        {% for application in applications %}
+
+        <!-- FIND CLUB NAME -->
+
+        {% set applied_club = namespace(name="Campus Club") %}
+
+        {% for club in clubs %}
+
+            {% if club.id == application.club_id %}
+
+                {% set applied_club.name = club.name %}
+
+            {% endif %}
+
+        {% endfor %}
+
+
+        <!-- APPLICATION CARD -->
+
+        <article class="application-card">
+
+
+            <!-- ICON -->
+
+            <div class="application-icon">
+
+                {% if application.status|lower == "approved" %}
+
+                    <i data-lucide="circle-check"></i>
+
+                {% elif application.status|lower == "rejected" %}
+
+                    <i data-lucide="circle-x"></i>
+
+                {% else %}
+
+                    <i data-lucide="briefcase-business"></i>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- APPLICATION INFORMATION -->
+
+            <div class="application-info">
+
+                <span class="application-label">
+                    CLUB APPLICATION
+                </span>
+
+
+                <h3>
+                    {{ application.role }}
+                </h3>
+
+
+                <p class="application-club-name">
+
+                    <i data-lucide="users"></i>
+
+                    {{ applied_club.name }}
+
+                </p>
+
+
+                <p class="application-id">
+                    Application #{{ application.id }}
+                </p>
+
+
+                <span class="application-date">
+
+                    <i data-lucide="calendar"></i>
+
+                    Applied
+
+                    {% if application.created_at %}
+
+                        {{ application.created_at.strftime(
+                            "%d %b %Y"
+                        ) }}
+
+                    {% else %}
+
+                        Recently
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="application-actions">
+
+
+                {% if application.status|lower == "approved" %}
+
+
+                <div class="application-status approved">
+
+                    <i data-lucide="check-circle"></i>
+
+                    <div>
+
+                        <strong>
+                            Approved
+                        </strong>
+
+                        <span>
+                            Your application was approved.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                {% elif application.status|lower == "rejected" %}
+
+
+                <div class="application-status rejected">
+
+                    <i data-lucide="x-circle"></i>
+
+                    <div>
+
+                        <strong>
+                            Rejected
+                        </strong>
+
+                        <span>
+                            This application was not selected.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                {% else %}
+
+
+                <div class="application-status pending">
+
+                    <i data-lucide="clock-3"></i>
+
+                    <div>
+
+                        <strong>
+                            Pending
+                        </strong>
+
+                        <span>
+                            Waiting for club administrator.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- WITHDRAW ONLY WHILE PENDING -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'withdraw_club_application',
+                        application_id=application.id
+                    ) }}"
+                    onsubmit="return confirm(
+                        'Are you sure you want to withdraw this application?'
+                    );"
+                >
+
+                    <button
+                        type="submit"
+                        class="admin-delete-btn"
+                    >
+
+                        <i data-lucide="x"></i>
+
+                        Withdraw
+
+                    </button>
+
+                </form>
+
+
+                {% endif %}
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+
+    <!-- EMPTY STATE -->
+
+    <div class="applications-empty">
+
+
+        <div class="applications-empty-icon">
+
+            <i data-lucide="file-search"></i>
+
+        </div>
+
+
+        <h2>
+            No applications yet
+        </h2>
+
+
+        <p>
+            Explore club opportunities and apply for
+            positions that interest you.
+        </p>
+
+
+        <a
+            href="{{ url_for('clubs') }}"
+            class="club-primary-btn"
+        >
+
+            <i data-lucide="compass"></i>
+
+            Explore Opportunities
+
+        </a>
+
+    </div>
+
+
+    {% endif %}
+
+
+</main>
+
+{% endblock %}
