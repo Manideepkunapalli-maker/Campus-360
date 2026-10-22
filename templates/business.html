@@ -94,7 +94,7 @@
 
         <article class="dashboard-panel business-panel">
             <div class="panel-header">
-                <div><div class="panel-label">CASH FLOW SNAPSHOT</div><h2>Money in and obligations</h2></div>
+                <div><div class="panel-label">OWNER-ONLY AGGREGATES</div><h2>Money in and obligations</h2></div>
             </div>
             <dl class="business-finance-list">
                 <div><dt>Completed subscription payments</dt><dd>₹{{ "%.2f"|format(subscription_revenue_paise / 100) }}</dd></div>
@@ -103,6 +103,7 @@
                 <div class="business-finance-total"><dt>Estimated platform revenue</dt><dd>₹{{ "%.2f"|format(platform_revenue_paise / 100) }}</dd></div>
             </dl>
             <p class="business-finance-disclaimer">Revenue estimate is verified gross less creator earnings and reserved subscription pools. It is not net profit and excludes Razorpay charges, taxes, refunds, and operating expenses. Marketplace sales are excluded because payment settlement is offline.</p>
+            <p class="business-finance-disclaimer">This console shows combined creator obligations only. Individual creator balances are visible only in each creator’s own account.</p>
         </article>
     </section>
 
