@@ -556,7 +556,9 @@ Academic Hub — Campus360
                             </h3>
 
                             <span class="resource-price-badge">
-                                {% if note.price_paise > 0 %}
+                                {% if note.price_paise > 0 and academic_subscription_active %}
+                                    Included with Academic Hub subscription
+                                {% elif note.price_paise > 0 %}
                                     ₹{{ "%.2f"|format(note.price_paise / 100) }} · paid resource
                                 {% else %}
                                     Free resource
@@ -599,7 +601,7 @@ Academic Hub — Campus360
 
                         <!-- DOWNLOAD -->
 
-                        {% if note.price_paise == 0 or note.uploaded_by == current_user_id or note.id in purchased_note_ids %}
+                        {% if note.price_paise == 0 or note.uploaded_by == current_user_id or note.id in purchased_note_ids or (note.price_paise > 0 and academic_subscription_active) %}
                             <a
                                 href="{{ url_for('download_academic', note_id=note.id) }}"
                                 class="academic-download"

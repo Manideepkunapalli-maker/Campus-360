@@ -239,6 +239,13 @@
                 <span>Plans &amp; Earnings</span>
             </a>
 
+            {% if business_owner %}
+            <a href="{{ url_for('business_dashboard') }}" class="sidebar-link">
+                <i data-lucide="chart-no-axes-combined"></i>
+                <span>Owner Business Console</span>
+            </a>
+            {% endif %}
+
 
             <div class="sidebar-divider"></div>
 
@@ -361,6 +368,29 @@
 
     </div>
 
+    {% set analytics_choice = request.cookies.get("campus360_analytics_consent") %}
+    <aside
+        class="analytics-consent-banner"
+        id="analytics-consent-banner"
+        aria-label="Analytics privacy choices"
+        {% if analytics_choice in ("true", "false") %}hidden{% endif %}
+    >
+        <div>
+            <strong>Help us improve Campus360?</strong>
+            <p>Optional analytics count page views and anonymous daily visitors. We do not store IP addresses or individual browsing histories.</p>
+        </div>
+        <div class="analytics-consent-actions">
+            <button type="button" class="analytics-consent-accept" data-analytics-choice="allow">Allow analytics</button>
+            <button type="button" class="analytics-consent-reject" data-analytics-choice="reject">No thanks</button>
+        </div>
+        <p class="analytics-consent-error" id="analytics-consent-error" role="alert" hidden></p>
+    </aside>
+    <button
+        type="button"
+        class="analytics-settings-button"
+        id="analytics-settings-button"
+        {% if analytics_choice not in ("true", "false") %}hidden{% endif %}
+    >Privacy settings</button>
 
 
     <!-- =====================================================
@@ -370,6 +400,38 @@
     <script
         src="{{ url_for('static', filename='css/js/app.js') }}"
     ></script>
+
+    <script>
+        const analyticsSettingsButton = document.getElementById("analytics-settings-button");
+        if (analyticsSettingsButton) {
+            analyticsSettingsButton.addEventListener("click", () => {
+                document.getElementById("analytics-consent-banner").hidden = false;
+                analyticsSettingsButton.hidden = true;
+            });
+        }
+
+        document.querySelectorAll("[data-analytics-choice]").forEach((button) => {
+            button.addEventListener("click", async () => {
+                const errorMessage = document.getElementById("analytics-consent-error");
+                button.disabled = true;
+                try {
+                    const result = await fetch("{{ url_for('analytics_consent') }}", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({choice: button.dataset.analyticsChoice})
+                    });
+                    if (!result.ok) {
+                        throw new Error("Could not save your analytics preference. Please try again.");
+                    }
+                    window.location.reload();
+                } catch (error) {
+                    button.disabled = false;
+                    errorMessage.textContent = error.message;
+                    errorMessage.hidden = false;
+                }
+            });
+        });
+    </script>
 
     {% if payments_enabled %}
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

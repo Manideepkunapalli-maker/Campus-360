@@ -24,21 +24,29 @@ from models import (
     SkillRequest,
     Mentor,
     ResourcePurchase,
-    PaymentOrder
+    PaymentOrder,
+    FeatureSubscription,
+    SubscriptionTerm,
+    SubscriptionResourceAccess,
+    SubscriptionCreatorEarning,
+    SiteVisitor,
+    SiteDailyVisitor,
+    SiteDailyPageView
 )
 
 import os
 import math
+import hmac
+from sqlalchemy.exc import SQLAlchemyError
 
 from datetime import datetime
 
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
-from uuid import uuid4
-from sqlalchemy import and_, or_
+from uuid import UUID, uuid4
+from sqlalchemy import and_, func, or_
 import razorpay
 import json
-import hmac
 import hashlib
 from datetime import timedelta
 
@@ -59,6 +67,12 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///campus360.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["RAZORPAY_KEY_ID"] = os.environ.get("RAZORPAY_KEY_ID", "")
 app.config["RAZORPAY_KEY_SECRET"] = os.environ.get("RAZORPAY_KEY_SECRET", "")
+app.config["CAMPUS360_OWNER_EMAIL"] = os.environ.get(
+    "CAMPUS360_OWNER_EMAIL", ""
+).strip().lower()
+app.config["CAMPUS360_OWNER_SETUP_TOKEN"] = os.environ.get(
+    "CAMPUS360_OWNER_SETUP_TOKEN", ""
+)
 uploads_persistent = os.environ.get(
     "CAMPUS360_UPLOADS_PERSISTENT",
     ""
@@ -118,9 +132,19 @@ def pie_gradient(values):
 
 @app.context_processor
 def inject_platform_settings():
+    current_user = None
+    if session.get("user_id"):
+        current_user = db.session.get(User, session["user_id"])
+    owner_email = app.config["CAMPUS360_OWNER_EMAIL"]
     return {
         "payments_enabled": app.config["PAYMENTS_ENABLED"],
-        "marketplace_fee_percent": MARKETPLACE_FEE_PERCENT
+        "marketplace_fee_percent": MARKETPLACE_FEE_PERCENT,
+        "business_owner": bool(
+            current_user
+            and owner_email
+            and current_user.is_owner
+            and current_user.email.strip().lower() == owner_email
+        )
     }
 
 
@@ -212,7 +236,7 @@ with app.app_context():
 
             db.session.execute(
                 db.text(
-                    "ALTER TABLE club ADD COLUMN created_at DATETIME"
+                    "ALTER TABLE club ADD COLUMN created_at TIMESTAMP"
                 )
             )
     # -----------------------------------------------------
@@ -231,8 +255,9 @@ with app.app_context():
         "green_points": "INTEGER NOT NULL DEFAULT 0",
         "pending_earnings_paise": "INTEGER NOT NULL DEFAULT 0",
         "locked_earnings_paise": "INTEGER NOT NULL DEFAULT 0",
+        "is_owner": "BOOLEAN NOT NULL DEFAULT FALSE",
         "subscription_features": "TEXT NOT NULL DEFAULT ''",
-        "subscription_until": "DATETIME"
+        "subscription_until": "TIMESTAMP"
     }
     for column_name, column_definition in user_migrations.items():
         if column_name not in user_columns:
@@ -249,7 +274,7 @@ with app.app_context():
 
         db.session.execute(
             db.text(
-                "ALTER TABLE user ADD COLUMN is_admin BOOLEAN DEFAULT 0"
+                "ALTER TABLE user ADD COLUMN is_admin BOOLEAN NOT NULL DEFAULT FALSE"
             )
         )
 
@@ -293,12 +318,207 @@ with app.app_context():
 
             db.session.execute(
                 db.text(
-                    "ALTER TABLE club_event ADD COLUMN created_at DATETIME"
+                    "ALTER TABLE club_event ADD COLUMN created_at TIMESTAMP"
                 )
             )
 
 
     db.session.commit()
+
+
+@app.after_request
+def record_site_page_view(response):
+    endpoint = request.endpoint or ""
+    if (
+        request.method != "GET"
+        or not 200 <= response.status_code < 300
+        or not response.mimetype
+        or response.mimetype != "text/html"
+        or endpoint == "business_dashboard"
+        or request.cookies.get("campus360_analytics_consent") != "true"
+    ):
+        return response
+
+    visitor_id = request.cookies.get("campus360_visitor_id", "")
+    try:
+        visitor_id = str(UUID(visitor_id)) if visitor_id else str(uuid4())
+    except ValueError:
+        visitor_id = str(uuid4())
+
+    visitor_hash = hmac.new(
+        app.config["SECRET_KEY"].encode("utf-8"),
+        visitor_id.encode("utf-8"),
+        hashlib.sha256
+    ).hexdigest()
+    today = datetime.utcnow().date()
+
+    try:
+        visitor = db.session.get(SiteVisitor, visitor_hash)
+        if not visitor:
+            visitor = SiteVisitor(
+                visitor_hash=visitor_hash,
+                first_seen_at=datetime.utcnow(),
+                last_seen_at=datetime.utcnow(),
+                total_page_views=0
+            )
+            db.session.add(visitor)
+            db.session.flush()
+
+        visitor.last_seen_at = datetime.utcnow()
+        visitor.total_page_views += 1
+
+        daily_visitor = SiteDailyVisitor.query.filter_by(
+            visit_date=today,
+            visitor_hash=visitor_hash
+        ).first()
+        if daily_visitor:
+            daily_visitor.page_views += 1
+        else:
+            db.session.add(SiteDailyVisitor(
+                visit_date=today,
+                visitor_hash=visitor_hash,
+                page_views=1
+            ))
+
+        daily_page = SiteDailyPageView.query.filter_by(
+            view_date=today,
+            page=endpoint[:100]
+        ).first()
+        if daily_page:
+            daily_page.views += 1
+        else:
+            db.session.add(SiteDailyPageView(
+                view_date=today,
+                page=endpoint[:100],
+                views=1
+            ))
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        app.logger.exception("Could not record an anonymous site page view")
+
+    response.set_cookie(
+        "campus360_visitor_id",
+        visitor_id,
+        max_age=60 * 60 * 24 * 30,
+        httponly=True,
+        secure=request.is_secure,
+        samesite="Lax"
+    )
+    return response
+
+
+@app.route("/analytics/consent", methods=["POST"])
+def analytics_consent():
+    payload = request.get_json(silent=True) or {}
+    choice = payload.get("choice")
+    if not isinstance(choice, str) or choice not in {"allow", "reject"}:
+        return {"error": "Choose whether to allow anonymous analytics."}, 400
+
+    response = {"status": "saved"}
+    result = app.response_class(
+        response=json.dumps(response),
+        status=200,
+        mimetype="application/json"
+    )
+    result.set_cookie(
+        "campus360_analytics_consent",
+        "true" if choice == "allow" else "false",
+        max_age=60 * 60 * 24 * 180,
+        httponly=True,
+        secure=request.is_secure,
+        samesite="Lax"
+    )
+    if choice == "reject":
+        result.delete_cookie("campus360_visitor_id", samesite="Lax")
+    return result
+
+
+def settle_expired_academic_terms():
+    now = datetime.utcnow()
+    expired_terms = SubscriptionTerm.query.with_for_update(
+        skip_locked=True
+    ).filter(
+        SubscriptionTerm.feature == "academic",
+        SubscriptionTerm.settled.is_(False),
+        SubscriptionTerm.ends_at <= now
+    ).all()
+    for term in expired_terms:
+        creator_downloads = db.session.query(
+            SubscriptionResourceAccess.creator_id,
+            func.count(SubscriptionResourceAccess.id)
+        ).filter_by(
+            term_id=term.id
+        ).group_by(
+            SubscriptionResourceAccess.creator_id
+        ).all()
+
+        total_downloads = sum(count for _, count in creator_downloads)
+        if total_downloads and term.creator_pool_paise:
+            shares = {
+                creator_id: term.creator_pool_paise * count // total_downloads
+                for creator_id, count in creator_downloads
+            }
+            remainder = term.creator_pool_paise - sum(shares.values())
+            remainder_order = sorted(
+                creator_downloads,
+                key=lambda entry: (
+                    -(term.creator_pool_paise * entry[1] % total_downloads),
+                    entry[0]
+                )
+            )
+            for creator_id, _ in remainder_order[:remainder]:
+                shares[creator_id] += 1
+
+            for creator_id, amount in shares.items():
+                if amount <= 0:
+                    continue
+                creator = db.session.get(User, creator_id)
+                if not creator:
+                    continue
+                approved_count = Note.query.filter_by(
+                    uploaded_by=creator.id,
+                    approval_status="approved"
+                ).count()
+                db.session.add(SubscriptionCreatorEarning(
+                    term_id=term.id,
+                    creator_id=creator.id,
+                    amount_paise=amount
+                ))
+                if approved_count >= CREATOR_PAYOUT_MIN_APPROVED_UPLOADS:
+                    creator.pending_earnings_paise += amount
+                else:
+                    creator.locked_earnings_paise += amount
+
+        term.settled = True
+
+    if expired_terms:
+        db.session.commit()
+
+
+def active_academic_term(user_id, at_time=None):
+    at_time = at_time or datetime.utcnow()
+    entitlement = FeatureSubscription.query.filter_by(
+        user_id=user_id,
+        feature="academic"
+    ).filter(
+        FeatureSubscription.expires_at > at_time
+    ).first()
+    if not entitlement:
+        return None
+
+    return SubscriptionTerm.query.join(
+        PaymentOrder,
+        PaymentOrder.id == SubscriptionTerm.payment_order_id
+    ).filter(
+        SubscriptionTerm.user_id == user_id,
+        SubscriptionTerm.feature == "academic",
+        SubscriptionTerm.starts_at <= at_time,
+        SubscriptionTerm.ends_at > at_time,
+        PaymentOrder.status == "completed"
+    ).order_by(
+        SubscriptionTerm.ends_at.desc()
+    ).first()
 
 
 # =========================================================
@@ -369,6 +589,15 @@ def signup():
             "confirm_password",
             ""
         )
+        owner_setup_token = request.form.get(
+            "owner_setup_token",
+            ""
+        )
+
+        is_owner_registration = bool(
+            app.config["CAMPUS360_OWNER_EMAIL"]
+            and email == app.config["CAMPUS360_OWNER_EMAIL"]
+        )
 
 
         if not name or not email or not branch or not batch:
@@ -392,6 +621,16 @@ def signup():
         elif password != confirm_password:
 
             error = "Passwords do not match."
+
+        elif is_owner_registration and (
+            not app.config["CAMPUS360_OWNER_SETUP_TOKEN"]
+            or not hmac.compare_digest(
+                owner_setup_token,
+                app.config["CAMPUS360_OWNER_SETUP_TOKEN"]
+            )
+        ):
+
+            error = "The configured site-owner account requires its one-time setup code."
 
 
         elif len(password) < 6:
@@ -429,6 +668,8 @@ def signup():
 
                 new_user.password = generate_password_hash(password)
                 new_user.student_level = student_level
+                new_user.is_owner = is_owner_registration
+                new_user.is_admin = is_owner_registration
 
                 db.session.add(new_user)
 
@@ -485,6 +726,10 @@ def login():
             "student_level",
             ""
         ).strip()
+        owner_setup_token = request.form.get(
+            "owner_setup_token",
+            ""
+        )
 
         user = User.query.filter_by(
             email=email
@@ -509,6 +754,24 @@ def login():
                 db.session.commit()
 
         if user and valid_password and student_level == user.student_level:
+            is_configured_owner = bool(
+                app.config["CAMPUS360_OWNER_EMAIL"]
+                and email == app.config["CAMPUS360_OWNER_EMAIL"]
+            )
+            if is_configured_owner and not user.is_owner:
+                if not app.config["CAMPUS360_OWNER_SETUP_TOKEN"] or not hmac.compare_digest(
+                    owner_setup_token,
+                    app.config["CAMPUS360_OWNER_SETUP_TOKEN"]
+                ):
+                    error = "Enter the site-owner setup code to enable the private business console."
+                    return render_template(
+                        "login.html",
+                        error=error,
+                        student_count=User.query.count()
+                    )
+                user.is_owner = True
+                user.is_admin = True
+                db.session.commit()
 
             session["user_id"] = user.id
 
@@ -548,6 +811,7 @@ def dashboard():
             url_for("login")
         )
 
+    settle_expired_academic_terms()
 
     user = db.session.get(User, session["user_id"])
     if not user:
@@ -623,6 +887,7 @@ def academic():
         )
 
 
+    settle_expired_academic_terms()
     search = request.args.get("search", "").strip()
     current_user_id = session["user_id"]
     notes_query = Note.query.filter(
@@ -676,6 +941,9 @@ def academic():
         search=search,
         current_user_id=current_user_id,
         purchased_note_ids=purchased_note_ids,
+        academic_subscription_active=(
+            active_academic_term(current_user_id) is not None
+        ),
         payments_enabled=app.config["PAYMENTS_ENABLED"]
     )
 
@@ -871,6 +1139,13 @@ def approve_academic_resource(note_id):
         flash("This resource has already been reviewed.", "info")
         return redirect(url_for("club_admin"))
 
+    approve_resource_record(note)
+    db.session.commit()
+    flash("Resource approved and published.", "success")
+    return redirect(url_for("club_admin"))
+
+
+def approve_resource_record(note):
     note.approval_status = "approved"
     creator = db.session.get(User, note.uploaded_by)
     if creator:
@@ -882,9 +1157,36 @@ def approve_academic_resource(note_id):
             creator.pending_earnings_paise += creator.locked_earnings_paise
             creator.locked_earnings_paise = 0
 
+
+@app.route(
+    "/business/resources/<int:note_id>/approve",
+    methods=["POST"]
+)
+def business_approve_resource(note_id):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    owner_email = app.config["CAMPUS360_OWNER_EMAIL"]
+    owner = db.session.get(User, session["user_id"])
+    if (
+        not owner_email
+        or not owner
+        or not owner.is_owner
+        or owner.email.strip().lower() != owner_email
+    ):
+        return "Access denied.", 403
+
+    note = db.session.get(Note, note_id)
+    if not note:
+        return "Resource not found.", 404
+    if note.approval_status != "pending":
+        flash("This resource has already been reviewed.", "info")
+        return redirect(url_for("business_dashboard"))
+
+    approve_resource_record(note)
     db.session.commit()
     flash("Resource approved and published.", "success")
-    return redirect(url_for("club_admin"))
+    return redirect(url_for("business_dashboard"))
 
 
 # =========================================================
@@ -908,23 +1210,48 @@ def download_academic(note_id):
     )
 
     user_id = session["user_id"]
+    settle_expired_academic_terms()
     if (
         note.approval_status != "approved"
         and note.uploaded_by != user_id
     ):
         return "This resource is awaiting moderator approval.", 403
+    if not os.path.isfile(os.path.join(app.config["UPLOAD_FOLDER"], note.file_path)):
+        return "This resource file is unavailable. Please contact Campus360 support.", 404
 
+    subscription_term = (
+        active_academic_term(user_id)
+        if note.price_paise > 0 and note.uploaded_by != user_id
+        else None
+    )
     if note.price_paise > 0 and note.uploaded_by != user_id:
         purchase = ResourcePurchase.query.filter_by(
             buyer_id=user_id,
             note_id=note.id
         ).first()
-        if not purchase:
+        if not purchase and not subscription_term:
             flash(
-                "Purchase this resource to download it.",
+                "Subscribe to Academic Hub or purchase this resource to download it.",
                 "error"
             )
-            return redirect(url_for("pricing"))
+            return redirect(url_for("academic"))
+
+        if subscription_term and not purchase:
+            access = SubscriptionResourceAccess.query.filter_by(
+                term_id=subscription_term.id,
+                buyer_id=user_id,
+                note_id=note.id
+            ).first()
+            if not access and note.uploaded_by and db.session.get(
+                User, note.uploaded_by
+            ):
+                db.session.add(SubscriptionResourceAccess(
+                    term_id=subscription_term.id,
+                    buyer_id=user_id,
+                    note_id=note.id,
+                    creator_id=note.uploaded_by
+                ))
+                db.session.commit()
 
     return send_from_directory(
 
@@ -2165,7 +2492,8 @@ def club_admin():
         applicants=applicants,
         opportunities=opportunities,
         pending_resources=pending_resources,
-        resource_uploaders=resource_uploaders
+        resource_uploaders=resource_uploaders,
+        current_admin=current_user
     )
 # =========================================================
 # EDIT CLUB OPPORTUNITY
@@ -3067,12 +3395,20 @@ def profile():
             url_for("login")
         )
 
+    settle_expired_academic_terms()
 
     user = User.query.get_or_404(
 
         session["user_id"]
 
     )
+    now = datetime.utcnow()
+    active_subscriptions = FeatureSubscription.query.filter(
+        FeatureSubscription.user_id == user.id,
+        FeatureSubscription.expires_at > now
+    ).order_by(
+        FeatureSubscription.feature.asc()
+    ).all()
 
 
     roommate_profile = RoommateProfile.query.filter_by(
@@ -3093,7 +3429,7 @@ def profile():
             uploaded_by=user.id,
             approval_status="approved"
         ).count(),
-        now=datetime.utcnow()
+        active_subscriptions=active_subscriptions
 
     )
 
@@ -3143,6 +3479,190 @@ def pricing():
     )
 
 
+@app.route("/business")
+def business_dashboard():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    owner_email = app.config["CAMPUS360_OWNER_EMAIL"]
+    owner = db.session.get(User, session["user_id"])
+    if not owner_email:
+        return (
+            "The private business dashboard is not configured. "
+            "Set CAMPUS360_OWNER_EMAIL in the hosting environment.",
+            503
+        )
+    if (
+        not owner
+        or not owner.is_owner
+        or owner.email.strip().lower() != owner_email
+    ):
+        return "Access denied.", 403
+
+    settle_expired_academic_terms()
+    now = datetime.utcnow()
+    today = now.date()
+    week_start = today - timedelta(days=6)
+    week_start_datetime = datetime.combine(week_start, datetime.min.time())
+
+    daily_rows = db.session.query(
+        SiteDailyVisitor.visit_date,
+        func.count(SiteDailyVisitor.id),
+        func.coalesce(func.sum(SiteDailyVisitor.page_views), 0)
+    ).filter(
+        SiteDailyVisitor.visit_date >= week_start,
+        SiteDailyVisitor.visit_date <= today
+    ).group_by(
+        SiteDailyVisitor.visit_date
+    ).all()
+    daily_metrics = {
+        visit_date: {"visitors": visitors, "page_views": page_views}
+        for visit_date, visitors, page_views in daily_rows
+    }
+    traffic_days = []
+    for offset in range(7):
+        day = week_start + timedelta(days=offset)
+        metrics = daily_metrics.get(day, {"visitors": 0, "page_views": 0})
+        traffic_days.append({
+            "label": day.strftime("%a"),
+            "date": day.strftime("%d %b"),
+            "visitors": metrics["visitors"],
+            "page_views": metrics["page_views"]
+        })
+
+    top_pages = db.session.query(
+        SiteDailyPageView.page,
+        func.sum(SiteDailyPageView.views).label("page_views")
+    ).filter(
+        SiteDailyPageView.view_date >= week_start,
+        SiteDailyPageView.view_date <= today
+    ).group_by(
+        SiteDailyPageView.page
+    ).order_by(
+        func.sum(SiteDailyPageView.views).desc()
+    ).limit(8).all()
+
+    registered_visitors = SiteVisitor.query.count()
+    total_page_views = db.session.query(
+        func.coalesce(func.sum(SiteVisitor.total_page_views), 0)
+    ).scalar()
+    registered_total = User.query.count()
+    new_registrations = User.query.filter(
+        User.created_at >= week_start_datetime
+    ).count()
+    active_subscribers = db.session.query(
+        func.count(func.distinct(FeatureSubscription.user_id))
+    ).filter(
+        FeatureSubscription.expires_at > now
+    ).scalar()
+    active_academic_subscribers = db.session.query(
+        func.count(func.distinct(FeatureSubscription.user_id))
+    ).filter(
+        FeatureSubscription.feature == "academic",
+        FeatureSubscription.expires_at > now
+    ).scalar()
+
+    completed_orders = PaymentOrder.query.filter_by(status="completed")
+    gross_revenue_paise = db.session.query(
+        func.coalesce(func.sum(PaymentOrder.amount_paise), 0)
+    ).filter(
+        PaymentOrder.status == "completed"
+    ).scalar()
+    subscription_revenue_paise = db.session.query(
+        func.coalesce(func.sum(PaymentOrder.amount_paise), 0)
+    ).filter(
+        PaymentOrder.status == "completed",
+        PaymentOrder.purchase_type == "subscription"
+    ).scalar()
+    resource_revenue_paise = db.session.query(
+        func.coalesce(func.sum(ResourcePurchase.amount_paise), 0)
+    ).scalar()
+    direct_creator_liability_paise = db.session.query(
+        func.coalesce(func.sum(ResourcePurchase.creator_earnings_paise), 0)
+    ).scalar()
+    subscription_creator_paid_paise = db.session.query(
+        func.coalesce(func.sum(SubscriptionCreatorEarning.amount_paise), 0)
+    ).scalar()
+    subscription_creator_reserved_paise = db.session.query(
+        func.coalesce(func.sum(SubscriptionTerm.creator_pool_paise), 0)
+    ).filter(
+        SubscriptionTerm.settled.is_(False)
+    ).scalar()
+    creator_liability_paise = (
+        direct_creator_liability_paise
+        + subscription_creator_paid_paise
+        + subscription_creator_reserved_paise
+    )
+    platform_revenue_paise = max(
+        0,
+        gross_revenue_paise - creator_liability_paise
+    )
+    paying_students = db.session.query(
+        func.count(func.distinct(PaymentOrder.user_id))
+    ).filter(
+        PaymentOrder.status == "completed"
+    ).scalar()
+    payment_count = completed_orders.count()
+    paid_conversions = (
+        round(paying_students * 100 / registered_visitors, 1)
+        if registered_visitors else 0
+    )
+    today_visitors = SiteDailyVisitor.query.filter_by(
+        visit_date=today
+    ).count()
+    today_page_views = db.session.query(
+        func.coalesce(func.sum(SiteDailyVisitor.page_views), 0)
+    ).filter_by(
+        visit_date=today
+    ).scalar()
+    approved_resources = Note.query.filter_by(
+        approval_status="approved"
+    ).count()
+    pending_resources = Note.query.filter_by(
+        approval_status="pending"
+    ).count()
+    pending_resource_records = Note.query.filter_by(
+        approval_status="pending"
+    ).order_by(Note.created_at.asc()).limit(10).all()
+    pending_resource_uploaders = {
+        note.id: db.session.get(User, note.uploaded_by)
+        for note in pending_resource_records
+    }
+
+    return render_template(
+        "business.html",
+        today=today,
+        owner=owner,
+        registered_visitors=registered_visitors,
+        total_page_views=total_page_views,
+        registered_total=registered_total,
+        new_registrations=new_registrations,
+        active_subscribers=active_subscribers,
+        active_academic_subscribers=active_academic_subscribers,
+        gross_revenue_paise=gross_revenue_paise,
+        subscription_revenue_paise=subscription_revenue_paise,
+        resource_revenue_paise=resource_revenue_paise,
+        platform_revenue_paise=platform_revenue_paise,
+        creator_liability_paise=creator_liability_paise,
+        subscription_creator_reserved_paise=subscription_creator_reserved_paise,
+        payment_count=payment_count,
+        paying_students=paying_students,
+        paid_conversions=paid_conversions,
+        today_visitors=today_visitors,
+        today_page_views=today_page_views,
+        approved_resources=approved_resources,
+        pending_resources=pending_resources,
+        pending_resource_records=pending_resource_records,
+        pending_resource_uploaders=pending_resource_uploaders,
+        traffic_days=traffic_days,
+        top_pages=top_pages,
+        payments_enabled=app.config["PAYMENTS_ENABLED"],
+        analytics_persistent=app.config[
+            "SQLALCHEMY_DATABASE_URI"
+        ].startswith(("postgresql://", "postgresql+"))
+    )
+
+
 @app.route("/payments/order", methods=["POST"])
 def create_payment_order():
 
@@ -3163,12 +3683,14 @@ def create_payment_order():
         if not isinstance(selected_features, list):
             return {"error": "Choose at least one feature."}, 400
 
-        features = sorted(set(selected_features))
-        if not features or any(
+        if any(
             not isinstance(feature, str)
             or feature not in FEATURE_PRICES_PAISE
-            for feature in features
+            for feature in selected_features
         ):
+            return {"error": "Invalid feature selection."}, 400
+        features = sorted(set(selected_features))
+        if not features:
             return {"error": "Invalid feature selection."}, 400
 
         amount_paise = (
@@ -3265,7 +3787,7 @@ def verify_payment():
     ):
         return {"error": "Incomplete payment confirmation."}, 400
 
-    order = PaymentOrder.query.filter_by(
+    order = PaymentOrder.query.with_for_update().filter_by(
         provider_order_id=provider_order_id,
         user_id=session["user_id"]
     ).first()
@@ -3313,26 +3835,54 @@ def verify_payment():
 
     if order.purchase_type == "subscription":
         features = json.loads(order.reference_id)
-        existing_features = set()
-        if (
-            user.subscription_until
-            and user.subscription_until > datetime.utcnow()
-        ):
-            existing_features = set(
-                item for item in user.subscription_features.split(",") if item
+        now = datetime.utcnow()
+        for feature in features:
+            entitlement = FeatureSubscription.query.filter_by(
+                user_id=user.id,
+                feature=feature
+            ).first()
+            starts_at = (
+                entitlement.expires_at
+                if entitlement and entitlement.expires_at > now
+                else now
             )
-        if len(features) == len(FEATURE_PRICES_PAISE):
-            existing_features = {"all"}
-        elif "all" not in existing_features:
-            existing_features.update(features)
-        user.subscription_features = ",".join(sorted(existing_features))
-        current_expiry = user.subscription_until
-        start = (
-            current_expiry
-            if current_expiry and current_expiry > datetime.utcnow()
-            else datetime.utcnow()
+            ends_at = starts_at + timedelta(days=30)
+            if entitlement:
+                entitlement.expires_at = ends_at
+            else:
+                entitlement = FeatureSubscription(
+                    user_id=user.id,
+                    feature=feature,
+                    expires_at=ends_at
+                )
+                db.session.add(entitlement)
+
+            creator_pool = (
+                FEATURE_PRICES_PAISE["academic"] * CREATOR_SHARE_PERCENT // 100
+                if feature == "academic"
+                else 0
+            )
+            db.session.add(SubscriptionTerm(
+                payment_order_id=order.id,
+                user_id=user.id,
+                feature=feature,
+                starts_at=starts_at,
+                ends_at=ends_at,
+                creator_pool_paise=creator_pool
+            ))
+
+        db.session.flush()
+        active_entitlements = FeatureSubscription.query.filter(
+            FeatureSubscription.user_id == user.id,
+            FeatureSubscription.expires_at > now
+        ).all()
+        user.subscription_features = ",".join(
+            sorted(entitlement.feature for entitlement in active_entitlements)
         )
-        user.subscription_until = start + timedelta(days=30)
+        user.subscription_until = max(
+            (entitlement.expires_at for entitlement in active_entitlements),
+            default=None
+        )
         user.green_points += max(1, order.amount_paise // 1000)
 
     elif order.purchase_type == "resource":

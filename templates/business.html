@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Owner Business Console — Campus360{% endblock %}
+
+{% block content %}
+<main class="dashboard-main business-console">
+    <header class="dashboard-header business-console-header">
+        <div>
+            <div class="dashboard-date"><i data-lucide="chart-no-axes-combined"></i> PRIVATE OWNER CONSOLE</div>
+            <h1>Campus360 business overview</h1>
+            <p>Registrations, campus usage, verified payments and creator obligations — in one place.</p>
+        </div>
+        <div class="business-console-date">Updated {{ today.strftime("%d %b %Y") }} · UTC</div>
+    </header>
+
+    {% if not payments_enabled %}
+    <section class="business-console-notice">
+        <i data-lucide="shield-alert"></i>
+        <div>
+            <strong>Revenue is currently a preview</strong>
+            <p>Checkout is not configured, so no payment revenue is being collected. Marketplace handovers and settlements are offline. Only verified, completed payment records are included below.</p>
+        </div>
+    </section>
+    {% endif %}
+    {% if not analytics_persistent %}
+    <section class="business-console-notice">
+        <i data-lucide="database"></i>
+        <div>
+            <strong>Usage history needs persistent storage</strong>
+            <p>This deployment is using SQLite. On hosts with ephemeral app disks, registrations and analytics can disappear after a restart or redeploy. Configure persistent PostgreSQL before relying on historical counts or enabling payments.</p>
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="business-metric-grid" aria-label="Business key performance indicators">
+        <article class="business-metric-card">
+            <span class="business-metric-icon violet"><i data-lucide="users"></i></span>
+            <div><small>REGISTERED STUDENTS</small><strong>{{ registered_total }}</strong><span>+{{ new_registrations }} in the last 7 days</span></div>
+        </article>
+        <article class="business-metric-card">
+            <span class="business-metric-icon blue"><i data-lucide="eye"></i></span>
+            <div><small>CONSENTED TRACKED BROWSERS</small><strong>{{ registered_visitors }}</strong><span>{{ total_page_views }} all-time page views · opt-outs are excluded</span></div>
+        </article>
+        <article class="business-metric-card">
+            <span class="business-metric-icon green"><i data-lucide="indian-rupee"></i></span>
+            <div><small>VERIFIED PAYMENT GROSS</small><strong>₹{{ "%.2f"|format(gross_revenue_paise / 100) }}</strong><span>{{ payment_count }} completed payment{{ "" if payment_count == 1 else "s" }}</span></div>
+        </article>
+        <article class="business-metric-card">
+            <span class="business-metric-icon amber"><i data-lucide="wallet"></i></span>
+            <div><small>PLATFORM REVENUE ESTIMATE</small><strong>₹{{ "%.2f"|format(platform_revenue_paise / 100) }}</strong><span>After creator shares; before operating costs</span></div>
+        </article>
+    </section>
+
+    <section class="business-metric-grid business-metric-grid-secondary">
+        <article class="business-metric-card">
+            <span class="business-metric-icon blue"><i data-lucide="calendar-days"></i></span>
+            <div><small>VISITORS TODAY</small><strong>{{ today_visitors }}</strong><span>Consented anonymous browsers</span></div>
+        </article>
+        <article class="business-metric-card">
+            <span class="business-metric-icon violet"><i data-lucide="mouse-pointer-click"></i></span>
+            <div><small>PAGE VIEWS TODAY</small><strong>{{ today_page_views }}</strong><span>Successful page loads</span></div>
+        </article>
+        <article class="business-metric-card">
+            <span class="business-metric-icon green"><i data-lucide="badge-check"></i></span>
+            <div><small>ACTIVE SUBSCRIBERS</small><strong>{{ active_subscribers }}</strong><span>{{ active_academic_subscribers }} on Academic Hub</span></div>
+        </article>
+        <article class="business-metric-card">
+            <span class="business-metric-icon amber"><i data-lucide="percent"></i></span>
+            <div><small>VISITOR-TO-PAYER RATE</small><strong>{{ paid_conversions }}%</strong><span>{{ paying_students }} paying students · all-time</span></div>
+        </article>
+    </section>
+
+    <section class="business-console-grid">
+        <article class="dashboard-panel business-panel">
+            <div class="panel-header">
+                <div><div class="panel-label">ACQUISITION &amp; ENGAGEMENT</div><h2>Daily visitors and page views</h2></div>
+                <span class="business-panel-period">Last 7 days</span>
+            </div>
+            {% set traffic = namespace(max_views=1) %}
+            {% for day in traffic_days %}
+                {% if day.page_views > traffic.max_views %}{% set traffic.max_views = day.page_views %}{% endif %}
+            {% endfor %}
+            <div class="business-traffic-chart">
+                {% for day in traffic_days %}
+                <div class="business-traffic-day" title="{{ day.date }}: {{ day.visitors }} visitors, {{ day.page_views }} page views">
+                    <strong>{{ day.page_views }}</strong>
+                    <span class="business-traffic-bar" style="--traffic-height: {{ (day.page_views * 100 / traffic.max_views)|round|int }}%"></span>
+                    <small>{{ day.label }}</small>
+                    <span class="business-traffic-visitors">{{ day.visitors }} visitors</span>
+                </div>
+                {% endfor %}
+            </div>
+        </article>
+
+        <article class="dashboard-panel business-panel">
+            <div class="panel-header">
+                <div><div class="panel-label">CASH FLOW SNAPSHOT</div><h2>Money in and obligations</h2></div>
+            </div>
+            <dl class="business-finance-list">
+                <div><dt>Completed subscription payments</dt><dd>₹{{ "%.2f"|format(subscription_revenue_paise / 100) }}</dd></div>
+                <div><dt>Paid resource sales</dt><dd>₹{{ "%.2f"|format(resource_revenue_paise / 100) }}</dd></div>
+                <div><dt>Creator earnings + reserved pools</dt><dd>₹{{ "%.2f"|format(creator_liability_paise / 100) }}</dd></div>
+                <div class="business-finance-total"><dt>Estimated platform revenue</dt><dd>₹{{ "%.2f"|format(platform_revenue_paise / 100) }}</dd></div>
+            </dl>
+            <p class="business-finance-disclaimer">Revenue estimate is verified gross less creator earnings and reserved subscription pools. It is not net profit and excludes Razorpay charges, taxes, refunds, and operating expenses. Marketplace sales are excluded because payment settlement is offline.</p>
+        </article>
+    </section>
+
+    <section class="business-console-grid">
+        <article class="dashboard-panel business-panel">
+            <div class="panel-header">
+                <div><div class="panel-label">CONTENT SUPPLY</div><h2>Academic resources</h2></div>
+                {% if owner.is_admin %}
+                <a href="{{ url_for('club_admin') }}" class="business-panel-link">Review queue <i data-lucide="arrow-up-right"></i></a>
+                {% endif %}
+            </div>
+            <div class="business-resource-counts">
+                <div><strong>{{ approved_resources }}</strong><span>Approved and published</span></div>
+                <div><strong>{{ pending_resources }}</strong><span>Awaiting review</span></div>
+            </div>
+            {% if pending_resource_records %}
+            <div class="business-review-list">
+                {% for resource in pending_resource_records %}
+                <div class="business-review-item">
+                    <div>
+                        <strong>{{ resource.title }}</strong>
+                        <span>{{ resource.subject or "No subject" }} ·
+                            {% if pending_resource_uploaders[resource.id] %}
+                                {{ pending_resource_uploaders[resource.id].name }}
+                            {% else %}
+                                former student
+                            {% endif %}
+                        </span>
+                    </div>
+                    <form method="POST" action="{{ url_for('business_approve_resource', note_id=resource.id) }}">
+                        <button type="submit" onclick="return confirm('Approve and publish this resource?');">Approve</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <p class="business-finance-disclaimer">Creator shares are based on completed resource purchases and unique downloads by active Academic Hub subscribers. Earnings unlock after five approved uploads.</p>
+        </article>
+
+        <article class="dashboard-panel business-panel">
+            <div class="panel-header">
+                <div><div class="panel-label">PRODUCT USAGE</div><h2>Most viewed pages</h2></div>
+                <span class="business-panel-period">Last 7 days</span>
+            </div>
+            {% if top_pages %}
+            <ol class="business-top-pages">
+                {% for page, views in top_pages %}
+                <li><span>{{ page.replace("_", " ")|title }}</span><strong>{{ views }}</strong></li>
+                {% endfor %}
+            </ol>
+            {% else %}
+            <p class="business-empty">Page-view data will appear as visitors use the site.</p>
+            {% endif %}
+        </article>
+    </section>
+
+    <p class="business-privacy-note"><i data-lucide="lock-keyhole"></i> Private owner data. Visitors can accept or decline analytics. For consenting visitors, Campus360 stores hashed first-party identifiers and aggregate daily totals, not IP addresses or individual page histories.</p>
+</main>
+{% endblock %}

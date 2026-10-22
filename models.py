@@ -72,6 +72,11 @@ class User(db.Model):
     default=False,
     nullable=False
 )
+    is_owner = db.Column(
+        db.Boolean,
+        default=False,
+        nullable=False
+    )
 
     created_at = db.Column(
         db.DateTime,
@@ -172,6 +177,108 @@ class PaymentOrder(db.Model):
     amount_paise = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String(20), nullable=False, default="created")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class FeatureSubscription(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    feature = db.Column(db.String(30), nullable=False)
+    expires_at = db.Column(db.DateTime, nullable=False)
+
+    __table_args__ = (
+        db.UniqueConstraint("user_id", "feature", name="uq_feature_subscription_user_feature"),
+    )
+
+
+class SubscriptionTerm(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    payment_order_id = db.Column(
+        db.Integer,
+        db.ForeignKey("payment_order.id"),
+        nullable=False
+    )
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    feature = db.Column(db.String(30), nullable=False)
+    starts_at = db.Column(db.DateTime, nullable=False)
+    ends_at = db.Column(db.DateTime, nullable=False)
+    creator_pool_paise = db.Column(db.Integer, nullable=False, default=0)
+    settled = db.Column(db.Boolean, nullable=False, default=False)
+
+    __table_args__ = (
+        db.UniqueConstraint("payment_order_id", "feature", name="uq_subscription_term_order_feature"),
+    )
+
+
+class SubscriptionResourceAccess(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    term_id = db.Column(
+        db.Integer,
+        db.ForeignKey("subscription_term.id"),
+        nullable=False
+    )
+    buyer_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    note_id = db.Column(db.Integer, db.ForeignKey("note.id"), nullable=False)
+    creator_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    accessed_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    __table_args__ = (
+        db.UniqueConstraint("term_id", "buyer_id", "note_id", name="uq_subscription_resource_access"),
+    )
+
+
+class SubscriptionCreatorEarning(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    term_id = db.Column(
+        db.Integer,
+        db.ForeignKey("subscription_term.id"),
+        nullable=False
+    )
+    creator_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    amount_paise = db.Column(db.Integer, nullable=False)
+
+    __table_args__ = (
+        db.UniqueConstraint("term_id", "creator_id", name="uq_subscription_creator_earning"),
+    )
+
+
+class SiteVisitor(db.Model):
+
+    visitor_hash = db.Column(db.String(64), primary_key=True)
+    first_seen_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    last_seen_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    total_page_views = db.Column(db.Integer, nullable=False, default=0)
+
+
+class SiteDailyVisitor(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    visit_date = db.Column(db.Date, nullable=False)
+    visitor_hash = db.Column(
+        db.String(64),
+        db.ForeignKey("site_visitor.visitor_hash"),
+        nullable=False
+    )
+    page_views = db.Column(db.Integer, nullable=False, default=0)
+
+    __table_args__ = (
+        db.UniqueConstraint("visit_date", "visitor_hash", name="uq_site_daily_visitor"),
+    )
+
+
+class SiteDailyPageView(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    view_date = db.Column(db.Date, nullable=False)
+    page = db.Column(db.String(100), nullable=False)
+    views = db.Column(db.Integer, nullable=False, default=0)
+
+    __table_args__ = (
+        db.UniqueConstraint("view_date", "page", name="uq_site_daily_page_view"),
+    )
 
 
 # =========================================================

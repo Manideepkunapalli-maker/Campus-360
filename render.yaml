@@ -8,3 +8,7 @@ services:
     envVars:
       - key: CAMPUS360_SECRET_KEY
         generateValue: true
+      - key: CAMPUS360_OWNER_EMAIL
+        sync: false
+      - key: CAMPUS360_OWNER_SETUP_TOKEN
+        generateValue: true
