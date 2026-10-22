@@ -221,6 +221,14 @@ Create Account — Campus360
 
         </div>
 
+        <div class="form-group">
+            <label class="form-label" for="student-level">Student level</label>
+            <select id="student-level" name="student_level" class="input" required>
+                <option value="">Select your level</option>
+                <option value="Junior">Junior · 1st or 2nd year</option>
+                <option value="Senior">Senior · 3rd or 4th year</option>
+            </select>
+        </div>
 
         <!-- PASSWORD -->
 
@@ -330,6 +338,7 @@ Create Account — Campus360
 
     </div>
 
+    <a href="{{ url_for('pricing') }}" class="login-pricing-link">View plans and creator earnings</a>
 
     <!-- BACK -->
 

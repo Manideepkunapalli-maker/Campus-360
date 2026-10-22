@@ -231,6 +231,14 @@
 
             </a>
 
+            <a
+                href="/pricing"
+                class="sidebar-link"
+            >
+                <i data-lucide="badge-indian-rupee"></i>
+                <span>Plans &amp; Earnings</span>
+            </a>
+
 
             <div class="sidebar-divider"></div>
 
@@ -363,6 +371,56 @@
         src="{{ url_for('static', filename='css/js/app.js') }}"
     ></script>
 
+    {% if payments_enabled %}
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    {% endif %}
+
+    <script>
+        async function startCampusPayment(purchase, onSuccess) {
+            try {
+                const orderResponse = await fetch("{{ url_for('create_payment_order') }}", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(purchase)
+                });
+                const order = await orderResponse.json();
+                if (!orderResponse.ok) {
+                    throw new Error(order.error || "Unable to start checkout.");
+                }
+
+                const checkout = new Razorpay({
+                    key: order.key,
+                    amount: order.amount,
+                    currency: order.currency,
+                    name: order.name,
+                    order_id: order.order_id,
+                    theme: {color: "#6366f1"},
+                    handler: async (paymentResponse) => {
+                        try {
+                            const verifyResponse = await fetch("{{ url_for('verify_payment') }}", {
+                                method: "POST",
+                                headers: {"Content-Type": "application/json"},
+                                body: JSON.stringify(paymentResponse)
+                            });
+                            const result = await verifyResponse.json();
+                            if (!verifyResponse.ok) {
+                                throw new Error(result.error || "Payment verification failed.");
+                            }
+                            onSuccess(result);
+                        } catch (error) {
+                            window.alert(error.message || "Payment verification failed. Contact support before retrying.");
+                        }
+                    }
+                });
+                checkout.on("payment.failed", (event) => {
+                    window.alert(event.error.description || "Payment failed. You have not been charged.");
+                });
+                checkout.open();
+            } catch (error) {
+                window.alert(error.message || "Checkout is temporarily unavailable.");
+            }
+        }
+    </script>
 
     <!-- Activate Lucide Icons -->
 

@@ -16063,3 +16063,800 @@ body:has(.login-card) .login-card {
 
     line-height: 1.5;
 }
+
+/* =========================================================
+   CAMPUS ECONOMY AND PRICING
+   ========================================================= */
+
+.pricing-page {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.pricing-header h1 {
+    max-width: 760px;
+    margin: 12px 0 8px;
+    font: 800 clamp(30px, 4vw, 46px)/1.12 "Plus Jakarta Sans", sans-serif;
+    letter-spacing: -1.4px;
+}
+
+.pricing-header p,
+.pricing-section-copy,
+.pricing-analytics-copy > p {
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.pricing-community-count {
+    min-width: 150px;
+    padding: 18px 22px;
+    border: 1px solid #dbeafe;
+    border-radius: 16px;
+    background: #eff6ff;
+    text-align: center;
+}
+
+.pricing-community-count strong,
+.pricing-community-count span {
+    display: block;
+}
+
+.pricing-community-count strong {
+    color: #4338ca;
+    font-size: 30px;
+}
+
+.pricing-community-count span {
+    color: #475569;
+    font-size: 13px;
+}
+
+.pricing-notice {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 17px 20px;
+    margin: 24px 0;
+    border: 1px solid #fcd34d;
+    border-radius: 14px;
+    background: #fffbeb;
+    color: #78350f;
+}
+
+.pricing-notice > svg {
+    width: 22px;
+    flex: 0 0 22px;
+}
+
+.pricing-notice strong {
+    font-size: 15px;
+}
+
+.pricing-notice p {
+    margin-top: 4px;
+    color: #854d0e;
+    font-size: 13px;
+}
+
+.pricing-notice-ready {
+    border-color: #a7f3d0;
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.pricing-notice-ready p {
+    color: #047857;
+}
+
+.pricing-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(280px, .85fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.pricing-plan-panel,
+.pricing-cart,
+.pricing-info-card,
+.pricing-analytics {
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: var(--shadow-small);
+}
+
+.pricing-plan-panel h2,
+.pricing-cart h2,
+.pricing-analytics h2 {
+    margin: 6px 0;
+    font: 750 24px/1.25 "Plus Jakarta Sans", sans-serif;
+    letter-spacing: -.5px;
+}
+
+.pricing-section-copy {
+    margin: 8px 0 20px;
+    font-size: 14px;
+}
+
+.pricing-feature-list {
+    display: grid;
+    gap: 9px;
+}
+
+.pricing-feature-option {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px;
+    border: 1px solid #e5e7eb;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: border-color .18s, background .18s, transform .18s;
+}
+
+.pricing-feature-option:has(input:checked) {
+    border-color: #818cf8;
+    background: #f5f3ff;
+}
+
+.pricing-feature-option:hover {
+    transform: translateY(-1px);
+    border-color: #a5b4fc;
+}
+
+.pricing-feature-option input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+}
+
+.pricing-feature-icon,
+.pricing-info-icon,
+.economy-icon {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.pricing-feature-copy {
+    display: grid;
+    flex: 1;
+    gap: 2px;
+}
+
+.pricing-feature-copy strong {
+    color: #111827;
+    font-size: 14px;
+}
+
+.pricing-feature-copy small,
+.pricing-feature-price small {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.pricing-feature-price {
+    color: #111827;
+    font-size: 17px;
+    font-weight: 800;
+    text-align: right;
+}
+
+.pricing-feature-price small {
+    display: block;
+    font-weight: 500;
+}
+
+.pricing-bundle-note {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 13px 15px;
+    margin-top: 17px;
+    border-radius: 12px;
+    background: #f0fdf4;
+    color: #166534;
+    font-size: 13px;
+}
+
+.pricing-bundle-note svg {
+    flex: 0 0 18px;
+}
+
+.pricing-cart {
+    position: sticky;
+    top: 22px;
+    border-color: #c7d2fe;
+    background: linear-gradient(160deg, #fff 55%, #f5f3ff);
+}
+
+.pricing-cart-items {
+    min-height: 48px;
+    padding: 12px 0;
+    color: #475569;
+    font-size: 13px;
+}
+
+.pricing-cart-total {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4px;
+    padding: 17px 0;
+    margin: 8px 0 14px;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.pricing-cart-total > span {
+    align-self: end;
+    color: #475569;
+    font-size: 14px;
+}
+
+.pricing-cart-total strong {
+    grid-row: span 2;
+    color: #312e81;
+    font-size: 32px;
+}
+
+.pricing-cart-total small {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.pricing-savings {
+    margin: 0 0 12px;
+    color: #047857;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.pricing-checkout {
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    border-radius: 11px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.pricing-checkout:disabled {
+    cursor: not-allowed;
+    opacity: .55;
+}
+
+.pricing-footnote,
+.pricing-small-note {
+    margin-top: 14px;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.pricing-earnings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 22px;
+}
+
+.pricing-info-card h2 {
+    margin: 10px 0;
+    font: 750 23px/1.25 "Plus Jakarta Sans", sans-serif;
+}
+
+.pricing-info-card > p {
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.creator-card .pricing-info-icon {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.marketplace-fee-card .pricing-info-icon {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.split-bar {
+    display: flex;
+    overflow: hidden;
+    height: 11px;
+    margin-top: 20px;
+    border-radius: 20px;
+}
+
+.split-bar span:first-child {
+    width: 70%;
+    background: #10b981;
+}
+
+.split-bar span:last-child {
+    width: 30%;
+    background: #6366f1;
+}
+
+.split-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    color: #475569;
+    font-size: 13px;
+}
+
+.split-labels strong {
+    color: #111827;
+}
+
+.fee-example {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    padding: 15px;
+    margin-top: 17px;
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #475569;
+    font-size: 13px;
+}
+
+.fee-example strong {
+    color: #111827;
+    text-align: right;
+}
+
+.fee-example strong:last-child {
+    color: #047857;
+}
+
+.pricing-analytics {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(250px, .7fr);
+    gap: 34px;
+    align-items: center;
+    margin-top: 22px;
+}
+
+.pricing-analytics-copy > p {
+    max-width: 600px;
+    margin: 8px 0 18px;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.pricing-legend {
+    display: grid;
+    gap: 11px;
+    padding: 0;
+    list-style: none;
+}
+
+.pricing-legend li,
+.pricing-legend li > span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 9px;
+}
+
+.pricing-legend li > span {
+    justify-content: flex-start;
+    color: #475569;
+    font-size: 13px;
+}
+
+.pricing-legend li i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--legend-color);
+}
+
+.pricing-legend li strong {
+    color: #111827;
+    font-size: 13px;
+}
+
+.pricing-legend li small {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.pricing-chart-wrap {
+    display: grid;
+    justify-items: center;
+    gap: 13px;
+    text-align: center;
+}
+
+.pricing-pie,
+.contribution-pie {
+    width: 190px;
+    height: 190px;
+    border: 8px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 7px 24px rgba(15, 23, 42, .13);
+}
+
+.pricing-level-stats {
+    display: flex;
+    gap: 25px;
+}
+
+.pricing-level-stats strong {
+    color: #111827;
+    font-size: 20px;
+}
+
+.pricing-level-stats span {
+    display: block;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.pricing-chart-wrap > small {
+    max-width: 290px;
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.pricing-points-banner {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    padding: 21px 24px;
+    margin: 22px 0 35px;
+    border: 1px solid #bbf7d0;
+    border-radius: 16px;
+    background: #f0fdf4;
+}
+
+.pricing-points-badge {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.pricing-points-banner strong {
+    color: #14532d;
+    font-size: 15px;
+}
+
+.pricing-points-banner p {
+    margin-top: 4px;
+    color: #166534;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.pricing-points-banner > a {
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 7px;
+    align-items: center;
+    margin-left: auto;
+    color: #166534;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.campus-economy-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 13px;
+    margin: 20px 0;
+}
+
+.campus-economy-summary > article,
+.economy-plan-card {
+    display: flex;
+    min-width: 0;
+    gap: 12px;
+    align-items: center;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: var(--shadow-small);
+}
+
+.economy-icon.points {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.economy-icon.earnings {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.economy-icon.student-level {
+    background: #f5f3ff;
+    color: #7c3aed;
+}
+
+.economy-icon.plan {
+    background: #fffbeb;
+    color: #b45309;
+}
+
+.campus-economy-summary article > div,
+.economy-plan-card > div {
+    display: grid;
+    min-width: 0;
+    gap: 3px;
+}
+
+.campus-economy-summary small,
+.economy-plan-card small {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .04em;
+}
+
+.campus-economy-summary article strong {
+    color: #111827;
+    font-size: 20px;
+}
+
+.campus-economy-summary article span:last-child,
+.economy-plan-card span:last-child {
+    color: #64748b;
+    font-size: 11px;
+}
+
+.economy-plan-card {
+    color: inherit;
+}
+
+.economy-plan-card > div {
+    flex: 1;
+}
+
+.economy-plan-card > div strong {
+    color: #312e81;
+    font-size: 14px;
+}
+
+.contribution-panel {
+    margin: 0 0 26px;
+}
+
+.contribution-chart-row {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.contribution-pie {
+    width: 150px;
+    height: 150px;
+    flex: 0 0 150px;
+}
+
+.contribution-legend {
+    display: grid;
+    flex: 1;
+    gap: 10px;
+}
+
+.contribution-legend > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    color: #475569;
+    font-size: 13px;
+}
+
+.contribution-legend strong {
+    color: #111827;
+}
+
+.contribution-legend small {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.contribution-link {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    color: #4f46e5;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.login-community-count,
+.login-pricing-link {
+    display: block;
+    margin-top: 14px;
+    color: #64748b;
+    font-size: 12px;
+    text-align: center;
+}
+
+.login-pricing-link {
+    color: #4f46e5;
+    font-weight: 700;
+}
+
+.form-help {
+    margin-top: 7px;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.creator-estimate,
+.market-fee-estimate {
+    display: grid;
+    gap: 8px;
+    padding: 13px;
+    margin-top: 12px;
+    border: 1px solid #d1fae5;
+    border-radius: 12px;
+    background: #f0fdf4;
+    color: #166534;
+    font-size: 13px;
+}
+
+.creator-estimate > span,
+.market-fee-estimate > span {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.creator-estimate small,
+.market-fee-estimate small {
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.market-fee-estimate {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.resource-price-badge {
+    display: inline-flex;
+    margin: 6px 0;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #f0fdf4;
+    color: #15803d;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.disabled-resource-buy {
+    cursor: not-allowed;
+    opacity: .55;
+}
+
+.profile-earnings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.profile-earnings-grid article {
+    display: grid;
+    gap: 7px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #fff;
+}
+
+.profile-earnings-grid article > svg {
+    color: #059669;
+}
+
+.profile-earnings-grid article span,
+.profile-earnings-grid article small {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.profile-earnings-grid article strong {
+    color: #111827;
+    font-size: 24px;
+}
+
+@media (max-width: 900px) {
+    .campus-economy-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pricing-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pricing-cart {
+        position: static;
+    }
+}
+
+@media (max-width: 640px) {
+    .pricing-page {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+
+    .pricing-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .pricing-header h1 {
+        font-size: 32px;
+    }
+
+    .pricing-community-count {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 14px;
+    }
+
+    .pricing-community-count strong {
+        font-size: 20px;
+    }
+
+    .pricing-plan-panel,
+    .pricing-cart,
+    .pricing-info-card,
+    .pricing-analytics {
+        padding: 20px;
+    }
+
+    .pricing-earnings-grid,
+    .pricing-analytics {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pricing-points-banner {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding: 17px;
+    }
+
+    .pricing-points-banner > a {
+        width: 100%;
+        margin: 0 0 0 64px;
+    }
+
+    .contribution-chart-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .contribution-pie {
+        align-self: center;
+    }
+}

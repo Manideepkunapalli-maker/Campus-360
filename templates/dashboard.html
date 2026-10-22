@@ -131,7 +131,40 @@ Dashboard — Campus360
 
         </section>
 
+        <section class="campus-economy-summary">
+            <article>
+                <span class="economy-icon points"><i data-lucide="leaf"></i></span>
+                <div><small>GREEN POINTS</small><strong>{{ user.green_points }}</strong><span>Contribution recognition · no cash value</span></div>
+            </article>
+            <article>
+                <span class="economy-icon earnings"><i data-lucide="wallet"></i></span>
+                <div><small>CREATOR EARNINGS</small><strong>₹{{ "%.2f"|format(user.pending_earnings_paise / 100) }}</strong><span>Pending payout · ₹{{ "%.2f"|format(user.locked_earnings_paise / 100) }} locked until five approved uploads</span></div>
+            </article>
+            <article>
+                <span class="economy-icon student-level"><i data-lucide="graduation-cap"></i></span>
+                <div><small>STUDENT COMMUNITY</small><strong>{{ user.student_level }}</strong><span>{{ user.branch }} · Batch {{ user.batch }}</span></div>
+            </article>
+            <a href="{{ url_for('pricing') }}" class="economy-plan-card">
+                <span class="economy-icon plan"><i data-lucide="badge-indian-rupee"></i></span>
+                <div><small>PLANS &amp; EARNINGS</small><strong>View transparent pricing</strong><span>See the 70/30 creator split</span></div>
+                <i data-lucide="arrow-up-right"></i>
+            </a>
+        </section>
 
+        <section class="dashboard-panel contribution-panel">
+            <div class="panel-header">
+                <div><div class="panel-label">CAMPUS CONTRIBUTIONS</div><h2>Live platform activity</h2></div>
+                <a href="{{ url_for('pricing') }}" class="contribution-link">View full snapshot <i data-lucide="arrow-right"></i></a>
+            </div>
+            <div class="contribution-chart-row">
+                <div class="contribution-pie" style="background: {{ contribution_gradient }};" role="img" aria-label="Live contribution category chart"></div>
+                <div class="contribution-legend">
+                    {% for item in contribution_mix %}
+                    <div><span>{{ item.label }}</span><strong>{{ item.count }} <small>{{ item.percent }}%</small></strong></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
 
         <!-- =================================================
              FEATURE GRID

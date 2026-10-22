@@ -59,19 +59,17 @@ Course Insights — Campus360
 
                 <div class="header-profile">
 
-                    <div class="header-avatar">
-                        D
-                    </div>
+                    <div class="header-avatar">{{ session.get("user_name", "S")[0]|upper }}</div>
 
 
                     <div class="header-profile-info">
 
                         <strong>
-                            Deepu
+                            {{ session.get("user_name", "Student") }}
                         </strong>
 
                         <span>
-                            AI & ML
+                            {{ session.get("user_branch", "Student") }}
                         </span>
 
                     </div>

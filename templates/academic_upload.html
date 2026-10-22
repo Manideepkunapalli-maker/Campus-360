@@ -144,6 +144,31 @@ Share Resource — Campus360
 
                 </div>
 
+                <div class="form-group">
+                    <label class="form-label" for="resource-price">Resource price (₹)</label>
+                    <input
+                        id="resource-price"
+                        type="number"
+                        name="price"
+                        class="input"
+                        min="0"
+                        max="500"
+                        step="1"
+                        value="0"
+                        required
+                    >
+                    <p class="form-help">
+                        Free sharing is encouraged. Paid sales use a transparent 70% creator / 30% Campus360 split.
+                        Creator earnings unlock after five resources are approved by a Campus360 moderator.
+                        The estimate assumes one purchase of each of five resources.
+                    </p>
+                    <div class="creator-estimate" aria-live="polite">
+                        <span>Creator share per purchase <strong id="creator-per-sale">₹0.00</strong></span>
+                        <span>Creator share for five resources* <strong id="creator-five-share">₹0.00</strong></span>
+                        <span>Campus360 share for five resources* <strong id="platform-five-share">₹0.00</strong></span>
+                        <small>*Illustrative only; earnings depend on actual purchases and five moderator-approved uploads.</small>
+                    </div>
+                </div>
 
                 <!-- FILE -->
 
@@ -194,5 +219,18 @@ Share Resource — Campus360
     </main>
 
 </div>
+
+<script>
+    const resourcePriceInput = document.getElementById("resource-price");
+    const rupees = (paise) => "₹" + (paise / 100).toFixed(2);
+    resourcePriceInput.addEventListener("input", () => {
+        const pricePaise = Math.max(0, Math.min(50000, Number(resourcePriceInput.value || 0) * 100));
+        const creatorPerSale = Math.floor(pricePaise * 0.70);
+        document.getElementById("creator-per-sale").textContent = rupees(creatorPerSale);
+        document.getElementById("creator-five-share").textContent = rupees(creatorPerSale * 5);
+        document.getElementById("platform-five-share").textContent = rupees((pricePaise - creatorPerSale) * 5);
+    });
+    resourcePriceInput.dispatchEvent(new Event("input"));
+</script>
 
 {% endblock %}

@@ -133,12 +133,18 @@ Sell Item — Campus360
                     <input
                         type="number"
                         name="price"
+                        id="marketplace-price"
                         class="input"
                         placeholder="₹"
                         min="0"
-                        step="1"
+                        step="0.01"
                         required
                     >
+                    <div class="market-fee-estimate" aria-live="polite">
+                        <span>Campus360 fee ({{ marketplace_fee_percent }}%) <strong id="market-fee">₹0.00</strong></span>
+                        <span>Your estimated proceeds <strong id="seller-proceeds">₹0.00</strong></span>
+                        <small>Creating a listing is free. The fee is an estimate for a completed sale; payments and seller settlement are not enabled yet.</small>
+                    </div>
 
                 </div>
 
@@ -210,5 +216,16 @@ Sell Item — Campus360
     </main>
 
 </div>
+
+<script>
+    const listingPrice = document.getElementById("marketplace-price");
+    listingPrice.addEventListener("input", () => {
+        const price = Math.max(0, Number(listingPrice.value || 0));
+        const fee = Math.round(price * {{ marketplace_fee_percent }} / 100 * 100) / 100;
+        document.getElementById("market-fee").textContent = "₹" + fee.toFixed(2);
+        document.getElementById("seller-proceeds").textContent = "₹" + (price - fee).toFixed(2);
+    });
+    listingPrice.dispatchEvent(new Event("input"));
+</script>
 
 {% endblock %}

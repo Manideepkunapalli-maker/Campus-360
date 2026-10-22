@@ -99,14 +99,12 @@ Marketplace — Campus360
 
             <div class="sidebar-user">
 
-                <div class="user-avatar">
-                    D
-                </div>
+                <div class="user-avatar">{{ session.get("user_name", "S")[0]|upper }}</div>
 
                 <div class="user-info">
 
                     <strong>
-                        Deepu
+                        {{ session.get("user_name", "Student") }}
                     </strong>
 
                     <span>
@@ -170,18 +168,16 @@ Marketplace — Campus360
 
                 <div class="header-profile">
 
-                    <div class="header-avatar">
-                        D
-                    </div>
+                    <div class="header-avatar">{{ session.get("user_name", "S")[0]|upper }}</div>
 
                     <div class="header-profile-info">
 
                         <strong>
-                            Deepu
+                            {{ session.get("user_name", "Student") }}
                         </strong>
 
                         <span>
-                            AI & ML
+                            {{ session.get("user_branch", "Student") }}
                         </span>
 
                     </div>
@@ -436,6 +432,10 @@ Marketplace — Campus360
                             </span>
 
                         </div>
+                        <div class="market-listing-fee">
+                            Listing is free · {{ marketplace_fee_percent }}% fee only on a completed sale
+                            <span>Estimated seller proceeds: ₹{{ "%.2f"|format((item.price or 0) * (100 - marketplace_fee_percent) / 100) }}</span>
+                        </div>
 
                     </div>
 
@@ -498,7 +498,7 @@ Marketplace — Campus360
 
                 <p>
                     Always meet in a safe campus location
-                    and verify the item before payment.
+                    and verify the item before payment. Current payments and fee settlement are handled offline.
                 </p>
 
             </div>

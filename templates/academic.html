@@ -163,15 +163,13 @@ Academic Hub — Campus360
 
             <div class="sidebar-user">
 
-                <div class="user-avatar">
-                    D
-                </div>
+                <div class="user-avatar">{{ session.get("user_name", "S")[0]|upper }}</div>
 
 
                 <div class="user-info">
 
                     <strong>
-                        Deepu
+                        {{ session.get("user_name", "Student") }}
                     </strong>
 
                     <span>
@@ -240,19 +238,17 @@ Academic Hub — Campus360
 
                 <div class="header-profile">
 
-                    <div class="header-avatar">
-                        D
-                    </div>
+                    <div class="header-avatar">{{ session.get("user_name", "S")[0]|upper }}</div>
 
 
                     <div class="header-profile-info">
 
                         <strong>
-                            Deepu
+                            {{ session.get("user_name", "Student") }}
                         </strong>
 
                         <span>
-                            AI & ML
+                            {{ session.get("user_branch", "Student") }}
                         </span>
 
                     </div>
@@ -559,6 +555,16 @@ Academic Hub — Campus360
                                 {{ note.title }}
                             </h3>
 
+                            <span class="resource-price-badge">
+                                {% if note.price_paise > 0 %}
+                                    ₹{{ "%.2f"|format(note.price_paise / 100) }} · paid resource
+                                {% else %}
+                                    Free resource
+                                {% endif %}
+                            </span>
+                            {% if note.approval_status == "pending" and note.uploaded_by == current_user_id %}
+                                <span class="resource-price-badge">Awaiting moderator approval</span>
+                            {% endif %}
 
                             <p>
                                 {{ note.subject }}
@@ -593,15 +599,28 @@ Academic Hub — Campus360
 
                         <!-- DOWNLOAD -->
 
-                        <a
-                            href="{{ url_for('download_academic', note_id=note.id) }}"
-                            class="academic-download"
-                            title="Download resource"
-                        >
-
-                            <i data-lucide="download"></i>
-
-                        </a>
+                        {% if note.price_paise == 0 or note.uploaded_by == current_user_id or note.id in purchased_note_ids %}
+                            <a
+                                href="{{ url_for('download_academic', note_id=note.id) }}"
+                                class="academic-download"
+                                title="Download resource"
+                            >
+                                <i data-lucide="download"></i>
+                            </a>
+                        {% elif payments_enabled %}
+                            <button
+                                class="academic-download paid-resource-buy"
+                                type="button"
+                                data-note-id="{{ note.id }}"
+                                title="Purchase this resource"
+                            >
+                                <i data-lucide="shopping-cart"></i>
+                            </button>
+                        {% else %}
+                            <span class="academic-download disabled-resource-buy" title="Secure checkout is not configured">
+                                <i data-lucide="lock-keyhole"></i>
+                            </span>
+                        {% endif %}
 
 
                     </div>
@@ -724,5 +743,18 @@ Academic Hub — Campus360
     </main>
 
 </div>
+
+{% if payments_enabled %}
+<script>
+    document.querySelectorAll(".paid-resource-buy").forEach((button) => {
+        button.addEventListener("click", () => {
+            startCampusPayment(
+                {type: "resource", note_id: Number(button.dataset.noteId)},
+                () => window.location.reload()
+            );
+        });
+    });
+</script>
+{% endif %}
 
 {% endblock %}

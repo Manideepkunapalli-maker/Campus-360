@@ -44,6 +44,45 @@ Club Admin — Campus360
 
     </div>
 
+    <section class="admin-card">
+        <div class="admin-card-header">
+            <div class="admin-icon"><i data-lucide="file-check-2"></i></div>
+            <div>
+                <h2>Academic resource review</h2>
+                <p>Approve resources before they appear to other students. Five approved uploads unlock a creator's locked earnings.</p>
+            </div>
+        </div>
+
+        {% if pending_resources %}
+        <div class="admin-application-list">
+            {% for resource in pending_resources %}
+            <article class="admin-application-card">
+                <div>
+                    <strong>{{ resource.title }}</strong>
+                    <p>{{ resource.subject or "No subject" }} · {{ resource.resource_type }} ·
+                        {% if resource.price_paise %}₹{{ "%.2f"|format(resource.price_paise / 100) }}{% else %}Free{% endif %}
+                    </p>
+                    <small>
+                        Uploaded by
+                        {% if resource_uploaders[resource.id] %}
+                            {{ resource_uploaders[resource.id].name }} ({{ resource_uploaders[resource.id].email }})
+                        {% else %}
+                            former student account
+                        {% endif %}
+                    </small>
+                </div>
+                <form method="POST" action="{{ url_for('approve_academic_resource', note_id=resource.id) }}">
+                    <button type="submit" class="admin-approve-btn" onclick="return confirm('Approve and publish this resource?');">
+                        <i data-lucide="check"></i> Approve
+                    </button>
+                </form>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="admin-empty"><i data-lucide="inbox"></i><p>No academic resources are waiting for review.</p></div>
+        {% endif %}
+    </section>
 
     <!-- =====================================================
          CREATE CLUB

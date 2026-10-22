@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}Plans &amp; Earnings — Campus360{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <main class="dashboard-main pricing-page">
+        <header class="dashboard-header pricing-header">
+            <div>
+                <div class="dashboard-date"><i data-lucide="badge-indian-rupee"></i> CLEAR PRICING. FAIR CREATOR SHARES.</div>
+                <h1>A campus economy that gives back.</h1>
+                <p>Free to join. See every price, platform share and creator estimate before choosing.</p>
+            </div>
+            <div class="pricing-community-count">
+                <strong>{{ student_count }}</strong>
+                <span>campus {{ "member" if student_count == 1 else "members" }}</span>
+            </div>
+        </header>
+
+        <section class="pricing-notice {% if payments_enabled %}pricing-notice-ready{% endif %}">
+            <i data-lucide="{% if payments_enabled %}shield-check{% else %}info{% endif %}"></i>
+            <div>
+                {% if payments_enabled %}
+                <strong>Secure checkout is enabled</strong>
+                <p>Payments are processed securely by Razorpay. Creator earnings are tracked as pending until payout.</p>
+                {% else %}
+                <strong>Pricing preview — no charges are being taken</strong>
+                <p>Secure checkout is disabled until Campus360 has PostgreSQL, persistent upload storage and verified Razorpay keys. Core campus features and Marketplace listings remain free; no payment is being simulated or collected.</p>
+                {% endif %}
+            </div>
+        </section>
+
+        <section class="pricing-layout">
+            <div class="pricing-plan-panel">
+                <div class="panel-label">MONTHLY FEATURE PLANS</div>
+                <h2>Choose what to support</h2>
+                <p class="pricing-section-copy">Choose the campus areas your monthly contribution supports. Core browsing and Marketplace listings stay free. Premium study resources, when offered, are individually priced and shown before checkout.</p>
+
+                <div class="pricing-feature-list" id="pricing-features">
+                    {% set feature_items = [
+                        ("academic", "Academic Hub", "Premium study resources", "book-open"),
+                        ("marketplace", "Marketplace", "Student-to-student listings", "shopping-bag"),
+                        ("roommates", "Smart Roommates", "Lifestyle-based matching", "house"),
+                        ("clubs", "Club Connect", "Events and opportunities", "users"),
+                        ("courses", "Course Insights", "Student-submitted course guides", "star"),
+                        ("skills", "Skill Services", "Peer learning support", "code-2")
+                    ] %}
+                    {% for key, label, description, icon in feature_items %}
+                    <label class="pricing-feature-option">
+                        <input type="checkbox" value="{{ key }}" data-price="{{ feature_prices[key] }}">
+                        <span class="pricing-feature-icon"><i data-lucide="{{ icon }}"></i></span>
+                        <span class="pricing-feature-copy"><strong>{{ label }}</strong><small>{{ description }}</small></span>
+                        <span class="pricing-feature-price">₹29<small>/ month</small></span>
+                    </label>
+                    {% endfor %}
+                </div>
+
+                <div class="pricing-bundle-note">
+                    <i data-lucide="sparkles"></i>
+                    <span>Choose all six and pay the bundle price: <strong>₹79/month</strong> instead of ₹174.</span>
+                </div>
+            </div>
+
+            <aside class="pricing-cart" aria-live="polite">
+                <div class="panel-label">YOUR PLAN CART</div>
+                <h2>Monthly estimate</h2>
+                <div class="pricing-cart-items" id="pricing-cart-items">Select a feature to get started.</div>
+                <div class="pricing-cart-total">
+                    <span>Estimated total</span>
+                    <strong id="pricing-total">₹0</strong>
+                    <small>per 30 days · INR</small>
+                </div>
+                <div class="pricing-savings" id="pricing-savings" hidden></div>
+                {% if session.get("user_id") and payments_enabled %}
+                <button class="btn btn-primary pricing-checkout" id="pricing-checkout" type="button" disabled>
+                    Continue to secure checkout <i data-lucide="arrow-right"></i>
+                </button>
+                {% elif not session.get("user_id") %}
+                <a class="btn btn-primary pricing-checkout" href="{{ url_for('login') }}">Sign in to continue <i data-lucide="arrow-right"></i></a>
+                {% else %}
+                <button class="btn btn-primary pricing-checkout" type="button" disabled title="Checkout is not configured">
+                    Checkout not available yet
+                </button>
+                {% endif %}
+                <p class="pricing-footnote">No hidden fees. This is a voluntary monthly plan preview. Prices are confirmed before payment.</p>
+            </aside>
+        </section>
+
+        <section class="pricing-earnings-grid">
+            <article class="pricing-info-card creator-card">
+                <div class="pricing-info-icon"><i data-lucide="file-up"></i></div>
+                <div class="panel-label">ACADEMIC RESOURCE SALES</div>
+                <h2>Creators keep 70%</h2>
+                <p>When a student buys a paid resource, 70% goes to its creator and 30% supports Campus360. Uploading is free; creators earn 10 green points per shared resource.</p>
+                <div class="split-bar"><span></span><span></span></div>
+                <div class="split-labels"><span>Creator <strong>70%</strong></span><span>Campus360 <strong>30%</strong></span></div>
+                <p class="pricing-small-note">Paid sales are available only after secure checkout is configured. Creator earnings unlock after five moderator-approved resources; actual payouts require a verified payout method.</p>
+            </article>
+
+            <article class="pricing-info-card marketplace-fee-card">
+                <div class="pricing-info-icon"><i data-lucide="shopping-bag"></i></div>
+                <div class="panel-label">CAMPUS MARKETPLACE</div>
+                <h2>Free to list. 5% platform fee.</h2>
+                <p>Students can browse and list items for free. On a completed sale, the estimate is 95% to the seller and 5% to Campus360.</p>
+                <div class="fee-example">
+                    <span>Example sale price</span><strong>₹1,000</strong>
+                    <span>Estimated platform fee</span><strong>₹50</strong>
+                    <span>Estimated seller proceeds</span><strong>₹950</strong>
+                </div>
+                <p class="pricing-small-note">Buying, payment collection and seller settlement are not active yet; arrange item handover directly and safely on campus.</p>
+            </article>
+        </section>
+
+        <section class="pricing-analytics">
+            <div class="pricing-analytics-copy">
+                <div class="panel-label">LIVE CAMPUS SNAPSHOT</div>
+                <h2>Where students are contributing</h2>
+                <p>Counts are live records from Campus360, not estimates. Percentages show each category's share of current contributions.</p>
+                <ul class="pricing-legend">
+                    {% for item in analytics %}
+                    <li><span><i style="--legend-color: {{ ['#6366f1','#10b981','#f59e0b','#ec4899','#0ea5e9'][loop.index0] }}"></i>{{ item.label }}</span><strong>{{ item.count }} <small>· {{ item.percent }}%</small></strong></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="pricing-chart-wrap">
+                <div class="pricing-pie" style="background: {{ analytics_gradient }};" role="img" aria-label="Pie chart showing current campus contributions"></div>
+                <div class="pricing-level-stats">
+                    <strong>{{ level_counts.Junior }} <span>Junior</span></strong>
+                    <strong>{{ level_counts.Senior }} <span>Senior</span></strong>
+                </div>
+                <small>Student-level totals are based on self-selected account profiles.</small>
+            </div>
+        </section>
+
+        <section class="pricing-points-banner">
+            <div class="pricing-points-badge"><i data-lucide="leaf"></i></div>
+            <div><strong>Green points recognize helpful contributions.</strong><p>Earn 10 points when you share an academic resource and points when you buy paid content. Green points are recognition only and have no cash value.</p></div>
+            <a href="{{ url_for('dashboard') if session.get('user_id') else url_for('signup') }}">Start contributing <i data-lucide="arrow-right"></i></a>
+        </section>
+    </main>
+</div>
+
+{% if payments_enabled and session.get("user_id") %}
+<script>
+    document.getElementById("pricing-checkout").addEventListener("click", () => {
+        const features = Array.from(document.querySelectorAll("#pricing-features input:checked"))
+            .map((input) => input.value);
+        if (!features.length) return;
+        startCampusPayment({type: "subscription", features}, () => {
+            window.location.assign("{{ url_for('profile') }}");
+        });
+    });
+</script>
+{% endif %}
+<script>
+    const featureOptions = Array.from(document.querySelectorAll("#pricing-features input"));
+    const currency = new Intl.NumberFormat("en-IN", {style: "currency", currency: "INR", maximumFractionDigits: 0});
+    function updatePlanCart() {
+        const selected = featureOptions.filter((input) => input.checked);
+        const subtotal = selected.reduce((sum, input) => sum + Number(input.dataset.price), 0);
+        const bundle = selected.length === featureOptions.length;
+        const total = bundle ? {{ bundle_price }} : Math.min(subtotal, {{ bundle_price }});
+        document.getElementById("pricing-total").textContent = currency.format(total / 100);
+        document.getElementById("pricing-cart-items").textContent = selected.length
+            ? selected.map((input) => input.parentElement.querySelector(".pricing-feature-copy strong").textContent).join(" · ")
+            : "Select a feature to get started.";
+        const savings = document.getElementById("pricing-savings");
+        if (subtotal > total) {
+            savings.hidden = false;
+            savings.textContent = "You save " + currency.format((subtotal - total) / 100) + " per month with the bundle price.";
+        } else {
+            savings.hidden = true;
+        }
+        const checkout = document.getElementById("pricing-checkout");
+        if (checkout) checkout.disabled = !selected.length;
+    }
+    featureOptions.forEach((input) => input.addEventListener("change", updatePlanCart));
+    updatePlanCart();
+</script>
+{% endblock %}

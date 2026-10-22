@@ -251,11 +251,35 @@ My Profile — Campus360
 
                 </div>
 
+                <div class="profile-info-card">
+                    <div class="profile-info-icon"><i data-lucide="graduation-cap"></i></div>
+                    <div><span>Student level</span><strong>{{ user.student_level }}</strong></div>
+                </div>
 
             </div>
 
         </section>
 
+        <section class="profile-section earnings-profile-section">
+            <div class="profile-section-header">
+                <div><div class="panel-label">CAMPUS CONTRIBUTIONS</div><h2>Your Campus360 impact</h2></div>
+            </div>
+            {% if user.subscription_until and user.subscription_until > now %}
+            <div class="active-support-plan">
+                <i data-lucide="badge-check"></i>
+                <span>Support plan active through {{ user.subscription_until.strftime("%d %b %Y") }} · {{ user.subscription_features.replace(",", " · ") }}</span>
+            </div>
+            {% else %}
+            <p class="pricing-small-note">No active monthly support plan. Core campus browsing stays free.</p>
+            {% endif %}
+            <div class="profile-earnings-grid">
+                <article><i data-lucide="leaf"></i><span>Green points</span><strong>{{ user.green_points }}</strong><small>Recognition points; no cash value</small></article>
+                <article><i data-lucide="wallet"></i><span>Creator earnings</span><strong>₹{{ "%.2f"|format(user.pending_earnings_paise / 100) }}</strong><small>Pending creator payout</small></article>
+                <article><i data-lucide="lock-keyhole"></i><span>Locked creator earnings</span><strong>₹{{ "%.2f"|format(user.locked_earnings_paise / 100) }}</strong><small>{{ approved_resource_count }}/5 approved resources required to unlock</small></article>
+            </div>
+            <p class="pricing-small-note">Verified resource-sale earnings unlock after five moderator-approved uploads. Unlocked earnings remain pending until Campus360 configures creator settlement.</p>
+            <a href="{{ url_for('pricing') }}" class="profile-action-btn">View pricing and earnings policy <i data-lucide="arrow-right"></i></a>
+        </section>
 
 
         <!-- =================================================

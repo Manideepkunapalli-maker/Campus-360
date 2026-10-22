@@ -42,6 +42,10 @@ Campus360 — Your Campus. One Platform.
                 Community
             </a>
 
+            <a href="{{ url_for('pricing') }}">
+                Pricing
+            </a>
+
             <a href="/login">
                 Login
             </a>
@@ -319,7 +323,7 @@ Campus360 — Your Campus. One Platform.
                                     <div>
 
                                         <strong>
-                                            Live
+                                            {{ resource_count }}
                                         </strong>
 
                                         <span>
@@ -345,11 +349,11 @@ Campus360 — Your Campus. One Platform.
                                     <div>
 
                                         <strong>
-                                            8
+                                            {{ roommate_count }}
                                         </strong>
 
                                         <span>
-                                            Matches
+                                            Roommate profiles
                                         </span>
 
                                     </div>
@@ -371,11 +375,11 @@ Campus360 — Your Campus. One Platform.
                                     <div>
 
                                         <strong>
-                                            5
+                                            {{ upcoming_event_count }}
                                         </strong>
 
                                         <span>
-                                            Updates
+                                            Events
                                         </span>
 
                                     </div>
