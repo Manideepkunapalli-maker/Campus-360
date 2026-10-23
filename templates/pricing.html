@@ -22,7 +22,7 @@
             <div>
                 {% if payments_enabled %}
                 <strong>Secure checkout is enabled</strong>
-                <p>Payments are processed securely by Razorpay. Creator earnings are tracked as pending until payout.</p>
+                <p>Payments are processed by Razorpay and activated only after server-side verification. Choose UPI in checkout to scan a Razorpay-generated QR when UPI QR is enabled on the merchant account. Creator earnings stay pending until payout.</p>
                 {% else %}
                 <strong>Pricing preview — no charges are being taken</strong>
                 <p>Secure checkout is disabled until Campus360 has PostgreSQL, persistent upload storage and verified Razorpay keys. Core campus features and Marketplace listings remain free; no payment is being simulated or collected.</p>

@@ -79,7 +79,7 @@ Login — Campus360
 
                 <label class="form-label">
 
-                    VIT Email
+                    Email
 
                 </label>
 
@@ -105,11 +105,14 @@ Login — Campus360
             </div>
 
             <div class="form-group">
-                <label class="form-label" for="student-level">Student level</label>
+                <label class="form-label" for="student-level">Account type / student level</label>
                 <select id="student-level" name="student_level" class="input" required>
-                    <option value="">Choose Junior or Senior</option>
+                    <option value="">Choose your account type</option>
                     <option value="Junior">Junior · 1st or 2nd year</option>
                     <option value="Senior">Senior · 3rd or 4th year</option>
+                    {% if developer_account_configured %}
+                    <option value="Developer">Developer / owner</option>
+                    {% endif %}
                 </select>
             </div>
 
@@ -211,7 +214,12 @@ Login — Campus360
 
 </div>
 
-        <a href="{{ url_for('pricing') }}" class="login-pricing-link">See transparent plans &amp; creator earnings</a>
+<div class="signup-link">
+    <span>Building Campus360?</span>
+    <a href="{{ url_for('developer_setup') }}">Set up the private developer account</a>
+</div>
+
+<a href="{{ url_for('pricing') }}" class="login-pricing-link">See transparent plans &amp; creator earnings</a>
 
         <!-- BACK -->
 

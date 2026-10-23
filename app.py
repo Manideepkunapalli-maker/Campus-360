@@ -139,6 +139,9 @@ def inject_platform_settings():
     return {
         "payments_enabled": app.config["PAYMENTS_ENABLED"],
         "marketplace_fee_percent": MARKETPLACE_FEE_PERCENT,
+        "developer_account_configured": bool(
+            owner_email and app.config["CAMPUS360_OWNER_SETUP_TOKEN"]
+        ),
         "business_owner": bool(
             current_user
             and owner_email
@@ -698,6 +701,73 @@ def signup():
     )
 
 
+@app.route(
+    "/developer-setup",
+    methods=["GET", "POST"]
+)
+def developer_setup():
+    error = None
+
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "")
+        confirm_password = request.form.get("confirm_password", "")
+        owner_setup_token = request.form.get("owner_setup_token", "")
+        configured_email = app.config["CAMPUS360_OWNER_EMAIL"]
+        configured_token = app.config["CAMPUS360_OWNER_SETUP_TOKEN"]
+
+        if not name or not email or not password:
+            error = "Please fill in all required fields."
+        elif not configured_email or not configured_token:
+            error = (
+                "Developer access is not configured yet. "
+                "The host must set the developer email and setup code in Render."
+            )
+        elif email != configured_email or not hmac.compare_digest(
+            owner_setup_token,
+            configured_token
+        ):
+            error = "The developer email or setup code is incorrect."
+        elif password != confirm_password:
+            error = "Passwords do not match."
+        elif len(password) < 6:
+            error = "Password must contain at least 6 characters."
+        elif User.query.filter_by(email=email).first():
+            error = (
+                "An account with this email already exists. "
+                "Sign in with the configured email and setup code to activate owner access."
+            )
+        else:
+            developer = User(
+                name=name,
+                email=email,
+                branch="Developer",
+                batch="Owner",
+                student_level="Developer"
+            )
+            developer.password = generate_password_hash(password)
+            developer.is_owner = True
+            developer.is_admin = True
+            db.session.add(developer)
+            db.session.commit()
+
+            session["user_id"] = developer.id
+            session["user_name"] = developer.name
+            session["user_email"] = developer.email
+            session["user_branch"] = developer.branch
+            session["branch"] = developer.branch
+            session["student_level"] = developer.student_level
+
+            return redirect(url_for("business_dashboard"))
+
+    return render_template(
+        "developer_setup.html",
+        error=error,
+        student_count=User.query.count()
+    )
+
+
 # =========================================================
 # LOGIN
 # =========================================================
@@ -753,24 +823,37 @@ def login():
                 user.password = generate_password_hash(password)
                 db.session.commit()
 
-        if user and valid_password and student_level == user.student_level:
-            is_configured_owner = bool(
-                app.config["CAMPUS360_OWNER_EMAIL"]
-                and email == app.config["CAMPUS360_OWNER_EMAIL"]
+        is_configured_owner = bool(
+            app.config["CAMPUS360_OWNER_EMAIL"]
+            and email == app.config["CAMPUS360_OWNER_EMAIL"]
+        )
+        valid_account_type = bool(
+            user
+            and (
+                student_level == user.student_level
+                or (is_configured_owner and student_level == "Developer")
             )
-            if is_configured_owner and not user.is_owner:
-                if not app.config["CAMPUS360_OWNER_SETUP_TOKEN"] or not hmac.compare_digest(
-                    owner_setup_token,
-                    app.config["CAMPUS360_OWNER_SETUP_TOKEN"]
-                ):
-                    error = "Enter the site-owner setup code to enable the private business console."
-                    return render_template(
-                        "login.html",
-                        error=error,
-                        student_count=User.query.count()
-                    )
-                user.is_owner = True
-                user.is_admin = True
+        )
+
+        if user and valid_password and valid_account_type:
+            if is_configured_owner:
+                if not user.is_owner:
+                    if not app.config["CAMPUS360_OWNER_SETUP_TOKEN"] or not hmac.compare_digest(
+                        owner_setup_token,
+                        app.config["CAMPUS360_OWNER_SETUP_TOKEN"]
+                    ):
+                        error = "Enter the site-owner setup code to enable the private business console."
+                        return render_template(
+                            "login.html",
+                            error=error,
+                            student_count=User.query.count()
+                        )
+                    user.is_owner = True
+                    user.is_admin = True
+                if student_level == "Developer":
+                    user.student_level = "Developer"
+                    user.branch = "Developer"
+                    user.batch = "Owner"
                 db.session.commit()
 
             session["user_id"] = user.id
@@ -784,7 +867,11 @@ def login():
 
 
             return redirect(
-                url_for("dashboard")
+                url_for(
+                    "business_dashboard"
+                    if user.is_owner and is_configured_owner
+                    else "dashboard"
+                )
             )
 
 

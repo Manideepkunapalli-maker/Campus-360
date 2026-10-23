@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Developer Account Setup — Campus360{% endblock %}
+
+{% block content %}
+<div class="login-page">
+    <main class="login-card">
+        <div class="login-header">
+            <div class="login-logo">
+                <div class="logo-icon"><i data-lucide="shield"></i></div>
+            </div>
+            <h1>Developer account setup</h1>
+            <p>Activate the private Campus360 owner and reports console.</p>
+        </div>
+
+        {% if error %}
+        <div class="login-error">
+            <i data-lucide="alert-circle" size="16"></i>
+            {{ error }}
+        </div>
+        {% endif %}
+
+        {% if not developer_account_configured %}
+        <div class="login-note">
+            <i data-lucide="triangle-alert" size="15"></i>
+            <span>The host must configure the developer’s personal email and one-time setup code in Render before this account can be activated.</span>
+        </div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('developer_setup') }}">
+            <div class="form-group">
+                <label class="form-label" for="developer-name">Developer name</label>
+                <div class="input-wrapper">
+                    <i data-lucide="user" size="17"></i>
+                    <input id="developer-name" type="text" name="name" class="input" placeholder="Enter your name" autocomplete="name" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="developer-email">Personal email</label>
+                <div class="input-wrapper">
+                    <i data-lucide="mail" size="17"></i>
+                    <input id="developer-email" type="email" name="email" class="input" placeholder="name@example.com" autocomplete="email" required>
+                </div>
+                <p class="form-help">Must exactly match the personal email configured by the host.</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="developer-setup-code">One-time developer setup code</label>
+                <input id="developer-setup-code" type="password" name="owner_setup_token" class="input" autocomplete="off" required>
+                <p class="form-help">Keep this code private. It grants access to owner-only business reports and moderation.</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="developer-password">Password</label>
+                <div class="input-wrapper">
+                    <i data-lucide="lock" size="17"></i>
+                    <input id="developer-password" type="password" name="password" class="input" minlength="6" autocomplete="new-password" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="developer-confirm-password">Confirm password</label>
+                <div class="input-wrapper">
+                    <i data-lucide="lock-keyhole" size="17"></i>
+                    <input id="developer-confirm-password" type="password" name="confirm_password" class="input" minlength="6" autocomplete="new-password" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary login-btn">
+                Create developer account
+                <i data-lucide="arrow-right" size="17"></i>
+            </button>
+        </form>
+
+        <div class="signup-link">
+            <span>Already set up?</span>
+            <a href="{{ url_for('login') }}">Sign in</a>
+        </div>
+        <a href="{{ url_for('landing') }}" class="back-home">
+            <i data-lucide="arrow-left" size="14"></i>
+            Back to Campus360
+        </a>
+    </main>
+</div>
+{% endblock %}
